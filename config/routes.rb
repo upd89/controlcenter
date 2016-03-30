@@ -15,6 +15,15 @@ Rails.application.routes.draw do
   resources :package_groups
   resources :systems
   resources :system_groups
+
+  scope module: 'api' do
+      namespace :v1 do
+        match "/register" => "api#register", via: :post
+        match "/system/:id/notify" => "api#updateSystem", via: :post
+        match "/task/:id/notify" => "api#updateTask", via: :post        
+      end
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
