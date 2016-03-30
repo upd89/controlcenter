@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @package_group.name %>
+</p>
+
+<p>
+  <strong>Permission level:</strong>
+  <%= @package_group.permission_level %>
+</p>
+
+<%= link_to 'Edit', edit_package_group_path(@package_group) %> |
+<%= link_to 'Back', package_groups_path %>

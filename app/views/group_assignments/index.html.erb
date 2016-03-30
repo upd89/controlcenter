@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Group Assignments</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Package group</th>
+      <th>Package</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @group_assignments.each do |group_assignment| %>
+      <tr>
+        <td><%= group_assignment.package_group.name %></td>
+        <td><%= group_assignment.package.name %></td>
+        <td><%= link_to 'Show', group_assignment %></td>
+        <td><%= link_to 'Edit', edit_group_assignment_path(group_assignment) %></td>
+        <td><%= link_to 'Destroy', group_assignment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Group assignment', new_group_assignment_path %>

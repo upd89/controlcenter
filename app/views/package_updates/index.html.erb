@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Package Updates</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Candidate version</th>
+      <th>Repository</th>
+      <th>Package</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @package_updates.each do |package_update| %>
+      <tr>
+        <td><%= package_update.candidate_version %></td>
+        <td><%= package_update.repository %></td>
+        <td><%= package_update.package.name %></td>
+        <td><%= link_to 'Show', package_update %></td>
+        <td><%= link_to 'Edit', edit_package_update_path(package_update) %></td>
+        <td><%= link_to 'Destroy', package_update, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Package update', new_package_update_path %>

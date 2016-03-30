@@ -1,0 +1,2 @@
+module SystemUpdatesHelper
+end

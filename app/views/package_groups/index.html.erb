@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Package Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Permission level</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @package_groups.each do |package_group| %>
+      <tr>
+        <td><%= package_group.name %></td>
+        <td><%= package_group.permission_level %></td>
+        <td><%= link_to 'Show', package_group %></td>
+        <td><%= link_to 'Edit', edit_package_group_path(package_group) %></td>
+        <td><%= link_to 'Destroy', package_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Package group', new_package_group_path %>

@@ -1,0 +1,9 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Log:</strong>
+  <%= @task_execution.log %>
+</p>
+
+<%= link_to 'Edit', edit_task_execution_path(@task_execution) %> |
+<%= link_to 'Back', task_executions_path %>

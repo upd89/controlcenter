@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing System Groups</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Permission level</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @system_groups.each do |system_group| %>
+      <tr>
+        <td><%= system_group.name %></td>
+        <td><%= system_group.permission_level %></td>
+        <td><%= link_to 'Show', system_group %></td>
+        <td><%= link_to 'Edit', edit_system_group_path(system_group) %></td>
+        <td><%= link_to 'Destroy', system_group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New System group', new_system_group_path %>

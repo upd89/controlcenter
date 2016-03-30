@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_state_id: 
+  task_execution_id: 
+  job_id: 
+
+two:
+  task_state_id: 
+  task_execution_id: 
+  job_id: 

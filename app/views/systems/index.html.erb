@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Listing Systems</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Urn</th>
+      <th>Os</th>
+      <th>Reboot required</th>
+      <th>Address</th>
+      <th>Last seen</th>
+      <th>System group</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @systems.each do |system| %>
+      <tr>
+        <td><%= system.name %></td>
+        <td><%= system.urn %></td>
+        <td><%= system.os %></td>
+        <td><%= system.reboot_required %></td>
+        <td><%= system.address %></td>
+        <td><%= system.last_seen %></td>
+        <td><%= system.system_group.name %></td>
+        <td><%= link_to 'Show', system %></td>
+        <td><%= link_to 'Edit', edit_system_path(system) %></td>
+        <td><%= link_to 'Destroy', system, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New System', new_system_path %>

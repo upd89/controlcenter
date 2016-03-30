@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  candidate_version: MyString
+  repository: MyString
+  package_id: 
+
+two:
+  candidate_version: MyString
+  repository: MyString
+  package_id: 

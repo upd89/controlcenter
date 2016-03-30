@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @system_group.name %>
+</p>
+
+<p>
+  <strong>Permission level:</strong>
+  <%= @system_group.permission_level %>
+</p>
+
+<%= link_to 'Edit', edit_system_group_path(@system_group) %> |
+<%= link_to 'Back', system_groups_path %>

@@ -1,0 +1,33 @@
+<%= form_for(@system_update) do |f| %>
+  <% if @system_update.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@system_update.errors.count, "error") %> prohibited this system_update from being saved:</h2>
+
+      <ul>
+      <% @system_update.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :system_update_state_id %><br>
+    <%= f.text_field :system_update_state_id %>
+  </div>
+  <div class="field">
+    <%= f.label :package_update_id %><br>
+    <%= f.text_field :package_update_id %>
+  </div>
+  <div class="field">
+    <%= f.label :system_id %><br>
+    <%= f.text_field :system_id %>
+  </div>
+  <div class="field">
+    <%= f.label :task_id %><br>
+    <%= f.text_field :task_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

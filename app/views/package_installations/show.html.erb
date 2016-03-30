@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Installed version:</strong>
+  <%= @package_installation.installed_version %>
+</p>
+
+<p>
+  <strong>Package:</strong>
+  <%= @package_installation.package.name %>
+</p>
+
+<p>
+  <strong>System:</strong>
+  <%= @package_installation.system.name %>
+</p>
+
+<%= link_to 'Edit', edit_package_installation_path(@package_installation) %> |
+<%= link_to 'Back', package_installations_path %>

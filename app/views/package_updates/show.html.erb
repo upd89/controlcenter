@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Candidate version:</strong>
+  <%= @package_update.candidate_version %>
+</p>
+
+<p>
+  <strong>Repository:</strong>
+  <%= @package_update.repository %>
+</p>
+
+<p>
+  <strong>Package:</strong>
+  <%= @package_update.package.name %>
+</p>
+
+<%= link_to 'Edit', edit_package_update_path(@package_update) %> |
+<%= link_to 'Back', package_updates_path %>

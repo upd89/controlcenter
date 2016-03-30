@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>System update state:</strong>
+  <%= @system_update.system_update_state %>
+</p>
+
+<p>
+  <strong>Package update:</strong>
+  <%= @system_update.package_update.package.name %>
+  <%= @system_update.package_update.candidate_version %>
+</p>
+
+<p>
+  <strong>System:</strong>
+  <%= @system_update.system.name %>
+</p>
+
+<p>
+  <strong>Task:</strong>
+  <%= @system_update.task %>
+</p>
+
+<%= link_to 'Edit', edit_system_update_path(@system_update) %> |
+<%= link_to 'Back', system_updates_path %>

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  system_update_state_id: 
+  package_update_id: 
+  system_id: 
+  task_id: 
+
+two:
+  system_update_state_id: 
+  package_update_id: 
+  system_id: 
+  task_id: 

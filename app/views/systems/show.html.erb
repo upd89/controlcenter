@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @system.name %>
+</p>
+
+<p>
+  <strong>Urn:</strong>
+  <%= @system.urn %>
+</p>
+
+<p>
+  <strong>Os:</strong>
+  <%= @system.os %>
+</p>
+
+<p>
+  <strong>Reboot required:</strong>
+  <%= @system.reboot_required %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @system.address %>
+</p>
+
+<p>
+  <strong>Last seen:</strong>
+  <%= @system.last_seen %>
+</p>
+
+<p>
+  <strong>System group:</strong>
+  <%= @system.system_group.name %>
+</p>
+
+<%= link_to 'Edit', edit_system_path(@system) %> |
+<%= link_to 'Back', systems_path %>

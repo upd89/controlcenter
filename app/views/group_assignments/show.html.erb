@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Package group:</strong>
+  <%= @group_assignment.package_group.name %>
+</p>
+
+<p>
+  <strong>Package:</strong>
+  <%= @group_assignment.package.name %>
+</p>
+
+<%= link_to 'Edit', edit_group_assignment_path(@group_assignment) %> |
+<%= link_to 'Back', group_assignments_path %>
