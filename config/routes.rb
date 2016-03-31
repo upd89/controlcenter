@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root to: "systems#index"
+  root 'systems#index'
   resources :system_updates
   resources :tasks
   resources :jobs
@@ -21,6 +21,7 @@ Rails.application.routes.draw do
         match "/register" => "api#register", via: :post
         match "/system/:id/notify" => "api#updateSystem", via: :post
         match "/task/:id/notify" => "api#updateTask", via: :post        
+        match "/system/:id/updateInstalled" => "api#updateInstalled", via: :post
       end
   end
 
