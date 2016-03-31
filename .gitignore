@@ -9,7 +9,10 @@
 /test/tmp/
 /test/version_tmp/
 /tmp/
-/log/*.log
+
+# Ignore all logfiles
+/log/*
+!/log/.keep
 
 ## Specific to RubyMotion:
 .dat*
