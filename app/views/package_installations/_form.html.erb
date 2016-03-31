@@ -17,11 +17,11 @@
   </div>
   <div class="field">
     <%= f.label :package_id %><br>
-    <%= f.text_field :package_id %>
+    <%= f.collection_select(:package_id, Package.all, :id, :name) %>
   </div>
   <div class="field">
     <%= f.label :system_id %><br>
-    <%= f.text_field :system_id %>
+    <%= f.collection_select(:system_id, System.all, :id, :name) %>
   </div>
   <div class="actions">
     <%= f.submit %>

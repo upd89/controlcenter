@@ -16,7 +16,7 @@
   <tbody>
     <% @system_updates.each do |system_update| %>
       <tr>
-        <td><%= system_update.system_update_state %></td>
+        <td><%= system_update.system_update_state.name %></td>
         <td><%= system_update.package_update.package.name %>
         <%= system_update.package_update.candidate_version %></td>
         <td><%= system_update.system.name %></td>

@@ -25,7 +25,7 @@
         <td><%= system.reboot_required %></td>
         <td><%= system.address %></td>
         <td><%= system.last_seen %></td>
-        <td><%= system.system_group.name %></td>
+        <td><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
         <td><%= link_to 'Show', system %></td>
         <td><%= link_to 'Edit', edit_system_path(system) %></td>
         <td><%= link_to 'Destroy', system, method: :delete, data: { confirm: 'Are you sure?' } %></td>

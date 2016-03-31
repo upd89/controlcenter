@@ -13,15 +13,15 @@
 
   <div class="field">
     <%= f.label :system_update_state_id %><br>
-    <%= f.text_field :system_update_state_id %>
+    <%= f.collection_select(:system_update_state_id, SystemUpdateState.all, :id, :name) %>
   </div>
   <div class="field">
     <%= f.label :package_update_id %><br>
-    <%= f.text_field :package_update_id %>
+    <%= f.collection_select(:package_update_id, PackageUpdate.all, :id, :package) %>
   </div>
   <div class="field">
     <%= f.label :system_id %><br>
-    <%= f.text_field :system_id %>
+    <%= f.collection_select(:system_id, System.all, :id, :name) %>
   </div>
   <div class="field">
     <%= f.label :task_id %><br>
