@@ -54,14 +54,11 @@ module Api::V1
     def updateTask
       if Task.exists?(params[:id])
         task = Task.find(params[:id])
-
         if JSON.parse( request.body.read )
           taskUpdate = JSON.parse request.body.read
-
           if taskUpdate["state"]
             task.taskstate = taskUpdate["state"]
             task.save()
-
             render text: "OK"
           else
             render text: "Missing params"
@@ -76,6 +73,38 @@ module Api::V1
 
     # /system/:id/updateInstalled
     def updateInstalled
+      if System.exists?(urn: params[:id])
+        system = System.where(urn: params[:id])[0]
+	if JSON.parse( request.body.read )
+	  sysUpdate = JSON.parse request.body.read
+          if sysUpdate["packages"]
+            sysUpdate["packages"].each do |package|
+              # do whatever
+              if Package.exists?(name: package['name'], base_version: package['baseversion'])
+                # linking...
+              else
+                # creating
+                newPackage = Package.create( {
+                       :name         =>  package['name'],
+                       :base_version =>  package['baseversion'],
+                       :architecture =>  package['architecture'],
+                       :section      =>  package['section'],
+                       :repository   =>  "",
+                       :homepage     =>  package['homepage'],
+                       :summary      =>  package['summary']   } )
+
+              end
+            end 
+	    render text: "OK"
+          else
+	    render text: "Missing params"
+	  end
+        else
+	  render text: "No JSON body"
+        end
+      else
+	render text: "System doesn't exist"
+      end
     end
 
   end
