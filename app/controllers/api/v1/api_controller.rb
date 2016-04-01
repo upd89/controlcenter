@@ -27,17 +27,37 @@ module Api::V1
     # /system/:id/notify
     def updateSystem
       if System.exists?(urn: params[:id])
-        system = System.where(urn: params[:id])[0]
+        currentSys = System.where(urn: params[:id])[0]
 	if JSON.parse( request.body.read )
 	  sysUpdate = JSON.parse request.body.read
           if sysUpdate["urn"] && sysUpdate["os"]
-            system.name = sysUpdate["name"] if sysUpdate["name"]
-     	    system.urn = sysUpdate["urn"]
-            system.address = sysUpdate["address"] if sysUpdate["address"]
-	    system.os = sysUpdate["os"]
-            system.reboot_required = sysUpdate["reboot_required"] if sysUpdate["reboot_required"]
-            system.last_seen = DateTime.now
-	    system.save()
+            currentSys.name = sysUpdate["name"] if sysUpdate["name"]
+     	    currentSys.urn = sysUpdate["urn"]
+            currentSys.address = sysUpdate["address"] if sysUpdate["address"]
+	    currentSys.os = sysUpdate["os"]
+            currentSys.reboot_required = sysUpdate["reboot_required"] if sysUpdate["reboot_required"]
+            currentSys.last_seen = DateTime.now
+	    currentSys.save()
+            sysUpdate["packageupdates"].each do |update|
+              if Package.exists?(name: update['name'], base_version: update['baseversion'])
+                currentPkg = Package.where(name: update['name'], base_version: update['baseversion'])[0]
+                if PackageUpdate.exists?(:package => currentPkg, :candidate_version => update['version'])
+                  currentUpdate = PackageUpdate.where(:package => currentPkg, :candidate_version => update['version'])[0]
+                else
+                  # createing update
+                  currentUpdate = PackageUpdate.create(:package => currentPkg,
+                                                       :candidate_version => update['version'],
+                                                       :repository => update['repository'])
+                end
+                if ! SystemUpdate.exists?(:system => currentSys, :package_update => currentUpdate)
+                  # linking update
+                  SystemUpdate.create( { :system => currentSys, :package_update => currentUpdate,
+                                         :system_update_state => SystemUpdateState.first } )
+                end
+              else
+                # package not found... what to do now?
+              end
+            end
 	    render text: "OK"
           else
 	    render text: "Missing params"
@@ -92,7 +112,7 @@ module Api::V1
                                               :installed_version => package['version'] } )
                 end
               else
-                # creating
+                # creating & linking
                 newPackage = Package.create( {
                        :name         =>  package['name'],
                        :base_version =>  package['baseversion'],
@@ -102,7 +122,6 @@ module Api::V1
                        :homepage     =>  package['homepage'],
                        :summary      =>  package['summary']
                 } )
-                # linking
                 PackageInstallation.create( { :system =>  currentSys, :package  =>  newPackage,
                                               :installed_version => package['version'] } )
               end
