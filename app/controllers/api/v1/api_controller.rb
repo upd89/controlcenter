@@ -101,19 +101,9 @@ module Api::V1
             sysUpdate["packages"].each do |package|
               if Package.exists?(name: package['name'], base_version: package['baseversion'])
                 currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
-                if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
-                  # updating
-                  currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
-                  currentInstall.installed_version = package['version']
-                  currentInstall.save
-                else
-                  # linking
-                  PackageInstallation.create( { :system => currentSys, :package => currentPkg,
-                                              :installed_version => package['version'] } )
-                end
               else
-                # creating & linking
-                newPackage = Package.create( {
+                # creating package
+                currentPkg = Package.create( {
                        :name         =>  package['name'],
                        :base_version =>  package['baseversion'],
                        :architecture =>  package['architecture'],
@@ -122,8 +112,19 @@ module Api::V1
                        :homepage     =>  package['homepage'],
                        :summary      =>  package['summary']
                 } )
-                PackageInstallation.create( { :system =>  currentSys, :package  =>  newPackage,
-                                              :installed_version => package['version'] } )
+              end
+              if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
+                # updating link (system <> package)
+                currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
+                currentInstall.installed_version = package['version']
+                currentInstall.save
+              else
+                # creating link (system <> package)
+                PackageInstallation.create( {
+                       :system            => currentSys,
+                       :package           => currentPkg,
+                       :installed_version => package['version']
+                } )
               end
             end 
 	    render text: "OK"
