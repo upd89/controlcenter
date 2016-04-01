@@ -8,13 +8,23 @@
 </head>
 <body>
 <div>
-<%= link_to 'Systemgroups', system_groups_path %>
+Configure:
+<%= link_to 'Roles', roles_path %>
 |
-<%= link_to 'Systems', systems_path %>
+<%= link_to 'Users', users_path %>
+|
+<%= link_to 'Systemgroups', system_groups_path %>
 |
 <%= link_to 'Packagegroups', package_groups_path %>
 |
+<%= link_to 'System Update States', system_update_states_path %>
+|
+<%= link_to 'Task States', task_states_path %>
+|
 <%= link_to 'Group Assignments', group_assignments_path %>
+<br />
+Collected:
+<%= link_to 'Systems', systems_path %>
 |
 <%= link_to 'Packages', packages_path %>
 |
@@ -24,19 +34,12 @@
 |
 <%= link_to 'System Updates', system_updates_path %>
 |
-<%= link_to 'Roles', roles_path %>
-|
-<%= link_to 'Users', users_path %>
-|
+Jobs/Tasks:
 <%= link_to 'Jobs', jobs_path %>
 |
 <%= link_to 'Tasks', tasks_path %>
 |
 <%= link_to 'Task Executions', task_executions_path %>
-|
-<%= link_to 'Task States', task_states_path %>
-|
-<%= link_to 'System Update States', system_update_states_path %>
 </div>
 
 <%= yield %>
