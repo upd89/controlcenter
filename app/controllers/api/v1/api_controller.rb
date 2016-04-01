@@ -6,17 +6,20 @@ module Api::V1
     def register
       if JSON.parse( request.body.read )
         sys = JSON.parse request.body.read
-        # TODO: CHECK FOR DUPLICATE FIRST!
 	if sys["urn"] && sys["os"] && sys["address"]
-          newSys = System.new
-          newSys.name = sys["name"] if sys["name"]
-          newSys.urn = sys["urn"]
-          newSys.os = sys["os"]
-          newSys.address = sys["address"]
-          newSys.system_group = SystemGroup.first
-          newSys.last_seen = DateTime.now
-          newSys.save()
-          render text: "OK"
+          if System.exists?(:urn => sys["urn"])
+            render text: "Duplicate"
+          else
+            newSys = System.new
+            newSys.name = sys["name"] if sys["name"]
+            newSys.urn = sys["urn"]
+            newSys.os = sys["os"]
+            newSys.address = sys["address"]
+            newSys.system_group = SystemGroup.first
+            newSys.last_seen = DateTime.now
+            newSys.save()
+            render text: "OK"
+          end
         else
           render text: "Missing params"
         end
