@@ -74,14 +74,23 @@ module Api::V1
     # /system/:id/updateInstalled
     def updateInstalled
       if System.exists?(urn: params[:id])
-        system = System.where(urn: params[:id])[0]
+        currentSys = System.where(urn: params[:id])[0]
 	if JSON.parse( request.body.read )
 	  sysUpdate = JSON.parse request.body.read
           if sysUpdate["packages"]
             sysUpdate["packages"].each do |package|
-              # do whatever
               if Package.exists?(name: package['name'], base_version: package['baseversion'])
-                # linking...
+                currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
+                if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
+                  # updating
+                  currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
+                  currentInstall.installed_version = package['version']
+                  currentInstall.save
+                else
+                  # linking
+                  PackageInstallation.create( { :system => currentSys, :package => currentPkg,
+                                              :installed_version => package['version'] } )
+                end
               else
                 # creating
                 newPackage = Package.create( {
@@ -89,10 +98,13 @@ module Api::V1
                        :base_version =>  package['baseversion'],
                        :architecture =>  package['architecture'],
                        :section      =>  package['section'],
-                       :repository   =>  "",
+                       :repository   =>  package['repository'],
                        :homepage     =>  package['homepage'],
-                       :summary      =>  package['summary']   } )
-
+                       :summary      =>  package['summary']
+                } )
+                # linking
+                PackageInstallation.create( { :system =>  currentSys, :package  =>  newPackage,
+                                              :installed_version => package['version'] } )
               end
             end 
 	    render text: "OK"
