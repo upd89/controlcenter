@@ -6,6 +6,7 @@ module Api::V1
     def register
       if JSON.parse( request.body.read )
         sys = JSON.parse request.body.read
+        # TODO: CHECK FOR DUPLICATE FIRST!
 	if sys["urn"] && sys["os"] && sys["address"]
           newSys = System.new
           newSys.name = sys["name"] if sys["name"]
