@@ -45,14 +45,19 @@ module Api::V1
                   currentUpdate = PackageUpdate.where(:package => currentPkg, :candidate_version => update['version'])[0]
                 else
                   # createing update
-                  currentUpdate = PackageUpdate.create(:package => currentPkg,
-                                                       :candidate_version => update['version'],
-                                                       :repository => update['repository'])
+                  currentUpdate = PackageUpdate.create( {
+                         :package           => currentPkg,
+                         :candidate_version => update['version'],
+                         :repository        => update['repository']
+                  } )
                 end
                 if ! SystemUpdate.exists?(:system => currentSys, :package_update => currentUpdate)
                   # linking update
-                  SystemUpdate.create( { :system => currentSys, :package_update => currentUpdate,
-                                         :system_update_state => SystemUpdateState.first } )
+                  SystemUpdate.create( {
+                         :system              => currentSys,
+                         :package_update      => currentUpdate,
+                         :system_update_state => SystemUpdateState.first
+                  } )
                 end
               else
                 # package not found... what to do now?
@@ -114,12 +119,12 @@ module Api::V1
                 } )
               end
               if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
-                # updating link (system <> package)
+                # updating link system <=> package
                 currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
                 currentInstall.installed_version = package['version']
                 currentInstall.save
               else
-                # creating link (system <> package)
+                # creating link system <=> package
                 PackageInstallation.create( {
                        :system            => currentSys,
                        :package           => currentPkg,
