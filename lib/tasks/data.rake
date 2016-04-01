@@ -1,3 +1,7 @@
+#
+# Sample Data, load with command: "rake db:sample_data"
+#
+
 namespace :db do
   desc "Generate sample data for developing"
   task :sample_data => :environment do
