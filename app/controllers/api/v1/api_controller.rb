@@ -48,7 +48,7 @@ module Api::V1
                 if PackageUpdate.exists?(:package => currentPkg, :candidate_version => update['version'])
                   currentUpdate = PackageUpdate.where(:package => currentPkg, :candidate_version => update['version'])[0]
                 else
-                  # createing update
+                  # creating update
                   currentUpdate = PackageUpdate.create( {
                          :package           => currentPkg,
                          :candidate_version => update['version'],
