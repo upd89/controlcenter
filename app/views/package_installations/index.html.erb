@@ -5,9 +5,9 @@
 <table>
   <thead>
     <tr>
-      <th>Installed version</th>
-      <th>Package</th>
       <th>System</th>
+      <th>Package</th>
+      <th>Installed version</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -15,9 +15,9 @@
   <tbody>
     <% @package_installations.each do |package_installation| %>
       <tr>
-        <td><%= package_installation.installed_version %></td>
-        <td><%= package_installation.package.name %></td>
         <td><%= package_installation.system.name %></td>
+        <td><%= package_installation.package.name %></td>
+        <td><%= package_installation.installed_version %></td>
         <td><%= link_to 'Show', package_installation %></td>
         <td><%= link_to 'Edit', edit_package_installation_path(package_installation) %></td>
         <td><%= link_to 'Destroy', package_installation, method: :delete, data: { confirm: 'Are you sure?' } %></td>
