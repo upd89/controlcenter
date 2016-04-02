@@ -24,10 +24,10 @@ namespace :db do
     Job.destroy_all
     SystemUpdateState.destroy_all
 
-    unasigned        = SystemGroup.create( { :name => "Unasigned-System",:permission_level => 1 } )
-    default          = SystemGroup.create( { :name => "Default-System",  :permission_level => 1 } )
-    db               = SystemGroup.create( { :name => "DB-System",       :permission_level => 6 } )
-    ha               = SystemGroup.create( { :name => "HA-System",       :permission_level => 7 } )
+    unassigned       = SystemGroup.create( { :name => "Unassigned-System", :permission_level => 1 } )
+    default          = SystemGroup.create( { :name => "Default-System",    :permission_level => 1 } )
+    db               = SystemGroup.create( { :name => "DB-System",         :permission_level => 6 } )
+    ha               = SystemGroup.create( { :name => "HA-System",         :permission_level => 7 } )
 
     uncrit           = PackageGroup.create( { :name => "Uncritical",  :permission_level => 1 } )
     crit             = PackageGroup.create( { :name => "Critical",    :permission_level => 5 } )
@@ -35,7 +35,7 @@ namespace :db do
     hacrit           = PackageGroup.create( { :name => "HA Critical", :permission_level => 7 } )
 
     update_available = SystemUpdateState.create( { :name => "Available" } ) 
-    update_queued    = SystemUpdateState.create( { :name => "Queued for installation" } ) 
+    update_queued    = SystemUpdateState.create( { :name => "Queued for Installation" } ) 
     update_failed    = SystemUpdateState.create( { :name => "Failed" } ) 
     update_outdated  = SystemUpdateState.create( { :name => "Outdated" } ) 
     update_installed = SystemUpdateState.create( { :name => "Installed" } ) 
