@@ -15,8 +15,8 @@
   <tbody>
     <% @package_installations.each do |package_installation| %>
       <tr>
-        <td><%= package_installation.system.name %></td>
-        <td><%= package_installation.package.name %></td>
+        <td><%= link_to package_installation.system.name, package_installation.system %></td>
+        <td><%= link_to package_installation.package.name, package_installation.package %></td>
         <td><%= package_installation.installed_version %></td>
         <td><%= link_to 'Show', package_installation %></td>
         <td><%= link_to 'Edit', edit_package_installation_path(package_installation) %></td>
