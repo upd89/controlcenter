@@ -104,10 +104,13 @@ module Api::V1
     def updateInstalled
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
+
 	if JSON.parse( request.body.read )
 	  sysUpdate = JSON.parse request.body.read
           if sysUpdate["packages"]
+
             sysUpdate["packages"].each do |package|
+
               if Package.exists?(name: package['name'], base_version: package['baseversion'])
                 currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
               else
@@ -122,6 +125,7 @@ module Api::V1
                        :summary      =>  package['summary']
                 } )
               end
+
               if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
                 # updating link system <=> package
                 currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
@@ -135,6 +139,7 @@ module Api::V1
                        :installed_version => package['version']
                 } )
               end
+
             end 
 	    render text: "OK"
           else

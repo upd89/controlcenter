@@ -1,10 +1,6 @@
 require 'test_helper'
 
 class Api::V1::ApiControllerTest < ActionController::TestCase
-   test "the truth" do
-     assert true
-   end
-
   test "should not save System without data" do
     sys = System.new
     assert_not sys.save
@@ -31,9 +27,9 @@ class Api::V1::ApiControllerTest < ActionController::TestCase
 
   #updateTask
 
-#  test "task update notification should fail w/o params" do
-#    post_via_redirect("/v1/task/1/notify", nil, nil)	
-#  end
+  test "task update notification should fail w/o params" do
+    post_via_redirect("/v1/task/1/notify", nil, nil)	
+  end
 
 #  test "task update notification should fail without params" do
 #    headers = { 'CONTENT_TYPE' => 'application/json' }
