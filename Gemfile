@@ -47,3 +47,4 @@ end
 
 gem 'font-awesome-sass'
 
+gem "rspec-rails", :group => [:development, :test]
