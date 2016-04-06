@@ -13,6 +13,7 @@ class SystemGroupDashboard < Administrate::BaseDashboard
     permission_level: Field::Number,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    systems: Field::HasMany
   }
 
   # COLLECTION_ATTRIBUTES
@@ -24,7 +25,7 @@ class SystemGroupDashboard < Administrate::BaseDashboard
     :id,
     :name,
     :permission_level,
-    :created_at,
+    :systems
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -35,6 +36,7 @@ class SystemGroupDashboard < Administrate::BaseDashboard
     :permission_level,
     :created_at,
     :updated_at,
+    :systems
   ]
 
   # FORM_ATTRIBUTES

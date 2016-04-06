@@ -18,6 +18,7 @@ class SystemDashboard < Administrate::BaseDashboard
     last_seen: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    system_updates: Field::HasMany
   }
 
   # COLLECTION_ATTRIBUTES
@@ -30,6 +31,7 @@ class SystemDashboard < Administrate::BaseDashboard
     :id,
     :name,
     :urn,
+    :system_updates
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -45,6 +47,7 @@ class SystemDashboard < Administrate::BaseDashboard
     :last_seen,
     :created_at,
     :updated_at,
+    :system_updates
   ]
 
   # FORM_ATTRIBUTES

@@ -14,6 +14,7 @@ class PackageUpdateDashboard < Administrate::BaseDashboard
     repository: Field::String,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
+    system_updates: Field::HasMany
   }
 
   # COLLECTION_ATTRIBUTES
@@ -26,6 +27,7 @@ class PackageUpdateDashboard < Administrate::BaseDashboard
     :id,
     :candidate_version,
     :repository,
+    :system_updates
   ]
 
   # SHOW_PAGE_ATTRIBUTES
@@ -37,6 +39,7 @@ class PackageUpdateDashboard < Administrate::BaseDashboard
     :repository,
     :created_at,
     :updated_at,
+    :system_updates
   ]
 
   # FORM_ATTRIBUTES
