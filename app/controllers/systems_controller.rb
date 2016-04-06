@@ -10,6 +10,7 @@ class SystemsController < ApplicationController
   # GET /systems/1
   # GET /systems/1.json
   def show
+    @system_updates = SystemUpdate.where(:system => @system)
   end
 
   # GET /systems/new

@@ -15,5 +15,29 @@
   <%= @package_update.package.name %>
 </p>
 
+<br>
+
+<table>
+  <thead>
+    <tr>
+      <th>System</th>
+      <th>Package</th>
+      <th>System update state</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @system_updates.each do |system_update| %>
+      <tr>
+        <td><%= link_to system_update.system.name, system_update.system %></td>
+        <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
+        <td><%= system_update.system_update_state.name %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+
 <%= link_to 'Edit', edit_package_update_path(@package_update) %> |
 <%= link_to 'Back', package_updates_path %>

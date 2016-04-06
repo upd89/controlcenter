@@ -4,7 +4,7 @@ class PackageInstallationsController < ApplicationController
   # GET /package_installations
   # GET /package_installations.json
   def index
-    @package_installations = PackageInstallation.all
+    @package_installations = PackageInstallation.all.includes(:system, :package)
   end
 
   # GET /package_installations/1
