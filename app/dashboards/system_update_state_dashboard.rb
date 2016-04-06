@@ -45,7 +45,7 @@ class SystemUpdateStateDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how system update states are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(system_update_state)
-  #   "SystemUpdateState ##{system_update_state.id}"
-  # end
+   def display_resource(system_update_state)
+     "#{system_update_state.name}"
+   end
 end

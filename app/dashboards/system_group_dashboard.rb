@@ -48,7 +48,7 @@ class SystemGroupDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how system groups are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(system_group)
-  #   "SystemGroup ##{system_group.id}"
-  # end
+   def display_resource(system_group)
+     "#{system_group.name}"
+   end
 end

@@ -51,7 +51,7 @@ class PackageUpdateDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how package updates are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(package_update)
-  #   "PackageUpdate ##{package_update.id}"
-  # end
+   def display_resource(package_update)
+     "#{package_update.package.name}" #todo: show version?
+   end
 end

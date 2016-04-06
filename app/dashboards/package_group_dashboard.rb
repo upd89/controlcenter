@@ -48,7 +48,7 @@ class PackageGroupDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how package groups are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(package_group)
-  #   "PackageGroup ##{package_group.id}"
-  # end
+   def display_resource(package_group)
+     "#{package_group.name}"
+   end
 end

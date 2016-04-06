@@ -63,7 +63,7 @@ class PackageDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how packages are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(package)
-  #   "Package ##{package.id}"
-  # end
+   def display_resource(package)
+     "#{package.name}"
+   end
 end

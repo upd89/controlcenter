@@ -63,7 +63,7 @@ class SystemDashboard < Administrate::BaseDashboard
   # Overwrite this method to customize how systems are displayed
   # across all pages of the admin dashboard.
   #
-  # def display_resource(system)
-  #   "System ##{system.id}"
-  # end
+   def display_resource(system)
+     "#{system.name}"
+   end
 end
