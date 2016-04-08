@@ -22,7 +22,7 @@
         <td><%= system.name %></td>
         <td><%= system.urn %></td>
         <td><%= system.os %></td>
-        <td><%= system.reboot_required %></td>
+        <td><%= system.reboot_required ? "yes" : "no" %></td>
         <td><%= system.address %></td>
         <td><%= system.last_seen %></td>
         <td><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
