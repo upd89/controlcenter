@@ -24,7 +24,7 @@
         <td><%= package.architecture %></td>
         <td><%= package.section %></td>
         <td><%= package.repository %></td>
-        <td><%= package.homepage %></td>
+        <td><a href="<%= package.homepage %>"><%= package.homepage %></a></td>
         <td><%= package.summary %></td>
         <td><%= link_to 'Show', package %></td>
         <td><%= link_to 'Edit', edit_package_path(package) %></td>
