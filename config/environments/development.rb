@@ -38,4 +38,8 @@ Rails.application.configure do
 
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
+
+  config.filtered_sidebar_resources = [:group_assignments]
+  config.super_debugger = 3
+
 end

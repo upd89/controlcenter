@@ -1,22 +1,22 @@
 Rails.application.routes.draw do
   namespace :admin do
+    resources :systems
     resources :group_assignments
-resources :jobs
-resources :packages
-resources :package_groups
-resources :package_installations
-resources :package_updates
-resources :roles
-resources :systems
-resources :system_groups
-resources :system_updates
-resources :system_update_states
-resources :tasks
-resources :task_executions
-resources :task_states
-resources :users
+    resources :jobs
+    resources :packages
+    resources :package_groups
+    resources :package_installations
+    resources :package_updates
+    resources :system_groups
+    resources :system_updates
+    resources :system_update_states
+    resources :tasks
+    resources :task_executions
+    resources :task_states
+    resources :roles
+    resources :users
 
-    root to: "group_assignments#index"
+    root to: "systems#index"
   end
 
   root 'systems#index'

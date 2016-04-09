@@ -38,3 +38,7 @@ build/
 
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
+
+config/settings.local.yml
+config/settings/*.local.yml
+config/environments/*.local.yml

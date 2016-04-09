@@ -76,4 +76,8 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+
+  config.filtered_sidebar_resources = [:group_assignments]
+  config.super_debugger = 3
+  
 end
