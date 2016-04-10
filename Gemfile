@@ -45,7 +45,7 @@ group :development do
   gem 'spring'
 end
 
-gem 'font-awesome-sass'
+gem 'font-awesome-rails'
 
 gem "rspec-rails", :group => [:development, :test]
 

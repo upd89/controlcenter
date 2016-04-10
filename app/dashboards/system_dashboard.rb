@@ -27,11 +27,11 @@ class SystemDashboard < Administrate::BaseDashboard
   # By default, it's limited to four items to reduce clutter on index pages.
   # Feel free to add, remove, or rearrange items.
   COLLECTION_ATTRIBUTES = [
-    :system_group,
-    :id,
     :name,
     :urn,
-    :system_updates
+    :system_group,
+    :system_updates,
+    :reboot_required
   ]
 
   # SHOW_PAGE_ATTRIBUTES
