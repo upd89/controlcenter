@@ -1,33 +1,33 @@
 <p id="notice"><%= notice %></p>
 
 <ul id="properties">
-  <li>
-    <div class="property">Name</div>
-    <div class="value"><%= @system.name %></div>
+  <li><p>
+    <span class="property">Name</span>
+    <span class="value"><%= @system.name %></span>
   </li>
-  <li>
-    <div class="property">URN</div>
-    <div class="value"><%= @system.urn %></div>
+  <li><p>
+    <span class="property">URN</span>
+    <span class="value"><%= @system.urn %></span>
   </li>
-  <li>
-    <div class="property">OS</div>
-    <div class="value"><%= @system.os %></div>
+  <li><p>
+    <span class="property">OS</span>
+    <span class="value"><%= @system.os %></span>
   </li>
-  <li>
-    <div class="property">Reboot Required?</div>
-    <div class="value"><%= @system.reboot_required %></div>
+  <li><p>
+    <span class="property">Reboot Required?</span>
+    <span class="value"><%= @system.reboot_required %></span>
   </li>
-  <li>
-    <div class="property">Address</div>
-    <div class="value"><%= @system.address %></div>
+  <li><p>
+    <span class="property">Address</span>
+    <span class="value"><%= @system.address %></span>
   </li>
-  <li>
-    <div class="property">Last seen</div>
-    <div class="value"><%= @system.last_seen %></div>
+  <li><p>
+    <span class="property">Last seen</span>
+    <span class="value"><%= @system.last_seen %></span>
   </li>
-  <li>
-    <div class="property">System Group</div>
-    <div class="value"><%= link_to @system.system_group.name, @system.system_group %></div>
+  <li><p>
+    <span class="property">System Group</span>
+    <span class="value"><%= link_to @system.system_group.name, @system.system_group %></span>
   </li>
 </ul>
 
