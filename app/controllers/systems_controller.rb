@@ -11,6 +11,8 @@ class SystemsController < ApplicationController
   # GET /systems/1.json
   def show
     @system_updates = SystemUpdate.where(:system => @system)
+    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => 15)
+    #@paginated_system_updates = SystemUpdate.where(:system => @system).paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /systems/new

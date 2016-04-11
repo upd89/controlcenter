@@ -72,7 +72,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @system_updates.each do |system_update| %>
+    <% @paginated_system_updates.each do |system_update| %>
       <tr>
         <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
         <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
@@ -81,4 +81,6 @@
     <% end %>
   </tbody>
 </table>
+
+<%= will_paginate @paginated_system_updates %>
 <% end %>

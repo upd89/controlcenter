@@ -52,3 +52,5 @@ gem "rspec-rails", :group => [:development, :test]
 gem "administrate"
 
 gem 'config' #for fine-grained configurations, especially custom configs
+
+gem 'will_paginate'
