@@ -5,9 +5,11 @@
 /* INDEX */
 header {
   h1, a { float: left;}
-  a {
-    margin-left: 100px !important;
+
+  a.button,
+  ul.button-bar {
     margin-top: 25px !important;
+    margin-left: 100px !important;
   }
 }
 table {
@@ -20,7 +22,11 @@ table {
 
 /* SHOW  */
 ul.properties {
-  margin-left: 0px;
+  &:first-of-type { clear: left; }
+
+  background-color: #DDD;
+  padding: 5px 10px;
+  border: 1px dashed #BABABA;
 
   li {
     list-style-type: none;

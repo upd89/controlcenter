@@ -1,10 +1,13 @@
-<p id="notice"><%= notice %></p>
+<header>
+  <h1>System <%= @system.name %></h1>
 
-<ul class="button-bar">
-  <li><%= link_to '<i class="fa fa-arrow-left"></i>'.html_safe,  systems_path %></li>
-  <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe,  edit_system_path(@system) %></li>
-  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, @system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-</ul>
+  <ul class="button-bar">
+    <li><%= link_to '<i class="fa fa-arrow-left"></i>'.html_safe,  systems_path %></li>
+    <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe,  edit_system_path(@system) %></li>
+    <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, @system, method: :delete, data: { confirm: 'Are you sure you want to delete this system?' } %></li>
+  </ul>
+
+</header>
 
 <ul class="properties col_6">
   <li>
