@@ -6,24 +6,24 @@
 <p id="notice"><%= notice %></p>
 
 
-<table>
+<table class="striped tight sortable">
   <thead>
     <tr>
-      <th>Name</th>
+      <th colspan="2">Name</th>
       <th>Urn</th>
       <th>Os</th>
       <th>Reboot required</th>
       <th>Address</th>
       <th>Last seen</th>
-      <th>System group</th>
-      <th></th>
+      <th colspan="2">System group</th>
     </tr>
   </thead>
 
   <tbody>
     <% @systems.each do |system| %>
-      <tr>
+      <tr class="relPos" >
         <td><%= system.name %></td>
+        <td class="hiddenFirstCol"><%= link_to '', system, class:"row-link"  %></td>
         <td><%= system.urn %></td>
         <td><%= system.os %></td>
         <td><%= system.reboot_required ? "yes" : "no" %></td>

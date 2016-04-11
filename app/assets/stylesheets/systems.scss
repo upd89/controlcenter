@@ -15,6 +15,21 @@ header {
 table {
   clear: both;
 
+  tr.relPos { position: relative; }
+
+  tr a.row-link {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+  }
+
+  tr td.hiddenFirstCol {
+    width: 0px;
+    padding: 0px;
+  }
+
   ul.button-bar {
     min-width: 105px;
   }
