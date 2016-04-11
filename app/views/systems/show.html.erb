@@ -1,39 +1,35 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @system.name %>
-</p>
-
-<p>
-  <strong>Urn:</strong>
-  <%= @system.urn %>
-</p>
-
-<p>
-  <strong>Os:</strong>
-  <%= @system.os %>
-</p>
-
-<p>
-  <strong>Reboot required:</strong>
-  <%= @system.reboot_required %>
-</p>
-
-<p>
-  <strong>Address:</strong>
-  <%= @system.address %>
-</p>
-
-<p>
-  <strong>Last seen:</strong>
-  <%= @system.last_seen %>
-</p>
-
-<p>
-  <strong>System group:</strong>
-  <%= @system.system_group.name %>
-</p>
+<ul id="properties">
+  <li>
+    <div class="property">Name</div>
+    <div class="value"><%= @system.name %></div>
+  </li>
+  <li>
+    <div class="property">URN</div>
+    <div class="value"><%= @system.urn %></div>
+  </li>
+  <li>
+    <div class="property">OS</div>
+    <div class="value"><%= @system.os %></div>
+  </li>
+  <li>
+    <div class="property">Reboot Required?</div>
+    <div class="value"><%= @system.reboot_required %></div>
+  </li>
+  <li>
+    <div class="property">Address</div>
+    <div class="value"><%= @system.address %></div>
+  </li>
+  <li>
+    <div class="property">Last seen</div>
+    <div class="value"><%= @system.last_seen %></div>
+  </li>
+  <li>
+    <div class="property">System Group</div>
+    <div class="value"><%= @system.system_group.name %>(<%= link_to 'Open', @system.system_group %>)</div>
+  </li>
+</ul>
 
 <p>
   <strong>Updates:</strong>
