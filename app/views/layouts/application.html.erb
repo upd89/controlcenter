@@ -7,44 +7,41 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-<div>
-<%= link_to('Admin', admin_systems_path ) %>
-|
-Configure:
-<%= link_to 'Roles', roles_path %>
-|
-<%= link_to 'Users', users_path %>
-|
-<%= link_to 'Systemgroups', system_groups_path %>
-|
-<%= link_to 'Packagegroups', package_groups_path %>
-|
-<%= link_to 'System Update States', system_update_states_path %>
-|
-<%= link_to 'Task States', task_states_path %>
-|
-<%= link_to 'Group Assignments', group_assignments_path %>
-<br />
-Collected:
-<%= link_to 'Systems', systems_path %>
-|
-<%= link_to 'Packages', packages_path %>
-|
-<%= link_to 'Package Installations', package_installations_path %>
-|
-<%= link_to 'Package Updates', package_updates_path %>
-|
-<%= link_to 'System Updates', system_updates_path %>
-|
-Jobs/Tasks:
-<%= link_to 'Jobs', jobs_path %>
-|
-<%= link_to 'Tasks', tasks_path %>
-|
-<%= link_to 'Task Executions', task_executions_path %>
-</div>
 
-<%= yield %>
+<ul class="menu">
+  <li><a href=""><span class="icon" data-icon="R"></span>Configure</a>
+    <ul>
+      <li><%= link_to 'Roles', roles_path %></li>
+      <li><%= link_to 'Users', users_path %></li>
+      <li><%= link_to 'Systemgroups', system_groups_path %></li>
+      <li><%= link_to 'Packagegroups', package_groups_path %></li>
+      <li><%= link_to 'System Update States', system_update_states_path %></li>
+      <li><%= link_to 'Task States', task_states_path %></li>
+      <li><%= link_to 'Group Assignments', group_assignments_path %></li>
+    </ul>
+  </li>
+  <li><a href=""><span class="icon" data-icon="R"></span>Collected</a>
+    <ul>
+      <li><%= link_to 'Systems', systems_path %></li>
+      <li><%= link_to 'Packages', packages_path %></li>
+      <li><%= link_to 'Package Installations', package_installations_path %></li>
+      <li><%= link_to 'Package Updates', package_updates_path %></li>
+      <li><%= link_to 'System Updates', system_updates_path %></li>
+    </ul>
+  </li>
+  <li><a href=""><span class="icon" data-icon="R"></span>Jobs/Tasks</a>
+    <ul>
+      <li><%= link_to 'Jobs', jobs_path %></li>
+      <li><%= link_to 'Tasks', tasks_path %></li>
+      <li><%= link_to 'Task Executions', task_executions_path %></li>
+    </ul>
+  </li>
+  <li><%= link_to('Admin', admin_systems_path ) %></li>
+</ul>
+
+<div class="grid">
+  <%= yield %>
+</div>
 
 </body>
 </html>
