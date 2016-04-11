@@ -27,7 +27,7 @@
   </li>
   <li>
     <div class="property">System Group</div>
-    <div class="value"><%= @system.system_group.name %>(<%= link_to 'Open', @system.system_group %>)</div>
+    <div class="value"><%= link_to @system.system_group.name, @system.system_group %></div>
   </li>
 </ul>
 
