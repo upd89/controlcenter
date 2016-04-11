@@ -3,7 +3,7 @@
 <ul class="button-bar">
   <li><%= link_to '<i class="fa fa-arrow-left"></i>'.html_safe,  systems_path %></li>
   <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe,  edit_system_path(@system) %></li>
-  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe,  delete_system_path(@system) %></li>
+  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, @system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
 </ul>
 
 <ul id="properties">
