@@ -52,10 +52,12 @@
   <li>
     <p>
       <span class="property">Updates</span>
+      <span class="value"><%= @system_updates.length %></span>
     </p>
   </li>
 </ul>
 
+<% if @system_updates.length %>
 <table>
   <thead>
     <tr>
@@ -74,3 +76,4 @@
     <% end %>
   </tbody>
 </table>
+<% end %>
