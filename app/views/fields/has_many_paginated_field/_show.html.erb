@@ -1,0 +1,22 @@
+<% if field.resources.any? %>
+  <%= render(
+    "collection",
+    collection_presenter: field.associated_collection,
+    resources: field.resources
+  ) %>
+
+  <% if field.more_than_limit? %>
+    <span>
+      <%= t(
+        'administrate.fields.has_many.more',
+        count: field.limit,
+        total_count: field.data.count,
+      ) %>
+    </span>
+  <% end %>
+
+<% else %>
+  <%= t("administrate.fields.has_many.none") %>
+<% end %>
+
+

@@ -18,7 +18,7 @@ class SystemDashboard < Administrate::BaseDashboard
     last_seen: Field::DateTime,
     created_at: Field::DateTime,
     updated_at: Field::DateTime,
-    system_updates: Field::HasMany
+    system_updates: HasManyPaginatedField
   }
 
   # COLLECTION_ATTRIBUTES
