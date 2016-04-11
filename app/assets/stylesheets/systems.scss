@@ -2,6 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+/* INDEX */
 header {
   h1, a { float: left;}
   a {
@@ -11,8 +12,13 @@ header {
 }
 table {
   clear: both;
+
+  ul.button-bar {
+    min-width: 105px;
+  }
 }
 
+/* SHOW  */
 ul#properties {
   margin-left: 0px;
 
