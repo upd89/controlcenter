@@ -6,7 +6,7 @@
   <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, @system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
 </ul>
 
-<ul id="properties">
+<ul class="properties col_6">
   <li>
     <p>
       <span class="property">Name</span>
@@ -31,6 +31,8 @@
       <span class="value"><%= @system.reboot_required %></span>
     </p>
   </li>
+</ul>
+<ul class="properties col_6">
   <li>
     <p>
       <span class="property">Address</span>
