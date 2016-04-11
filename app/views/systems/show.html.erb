@@ -1,39 +1,59 @@
 <p id="notice"><%= notice %></p>
 
-<ul id="properties">
-  <li><p>
-    <span class="property">Name</span>
-    <span class="value"><%= @system.name %></span>
-  </li>
-  <li><p>
-    <span class="property">URN</span>
-    <span class="value"><%= @system.urn %></span>
-  </li>
-  <li><p>
-    <span class="property">OS</span>
-    <span class="value"><%= @system.os %></span>
-  </li>
-  <li><p>
-    <span class="property">Reboot Required?</span>
-    <span class="value"><%= @system.reboot_required %></span>
-  </li>
-  <li><p>
-    <span class="property">Address</span>
-    <span class="value"><%= @system.address %></span>
-  </li>
-  <li><p>
-    <span class="property">Last seen</span>
-    <span class="value"><%= @system.last_seen %></span>
-  </li>
-  <li><p>
-    <span class="property">System Group</span>
-    <span class="value"><%= link_to @system.system_group.name, @system.system_group %></span>
-  </li>
+<ul class="button-bar">
+  <li><%= link_to 'Edit', edit_system_path(@system), class:"button" %></li>
+  <li><%= link_to 'Back', systems_path, class:"button" %></li>
 </ul>
 
-<p>
-  <strong>Updates:</strong>
-</p>
+<ul id="properties">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @system.name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">URN</span>
+      <span class="value"><%= @system.urn %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">OS</span>
+      <span class="value"><%= @system.os %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Reboot Required?</span>
+      <span class="value"><%= @system.reboot_required %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Address</span>
+      <span class="value"><%= @system.address %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Last seen</span>
+      <span class="value"><%= @system.last_seen %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">System Group</span>
+      <span class="value"><%= link_to @system.system_group.name, @system.system_group %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Updates</span>
+    </p>
+  </li>
+</ul>
 
 <table>
   <thead>
@@ -53,8 +73,3 @@
     <% end %>
   </tbody>
 </table>
-
-<br>
-
-<%= link_to 'Edit', edit_system_path(@system) %> |
-<%= link_to 'Back', systems_path %>
