@@ -12,3 +12,22 @@ header {
 table {
   clear: both;
 }
+
+ul#properties {
+  margin-left: 0px;
+
+  li {
+    list-style-type: none;
+
+    p {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    .property {
+      min-width: 150px;
+      display: inline-block;
+      color: #8F8F8F;
+    }
+  }
+}
