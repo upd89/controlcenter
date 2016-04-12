@@ -4,13 +4,11 @@
 
 /* INDEX */
 header {
-  h1, a { float: left;}
+  h1 { float: left;}
 
-  a.button,
-  ul.button-bar,
-  #addNewSystemBtn {
-    margin-top: 25px !important;
-    float: right;
+  ul.button-bar {
+    margin-top: 40px !important;
+    text-align: right;
   }
 }
 table {

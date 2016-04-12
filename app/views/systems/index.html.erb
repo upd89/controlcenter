@@ -1,6 +1,8 @@
 <header>
-  <h1>Systems</h1>
-  <%= link_to '<i class="fa fa-plus"></i> New System'.html_safe, new_system_path, class:"button", id:"addNewSystemBtn" %>
+  <h1 class="col_9">Systems</h1>
+  <ul class="button-bar col_3">
+    <li><%= link_to '<i class="fa fa-plus"></i> New System'.html_safe, new_system_path %></li>
+  </ul>
 </header>
 
 <p id="notice"><%= notice %></p>
