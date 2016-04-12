@@ -14,15 +14,16 @@ header {
 }
 table {
   clear: both;
+  position: relative;
 
-  tr.relPos { position: relative; }
-
-  tr a.row-link {
+  a.row-link::before {
+    content: "";
+    display: block;
     position: absolute;
+    left: 0;
     width: 100%;
-    height: 100%;
-    top: 0px;
-    left: 0px;
+    height: 34px;
+    margin-top: -17px;
   }
 
   tr td.hiddenFirstCol {
