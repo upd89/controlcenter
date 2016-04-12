@@ -3,8 +3,7 @@
 	kickstart.js
 */
 
-jQuery(document).ready(function($){
-
+$(document).on("page:change", function(){
 	/*---------------------------------
 		MENU Dropdowns
 	-----------------------------------*/
