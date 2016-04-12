@@ -14,3 +14,50 @@ html {
 .actions {
  clear: both;
 }
+
+table.clickableRows {
+  tbody tr {
+    cursor: pointer;
+    cursor: hand;
+
+    &:hover {
+      background: RGBA(170, 170, 170, 0.7);
+    }
+  }
+}
+
+/* INDEX */
+header {
+  float: left;
+  width: 100%;
+
+  ul.button-bar {
+    margin-top: 40px;
+    margin-bottom: 10px;
+    text-align: right;
+  }
+}
+
+table {
+  clear: both;
+  position: relative;
+
+  a.row-link::before {
+    content: "";
+    display: block;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 34px;
+    margin-top: -17px;
+  }
+
+  tr td.hiddenFirstCol {
+    width: 0px;
+    padding: 0px;
+  }
+
+  ul.button-bar {
+    min-width: 105px;
+  }
+}

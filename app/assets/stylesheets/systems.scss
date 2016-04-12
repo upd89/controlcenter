@@ -2,40 +2,6 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-/* INDEX */
-header {
-  float: left;
-  width: 100%;
-
-  ul.button-bar {
-    margin-top: 40px !important;
-    text-align: right;
-  }
-}
-table {
-  clear: both;
-  position: relative;
-
-  a.row-link::before {
-    content: "";
-    display: block;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 34px;
-    margin-top: -17px;
-  }
-
-  tr td.hiddenFirstCol {
-    width: 0px;
-    padding: 0px;
-  }
-
-  ul.button-bar {
-    min-width: 105px;
-  }
-}
-
 /* SHOW  */
 ul.properties {
   &:first-of-type { clear: left; }
