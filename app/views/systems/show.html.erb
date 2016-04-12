@@ -82,5 +82,11 @@
   </tbody>
 </table>
 
-<%= will_paginate @paginated_system_updates %>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_system_updates %>
+  </div>
+  <%= will_paginate @paginated_system_updates, :container => false %>
+</div>
+
 <% end %>
