@@ -40,6 +40,6 @@
     <%= f.collection_select(:system_group_id, SystemGroup.all, :id, :name) %>
   </div>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
 <% end %>
