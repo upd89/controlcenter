@@ -1,0 +1,8 @@
+<header>
+  <h1 class="col_9"><%= header["title"]  %></h1>
+  <ul class="button-bar col_3">
+    <% header["actions"].each do |action| %>
+      <li><%= link_to ('<i class="fa fa-' + action["icon"] + '"></i> ' + action["text"] ).html_safe, action["path"]  %></li>
+    <% end %>
+  </ul>
+</header>

@@ -1,9 +1,11 @@
-<header>
-  <h1 class="col_9">Systems</h1>
-  <ul class="button-bar col_3">
-    <li><%= link_to '<i class="fa fa-plus"></i> New System'.html_safe, new_system_path %></li>
-  </ul>
-</header>
+<%= render :partial => "header", :object => {
+  "title" => "Systems",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New System",
+    "path" => new_system_path
+  }]
+} %>
 
 <p id="notice"><%= notice %></p>
 
