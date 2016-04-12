@@ -7,9 +7,10 @@ header {
   h1, a { float: left;}
 
   a.button,
-  ul.button-bar {
+  ul.button-bar,
+  #addNewSystemBtn {
     margin-top: 25px !important;
-    margin-left: 100px !important;
+    float: right;
   }
 }
 table {
