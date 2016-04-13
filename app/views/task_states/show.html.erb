@@ -1,9 +1,29 @@
+<%= render :partial => "header", :object => {
+  "title" => "System Update State " + @task_state.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => task_states_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_task_state_path(@task_state)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @task_state,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this task state?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @task_state.name %>
-</p>
-
-<%= link_to 'Edit', edit_task_state_path(@task_state) %> |
-<%= link_to 'Back', task_states_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @task_state.name %></span>
+    </p>
+  </li>
+</ul>

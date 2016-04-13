@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Task States",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Task State",
+    "path" => new_task_state_path
+  }]
+} %>
 
-<h1>Listing Task States</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -23,5 +30,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Task state', new_task_state_path %>
