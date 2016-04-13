@@ -11,34 +11,52 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :base_version %><br>
-    <%= f.text_field :base_version %>
-  </div>
-  <div class="field">
-    <%= f.label :architecture %><br>
-    <%= f.text_field :architecture %>
-  </div>
-  <div class="field">
-    <%= f.label :section %><br>
-    <%= f.text_field :section %>
-  </div>
-  <div class="field">
-    <%= f.label :repository %><br>
-    <%= f.text_field :repository %>
-  </div>
-  <div class="field">
-    <%= f.label :homepage %><br>
-    <%= f.text_field :homepage %>
-  </div>
-  <div class="field">
-    <%= f.label :summary %><br>
-    <%= f.text_field :summary %>
-  </div>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property"><%= f.label :name %></span>
+      <span class="value"><%= f.text_field :name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property"><%= f.label :base_version %></span>
+      <span class="value"><%= f.text_field :base_version %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property"><%= f.label :architecture %></span>
+      <span class="value"><%= f.text_field :architecture %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property"><%= f.label :section %></span>
+      <span class="value"><%= f.text_field :section %></span>
+    </p>
+  </li>
+</ul>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property"><%= f.label :repository %></span>
+      <span class="value"><%= f.text_field :repository %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property"><%= f.label :homepage %></span>
+      <span class="value"><%= f.text_field :homepage %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property"><%= f.label :summary %></span>
+      <span class="value"><%= f.text_field :summary %></span>
+    </p>
+  </li>
+</ul>
   <div class="actions">
     <%= f.submit %>
   </div>

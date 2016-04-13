@@ -1,39 +1,68 @@
+<%= render :partial => "header", :object => {
+  "title" => "Package " + @package.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => packages_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_package_path(@package)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @package,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this package?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @package.name %>
-</p>
-
-<p>
-  <strong>Base version:</strong>
-  <%= @package.base_version %>
-</p>
-
-<p>
-  <strong>Architecture:</strong>
-  <%= @package.architecture %>
-</p>
-
-<p>
-  <strong>Section:</strong>
-  <%= @package.section %>
-</p>
-
-<p>
-  <strong>Repository:</strong>
-  <%= @package.repository %>
-</p>
-
-<p>
-  <strong>Homepage:</strong>
-  <%= @package.homepage %>
-</p>
-
-<p>
-  <strong>Summary:</strong>
-  <%= @package.summary %>
-</p>
-
-<%= link_to 'Edit', edit_package_path(@package) %> |
-<%= link_to 'Back', packages_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @package.name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Base version</span>
+      <span class="value"><%= @package.base_version %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Architecture</span>
+      <span class="value"><%= @package.architecture %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Section</span>
+      <span class="value"><%= @package.section %></span>
+    </p>
+  </li>
+</ul>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Repository</span>
+      <span class="value"><%= @package.repository %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Homepage</span>
+      <span class="value"><%= @package.homepage %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Summary</span>
+      <span class="value"><%= @package.summary %></span>
+    </p>
+  </li>
+</ul>
+<div class="floatFix"></div>
