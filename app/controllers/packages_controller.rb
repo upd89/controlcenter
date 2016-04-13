@@ -5,6 +5,7 @@ class PackagesController < ApplicationController
   # GET /packages.json
   def index
     @packages = Package.all
+    @paginated_packages = @packages.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /packages/1

@@ -17,7 +17,7 @@
   </thead>
 
   <tbody>
-    <% @packages.each do |package| %>
+    <% @paginated_packages.each do |package| %>
       <tr>
         <td><%= package.name %></td>
         <td><%= package.base_version %></td>
@@ -33,6 +33,13 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_packages %>
+  </div>
+  <%= will_paginate @paginated_packages, :container => false %>
+</div>
 
 <br>
 
