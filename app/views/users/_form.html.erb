@@ -27,7 +27,7 @@
     <li>
       <p>
         <span class="property"><%= f.label :role_id %></span>
-        <span class="value"><%= f.text_field :role_id %></span>
+        <span class="value"><%= f.collection_select(:role_id, Role.all, :id, :name) %></span>
       </p>
     </li>
   </ul>
