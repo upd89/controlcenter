@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Group Assignments",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Group Assignment",
+    "path" => new_group_assignment_path
+  }]
+} %>
 
-<h1>Listing Group Assignments</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -25,5 +32,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Group assignment', new_group_assignment_path %>
