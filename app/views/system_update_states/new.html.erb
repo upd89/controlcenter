@@ -1,5 +1,10 @@
-<h1>New System Update State</h1>
+<%= render :partial => "header", :object => {
+  "title" => "New System Update State",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => system_update_states_path
+  }]
+} %>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', system_update_states_path %>
