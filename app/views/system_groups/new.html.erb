@@ -1,5 +1,10 @@
-<h1>New System Group</h1>
+<%= render :partial => "header", :object => {
+  "title" => "New System Group",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => system_groups_path
+  }]
+} %>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', system_groups_path %>
