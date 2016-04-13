@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Users",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New User",
+    "path" => new_user_path
+  }]
+} %>
 
-<h1>Listing Users</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -27,5 +34,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New User', new_user_path %>

@@ -1,5 +1,10 @@
-<h1>New User</h1>
+<%= render :partial => "header", :object => {
+  "title" => "New User",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => users_path
+  }]
+} %>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', users_path %>

@@ -11,19 +11,27 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :email %><br>
-    <%= f.text_field :email %>
-  </div>
-  <div class="field">
-    <%= f.label :role_id %><br>
-    <%= f.text_field :role_id %>
-  </div>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :name %></span>
+        <span class="value"><%= f.text_field :name %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :email %></span>
+        <span class="value"><%= f.text_field :email %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :role_id %></span>
+        <span class="value"><%= f.text_field :role_id %></span>
+      </p>
+    </li>
+  </ul>
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
 <% end %>

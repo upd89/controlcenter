@@ -1,19 +1,41 @@
+<%= render :partial => "header", :object => {
+  "title" => "User " + @user.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => users_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_user_path(@user)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @user,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this user?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @user.name %>
-</p>
-
-<p>
-  <strong>Email:</strong>
-  <%= @user.email %>
-</p>
-
-<p>
-  <strong>Role:</strong>
-  <%= @user.role %>
-</p>
-
-<%= link_to 'Edit', edit_user_path(@user) %> |
-<%= link_to 'Back', users_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @user.name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Email</span>
+      <span class="value"><%= @user.email %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Role</span>
+      <span class="value"><%= @user.role %></span>
+    </p>
+  </li>
+</ul>

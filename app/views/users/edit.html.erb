@@ -1,6 +1,20 @@
-<h1>Editing User</h1>
+<%= render :partial => "header", :object => {
+  "title" => "Edit " + @user.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => users_path
+  }, {
+    "icon" => "eye",
+    "text" => "",
+    "path" => @user
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @user,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this user?"
+  }]
+} %>
 
 <%= render 'form' %>
-
-<%= link_to 'Show', @user %> |
-<%= link_to 'Back', users_path %>
