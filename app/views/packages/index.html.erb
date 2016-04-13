@@ -12,21 +12,21 @@
 <table class="striped tight sortable clickableRows">
   <thead>
     <tr>
-      <th>Name</th>
+      <th colspan="2">Name</th>
       <th>Base version</th>
       <th>Architecture</th>
       <th>Section</th>
       <th>Repository</th>
       <th>Homepage</th>
-      <th>Summary</th>
-      <th></th>
+      <th colspan="2">Summary</th>
     </tr>
   </thead>
 
   <tbody>
     <% @paginated_packages.each do |package| %>
-      <tr>
+      <tr class="relPos">
         <td><%= package.name %></td>
+        <td class="hiddenFirstCol"><%= link_to '', package, class:"row-link"  %></td>
         <td><%= package.base_version %></td>
         <td><%= package.architecture %></td>
         <td><%= package.section %></td>
