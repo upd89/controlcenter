@@ -1,8 +1,15 @@
+<%= render :partial => "header", :object => {
+  "title" => "Packages",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Package",
+    "path" => new_package_path
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Packages</h1>
-
-<table>
+<table class="striped tight sortable clickableRows">
   <thead>
     <tr>
       <th>Name</th>
@@ -12,7 +19,7 @@
       <th>Repository</th>
       <th>Homepage</th>
       <th>Summary</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -26,9 +33,13 @@
         <td><%= package.repository %></td>
         <td><a href="<%= package.homepage %>"><%= package.homepage %></a></td>
         <td><%= package.summary %></td>
-        <td><%= link_to 'Show', package %></td>
-        <td><%= link_to 'Edit', edit_package_path(package) %></td>
-        <td><%= link_to 'Destroy', package, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <ul class="button-bar">
+      	    <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package  %></li>
+                  <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_path(package) %></li>
+                  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+      	  </ul>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -42,5 +53,3 @@
 </div>
 
 <br>
-
-<%= link_to 'New Package', new_package_path %>
