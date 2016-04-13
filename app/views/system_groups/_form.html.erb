@@ -11,15 +11,22 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :permission_level %><br>
-    <%= f.number_field :permission_level %>
-  </div>
+  <ul class="properties col_6">
+    <li>
+      <p>
+    <span class="property"><%= f.label :name %></span>
+    <span class="value"><%= f.text_field :name %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :permission_level %></span>
+        <span class="value"><%= f.number_field :permission_level %></span>
+      </p>
+    </li>
+  </ul>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
 <% end %>

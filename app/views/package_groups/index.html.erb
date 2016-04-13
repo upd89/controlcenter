@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Package Groups",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Package group",
+    "path" => new_package_group_path
+  }]
+} %>
 
-<h1>Listing Package Groups</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -25,5 +32,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New Package group', new_package_group_path %>

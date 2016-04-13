@@ -35,12 +35,12 @@
         <td><%= system.last_seen %></td>
         <td><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
         <td>
-	  <ul class="button-bar">
-	    <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-	  </ul>
-	</td>
+      	  <ul class="button-bar">
+      	    <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li>
+                  <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
+                  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+      	  </ul>
+         </td>
       </tr>
     <% end %>
   </tbody>

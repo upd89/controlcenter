@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "System Groups",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New System Group",
+    "path" => new_system_group_path
+  }]
+} %>
 
-<h1>Listing System Groups</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -25,5 +32,3 @@
 </table>
 
 <br>
-
-<%= link_to 'New System group', new_system_group_path %>

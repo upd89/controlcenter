@@ -1,14 +1,37 @@
+<%= render :partial => "header", :object => {
+  "title" => "System " + @package_group.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => package_groups_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_package_group_path(@package_group)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @package_group,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this package group?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @package_group.name %>
-</p>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @package_group.name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Permission level</span>
+      <span class="value"><%= @package_group.permission_level %></span>
+    </p>
+  </li>
+</ul>
 
-<p>
-  <strong>Permission level:</strong>
-  <%= @package_group.permission_level %>
-</p>
-
-<%= link_to 'Edit', edit_package_group_path(@package_group) %> |
-<%= link_to 'Back', package_groups_path %>
+<div class="floatFix"></div>

@@ -1,14 +1,37 @@
+<%= render :partial => "header", :object => {
+  "title" => "User " + @system_group.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => system_groups_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_system_group_path(@system_group)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @system_group,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this system group?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @system_group.name %>
-</p>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Name</span>
+      <span class="value"><%= @system_group.name %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Permission level</span>
+      <span class="value"><%= @system_group.permission_level %></span>
+    </p>
+  </li>
+</ul>
 
-<p>
-  <strong>Permission level:</strong>
-  <%= @system_group.permission_level %>
-</p>
-
-<%= link_to 'Edit', edit_system_group_path(@system_group) %> |
-<%= link_to 'Back', system_groups_path %>
+<div class="floatFix"></div>
