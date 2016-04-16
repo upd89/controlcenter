@@ -1,14 +1,35 @@
+<%= render :partial => "header", :object => {
+  "title" => "Job " + @job.name,
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => jobs_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_job_path(@job)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @job,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this job?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Started at:</strong>
-  <%= @job.started_at %>
-</p>
-
-<p>
-  <strong>User:</strong>
-  <%= @job.user %>
-</p>
-
-<%= link_to 'Edit', edit_job_path(@job) %> |
-<%= link_to 'Back', jobs_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Started at</span>
+      <span class="value"><%= @job.started_at %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">User</span>
+      <span class="value"><%= @job.user %></span>
+    </p>
+  </li>
+</ul>

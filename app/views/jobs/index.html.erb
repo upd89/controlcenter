@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Jobs",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Job",
+    "path" => new_job_path
+  }]
+} %>
 
-<h1>Listing Jobs</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -12,7 +19,7 @@
   </thead>
 
   <tbody>
-    <% @jobs.each do |job| %>
+    <% @paginated_jobs.each do |job| %>
       <tr>
         <td><%= job.started_at %></td>
         <td><%= job.user %></td>
@@ -24,6 +31,11 @@
   </tbody>
 </table>
 
-<br>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_jobs %>
+  </div>
+  <%= will_paginate @paginated_jobs, :container => false %>
+</div>
 
-<%= link_to 'New Job', new_job_path %>
+<br>
