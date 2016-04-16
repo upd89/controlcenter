@@ -6,7 +6,7 @@ module Api::V1
     def register
       if JSON.parse( request.body.read )
         sys = JSON.parse request.body.read
-	if sys["urn"] && sys["os"] && sys["address"]
+        if sys["urn"] && sys["os"] && sys["address"]
           if System.exists?(:urn => sys["urn"])
             render text: "Duplicate"
           else
@@ -32,16 +32,16 @@ module Api::V1
     def updateSystem
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
-	if JSON.parse( request.body.read )
-	  sysUpdate = JSON.parse request.body.read
+          if JSON.parse( request.body.read )
+            sysUpdate = JSON.parse request.body.read
           if sysUpdate["urn"] && sysUpdate["os"]
             currentSys.name = sysUpdate["name"] if sysUpdate["name"]
-     	    currentSys.urn = sysUpdate["urn"]
+            currentSys.urn = sysUpdate["urn"]
             currentSys.address = sysUpdate["address"] if sysUpdate["address"]
-	    currentSys.os = sysUpdate["os"]
+            currentSys.os = sysUpdate["os"]
             currentSys.reboot_required = sysUpdate["reboot_required"] if sysUpdate["reboot_required"]
             currentSys.last_seen = DateTime.now
-	    currentSys.save()
+            currentSys.save()
             sysUpdate["packageupdates"].each do |update|
               if Package.exists?(name: update['name'], base_version: update['baseversion'])
                 currentPkg = Package.where(name: update['name'], base_version: update['baseversion'])[0]
@@ -67,15 +67,15 @@ module Api::V1
                 # TODO: package not found... what to do now?
               end
             end
-	    render text: "OK"
+            render text: "OK"
           else
-	    render text: "Missing params"
-	  end
+            render text: "Missing params"
+          end
         else
-	  render text: "No JSON body"
+          render text: "No JSON body"
         end
       else
-	render text: "System doesn't exist"
+        render text: "System doesn't exist"
       end
     end
 
@@ -105,8 +105,8 @@ module Api::V1
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
 
-	if JSON.parse( request.body.read )
-	  sysUpdate = JSON.parse request.body.read
+        if JSON.parse( request.body.read )
+          sysUpdate = JSON.parse request.body.read
           if sysUpdate["packages"]
 
             sysUpdate["packages"].each do |package|
@@ -140,19 +140,18 @@ module Api::V1
                 } )
               end
 
-            end 
-	    render text: "OK"
+            end
+            render text: "OK"
           else
-	    render text: "Missing params"
-	  end
+            render text: "Missing params"
+          end
         else
-	  render text: "No JSON body"
+          render text: "No JSON body"
         end
       else
-	render text: "System doesn't exist"
+        render text: "System doesn't exist"
       end
     end
 
   end
 end
-
