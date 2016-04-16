@@ -42,6 +42,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+  gem "rspec-rails"
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -52,12 +54,17 @@ group :development do
   gem 'spring'
 end
 
-gem 'font-awesome-rails'
+group :test do
+  gem 'faker'
+  gem 'capybara'
+  gem 'guard-rspec'
+  gem 'launchy'
+end
 
-gem "rspec-rails", :group => [:development, :test]
+gem 'font-awesome-rails'  #for icons
 
-gem "administrate"
+gem "administrate" #admin-interface
 
 gem 'config' #for fine-grained configurations, especially custom configs
 
-gem 'will_paginate'
+gem 'will_paginate' #easy pagination
