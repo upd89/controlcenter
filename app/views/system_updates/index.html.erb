@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "System Updates",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New System Update",
+    "path" => new_system_update_path
+  }]
+} %>
 
-<h1>Listing System Updates</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -14,7 +21,7 @@
   </thead>
 
   <tbody>
-    <% @system_updates.each do |system_update| %>
+    <% @paginated_system_updates.each do |system_update| %>
       <tr>
         <td><%= link_to system_update.system.name, system_update.system %></td>
         <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %>
@@ -29,6 +36,11 @@
   </tbody>
 </table>
 
-<br>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_system_updates %>
+  </div>
+  <%= will_paginate @paginated_system_updates, :container => false %>
+</div>
 
-<%= link_to 'New System update', new_system_update_path %>
+<br>

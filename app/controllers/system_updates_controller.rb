@@ -5,6 +5,7 @@ class SystemUpdatesController < ApplicationController
   # GET /system_updates.json
   def index
     @system_updates = SystemUpdate.all
+    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /system_updates/1
