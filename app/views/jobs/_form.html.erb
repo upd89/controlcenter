@@ -14,14 +14,14 @@
   <ul class="properties col_6">
     <li>
       <p>
-        <span class="propterty"><%= f.label :started_at %></span>
+        <span class="property"><%= f.label :started_at %></span>
         <span class="value"><%= f.datetime_select :started_at %></span>
       </p>
     </li>
     <li>
       <p>
-        <span class="propterty"><%= f.label :user_id %></span>
-        <span class="value"><%= f.text_field :user_id %></span>
+        <span class="property"><%= f.label :user_id %></span>
+        <span class="value"><%= f.collection_select(:user_id, User.all, :id, :name) %></span>
       </p>
     </li>
   </ul>
