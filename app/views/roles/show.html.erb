@@ -34,4 +34,29 @@
   </li>
 </ul>
 
+<% if @users.length %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paginated_users.each do |user| %>
+      <tr>
+        <td><%= link_to user.name, user %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_users %>
+  </div>
+  <%= will_paginate @paginated_users, :container => false %>
+</div>
+
+<% end %>
+
 <div class="floatFix"></div>

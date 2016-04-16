@@ -14,6 +14,7 @@
     <tr>
       <th>Name</th>
       <th>Permission level</th>
+      <th>Users</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
       <tr>
         <td><%= role.name %></td>
         <td><%= role.permission_level %></td>
+        <td><%= role.users.length %></td>
         <td><%= link_to 'Show', role %></td>
         <td><%= link_to 'Edit', edit_role_path(role) %></td>
         <td><%= link_to 'Destroy', role, method: :delete, data: { confirm: 'Are you sure?' } %></td>
