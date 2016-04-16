@@ -1,4 +1,4 @@
-<%= render :partial => "header", 
+<%= render :partial => "header",
 :object => {
   "title" => "Job " + params[:id],
   "actions" =>[{
@@ -30,7 +30,7 @@
   <li>
     <p>
       <span class="property">User</span>
-      <span class="value"><%= @job.user %></span>
+      <span class="value"><%= @job.user.name %></span>
     </p>
   </li>
 </ul>
