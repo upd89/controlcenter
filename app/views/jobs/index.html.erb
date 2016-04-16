@@ -22,7 +22,7 @@
     <% @paginated_jobs.each do |job| %>
       <tr>
         <td><%= job.started_at %></td>
-        <td><%= job.user %></td>
+        <td><%= job.user.name %></td>
         <td><%= link_to 'Show', job %></td>
         <td><%= link_to 'Edit', edit_job_path(job) %></td>
         <td><%= link_to 'Destroy', job, method: :delete, data: { confirm: 'Are you sure?' } %></td>
