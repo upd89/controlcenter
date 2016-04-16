@@ -11,11 +11,17 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :log %><br>
-    <%= f.text_field :log %>
-  </div>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :log %></span>
+        <span class="value"><%= f.text_field :log %></span>
+      </p>
+    </li>
+  </ul>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
+
 <% end %>

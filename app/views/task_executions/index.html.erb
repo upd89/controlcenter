@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Task Executions",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Task Execution",
+    "path" => new_task_execution_path
+  }]
+} %>
 
-<h1>Listing Task Executions</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -11,7 +18,7 @@
   </thead>
 
   <tbody>
-    <% @task_executions.each do |task_execution| %>
+    <% @paginated_task_executions.each do |task_execution| %>
       <tr>
         <td><%= task_execution.log %></td>
         <td><%= link_to 'Show', task_execution %></td>
@@ -22,6 +29,11 @@
   </tbody>
 </table>
 
-<br>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_task_executions %>
+  </div>
+  <%= will_paginate @paginated_task_executions, :container => false %>
+</div>
 
-<%= link_to 'New Task execution', new_task_execution_path %>
+<br>

@@ -1,9 +1,29 @@
+<%= render :partial => "header", :object => {
+  "title" => "Task Execution",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => task_executions_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_task_execution_path(@task_execution)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @task_execution,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this task execution?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Log:</strong>
-  <%= @task_execution.log %>
-</p>
-
-<%= link_to 'Edit', edit_task_execution_path(@task_execution) %> |
-<%= link_to 'Back', task_executions_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Log</span>
+      <span class="value"><%= @task_execution.log %></span>
+    </p>
+  </li>
+</ul>
