@@ -10,7 +10,7 @@ class RolesController < ApplicationController
   # GET /roles/1
   # GET /roles/1.json
   def show
-    @users = User.where(:user => @role)
+    @users = User.where(:role => @role)
     @paginated_users = @users.paginate(:page => params[:page], :per_page => 15)
   end
 
