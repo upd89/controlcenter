@@ -11,19 +11,28 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :task_state_id %><br>
-    <%= f.text_field :task_state_id %>
-  </div>
-  <div class="field">
-    <%= f.label :task_execution_id %><br>
-    <%= f.text_field :task_execution_id %>
-  </div>
-  <div class="field">
-    <%= f.label :job_id %><br>
-    <%= f.text_field :job_id %>
-  </div>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :task_state_id %></span>
+        <span class="value"><%= f.text_field :task_state_id %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :task_execution_id %></span>
+        <span class="value"><%= f.text_field :task_execution_id %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :job_id %></span>
+        <span class="value"><%= f.text_field :job_id %></span>
+      </p>
+    </li>
+  </ul>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
 <% end %>

@@ -1,19 +1,41 @@
+<%= render :partial => "header", :object => {
+  "title" => "Task",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => tasks_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_task_path(@task)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @task,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this task?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Task state:</strong>
-  <%= @task.task_state %>
-</p>
-
-<p>
-  <strong>Task execution:</strong>
-  <%= @task.task_execution %>
-</p>
-
-<p>
-  <strong>Job:</strong>
-  <%= @task.job %>
-</p>
-
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Task state</span>
+      <span class="value"><%= @task.task_state %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Task execution</span>
+      <span class="value"><%= @task.task_execution %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Job</span>
+      <span class="value"><%= @task.job %></span>
+    </p>
+  </li>
+</ul>

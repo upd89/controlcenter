@@ -1,6 +1,13 @@
-<p id="notice"><%= notice %></p>
+<%= render :partial => "header", :object => {
+  "title" => "Tasks",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Task",
+    "path" => new_task_path
+  }]
+} %>
 
-<h1>Listing Tasks</h1>
+<p id="notice"><%= notice %></p>
 
 <table>
   <thead>
@@ -13,7 +20,7 @@
   </thead>
 
   <tbody>
-    <% @tasks.each do |task| %>
+    <% @paginated_tasks.each do |task| %>
       <tr>
         <td><%= task.task_state %></td>
         <td><%= task.task_execution %></td>
@@ -26,6 +33,11 @@
   </tbody>
 </table>
 
-<br>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_tasks %>
+  </div>
+  <%= will_paginate @paginated_tasks, :container => false %>
+</div>
 
-<%= link_to 'New Task', new_task_path %>
+<br>
