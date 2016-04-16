@@ -5,6 +5,7 @@ class SystemsController < ApplicationController
   # GET /systems.json
   def index
     @systems = System.all
+    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /systems/1

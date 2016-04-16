@@ -5,6 +5,7 @@ class PackageInstallationsController < ApplicationController
   # GET /package_installations.json
   def index
     @package_installations = PackageInstallation.all.includes(:system, :package)
+    @paginated_package_installations = @package_installations.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /package_installations/1

@@ -24,7 +24,7 @@
   </thead>
 
   <tbody>
-    <% @systems.each do |system| %>
+    <% @paginated_systems.each do |system| %>
       <tr class="relPos">
         <td><%= system.name %></td>
         <td class="hiddenFirstCol"><%= link_to '', system, class:"row-link"  %></td>
@@ -45,5 +45,12 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_systems %>
+  </div>
+  <%= will_paginate @paginated_systems, :container => false %>
+</div>
 
 <br>

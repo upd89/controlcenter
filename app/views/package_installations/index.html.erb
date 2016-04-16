@@ -20,7 +20,7 @@
   </thead>
 
   <tbody>
-    <% @package_installations.each do |package_installation| %>
+    <% @paginated_package_installations.each do |package_installation| %>
       <tr>
         <td><%= link_to package_installation.system.name, package_installation.system %></td>
         <td><%= link_to package_installation.package.name, package_installation.package %></td>
@@ -32,5 +32,12 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_package_installations %>
+  </div>
+  <%= will_paginate @paginated_package_installations, :container => false %>
+</div>
 
 <br>
