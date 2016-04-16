@@ -35,4 +35,32 @@
   </li>
 </ul>
 
+<% if @paginated_tasks.length %>
+<table>
+  <thead>
+    <tr>
+      <th>State</th>
+      <th>Execution</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paginated_tasks.each do |task| %>
+      <tr>
+        <td><%= task.task_state.name %></td>
+        <td><%= task.task_execution %></td>
+        <td><%= link_to task.id, task %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_tasks %>
+  </div>
+  <%= will_paginate @paginated_tasks, :container => false %>
+</div>
+<%end>
+
 <div class="floatFix"></div>

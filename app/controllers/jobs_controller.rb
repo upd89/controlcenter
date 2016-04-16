@@ -11,6 +11,8 @@ class JobsController < ApplicationController
   # GET /jobs/1
   # GET /jobs/1.json
   def show
+    @tasks = Task.where(:job => @job)
+    @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /jobs/new
