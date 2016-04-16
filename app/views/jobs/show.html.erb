@@ -1,5 +1,6 @@
-<%= render :partial => "header", :object => {
-  "title" => "Job " + @job.id,
+<%= render :partial => "header", 
+:object => {
+  "title" => "Job " + params[:id],
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
