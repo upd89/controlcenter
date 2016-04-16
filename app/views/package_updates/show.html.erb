@@ -1,22 +1,46 @@
+<%= render :partial => "header", :object => {
+  "title" => "Package Update",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => package_updates_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_package_update_path(@package_update)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @package_update,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this package update?"
+  }]
+} %>
+
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Candidate version:</strong>
-  <%= @package_update.candidate_version %>
-</p>
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Candidate version</span>
+      <span class="value"><%= @package_update.candidate_version %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Repository</span>
+      <span class="value"><%= @package_update.repository %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Package</span>
+      <span class="value"><%= @package_update.package.name %></span>
+    </p>
+  </li>
+</ul>
 
-<p>
-  <strong>Repository:</strong>
-  <%= @package_update.repository %>
-</p>
-
-<p>
-  <strong>Package:</strong>
-  <%= @package_update.package.name %>
-</p>
-
-<br>
-
+<% if @system_updates.length %>
 <table>
   <thead>
     <tr>
@@ -26,7 +50,7 @@
     </tr>
   </thead>
   <tbody>
-    <% @system_updates.each do |system_update| %>
+    <% @paginated_system_updates.each do |system_update| %>
       <tr>
         <td><%= link_to system_update.system.name, system_update.system %></td>
         <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
@@ -36,8 +60,11 @@
   </tbody>
 </table>
 
-<br>
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_system_updates %>
+  </div>
+  <%= will_paginate @paginated_system_updates, :container => false %>
+</div>
 
-
-<%= link_to 'Edit', edit_package_update_path(@package_update) %> |
-<%= link_to 'Back', package_updates_path %>
+<% end %>

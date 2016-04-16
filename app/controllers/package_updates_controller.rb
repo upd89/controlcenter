@@ -5,12 +5,14 @@ class PackageUpdatesController < ApplicationController
   # GET /package_updates.json
   def index
     @package_updates = PackageUpdate.all
+    @paginated_package_updates = @package_updates.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /package_updates/1
   # GET /package_updates/1.json
   def show
     @system_updates = SystemUpdate.where(:package_update => @package_update)
+    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => 15)
   end
 
   # GET /package_updates/new

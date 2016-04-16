@@ -11,19 +11,28 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :candidate_version %><br>
-    <%= f.text_field :candidate_version %>
-  </div>
-  <div class="field">
-    <%= f.label :repository %><br>
-    <%= f.text_field :repository %>
-  </div>
-  <div class="field">
-    <%= f.label :package_id %><br>
-    <%= f.collection_select(:package_id, Package.all, :id, :name) %>
-  </div>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :candidate_version %></span>
+        <span class="value"><%= f.text_field :candidate_version %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :repository %></span>
+        <span class="value"><%= f.text_field :repository %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :package_id %></span>
+        <span class="value"><%= f.collection_select(:package_id, Package.all, :id, :name) %></span>
+      </p>
+    </li>
+  </ul>
+
   <div class="actions">
-    <%= f.submit %>
+    <%= f.button "Save", :class => "button" %>
   </div>
 <% end %>
