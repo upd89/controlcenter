@@ -5,7 +5,7 @@ class TaskExecutionsController < ApplicationController
   # GET /task_executions.json
   def index
     @task_executions = TaskExecution.all
-    @paginated_task_executions = @task_executions.paginate(:page => params[:page], :per_page => 15)
+    @paginated_task_executions = @task_executions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
 
   end
 

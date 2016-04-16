@@ -5,7 +5,7 @@ class PackagesController < ApplicationController
   # GET /packages.json
   def index
     @packages = Package.all
-    @paginated_packages = @packages.paginate(:page => params[:page], :per_page => 15)
+    @paginated_packages = @packages.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /packages/1

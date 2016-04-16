@@ -5,15 +5,15 @@ class SystemsController < ApplicationController
   # GET /systems.json
   def index
     @systems = System.all
-    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => 15)
+    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/1
   # GET /systems/1.json
   def show
     @system_updates = SystemUpdate.where(:system => @system)
-    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => 15)
-    #@paginated_system_updates = SystemUpdate.where(:system => @system).paginate(:page => params[:page], :per_page => 15)
+    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    #@paginated_system_updates = SystemUpdate.where(:system => @system).paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/new

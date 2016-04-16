@@ -5,14 +5,14 @@ class JobsController < ApplicationController
   # GET /jobs.json
   def index
     @jobs = Job.all
-    @paginated_jobs = @jobs.paginate(:page => params[:page], :per_page => 15)
+    @paginated_jobs = @jobs.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /jobs/1
   # GET /jobs/1.json
   def show
     @tasks = Task.where(:job => @job)
-    @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => 15)
+    @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /jobs/new
