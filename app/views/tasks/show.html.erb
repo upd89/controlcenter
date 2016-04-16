@@ -23,7 +23,7 @@
   <li>
     <p>
       <span class="property">Task state</span>
-      <span class="value"><%= @task.task_state %></span>
+      <span class="value"><%= @task.task_state.name %></span>
     </p>
   </li>
   <li>
@@ -35,7 +35,9 @@
   <li>
     <p>
       <span class="property">Job</span>
-      <span class="value"><%= @task.job %></span>
+      <span class="value"><%= link_to @task.job.id, @task.job %></span>
     </p>
   </li>
 </ul>
+
+<div class="floatFix"></div>

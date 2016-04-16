@@ -21,13 +21,13 @@
     <li>
       <p>
         <span class="property"><%= f.label :task_execution_id %></span>
-        <span class="value"><%= f.text_field :task_execution_id %></span>
+        <span class="value"><%= f.collection_select(:task_execution_id, TaskExecution.all, :id, :id) %></span>
       </p>
     </li>
     <li>
       <p>
         <span class="property"><%= f.label :job_id %></span>
-        <span class="value"><%= f.collection_select(:job_id, Job.all, :id) %></span>
+        <span class="value"><%= f.collection_select(:job_id, Job.all, :id, :id) %></span>
       </p>
     </li>
   </ul>
