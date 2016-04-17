@@ -56,6 +56,7 @@ group :development do
 end
 
 group :test do
+  gem 'rake'
   gem 'faker'
   gem 'capybara'
   gem 'guard-rspec'
