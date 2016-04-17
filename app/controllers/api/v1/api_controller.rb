@@ -105,7 +105,7 @@ module Api::V1
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
 
-        if JSON.parse( request.body.read )
+        if JSON.parse(request.body.read)
           sysUpdate = JSON.parse request.body.read
           if sysUpdate["packages"]
 
@@ -133,25 +133,23 @@ module Api::V1
                 currentInstall.save
               else
                 # creating link system <=> package
-                PackageInstallation.create( {
+                PackageInstallation.create({
                        :system            => currentSys,
                        :package           => currentPkg,
                        :installed_version => package['version']
-                } )
+                })
               end
-
             end
-            render text: "OK"
+            render text: 'OK'
           else
-            render text: "Missing params"
+            render text: 'Missing params'
           end
         else
-          render text: "No JSON body"
+          render text: 'No JSON body'
         end
       else
-        render text: "System doesn't exist"
+        render text: 'System doesn\'t exist'
       end
     end
-
   end
 end
