@@ -1,4 +1,4 @@
 test:
   adapter: postgresql
   database: cc_test
-  username: cc
+  username: postgres

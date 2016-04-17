@@ -3,6 +3,6 @@ rvm:
   - "2.2.3"
 before_script:
   - cp config/database.travis.yml config/database.yml
-  - psql -c 'create database cc_test;' -U cc
+  - psql -c 'create database cc_test;' -U postgres
 script:
-  RAILS_ENV=test bundle exec rake
+  - RAILS_ENV=test bundle exec rake
