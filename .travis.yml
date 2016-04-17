@@ -1,5 +1,8 @@
 language: ruby
 rvm:
   - "2.2.3"
+before_script:
+  - cp config/database.travis.yml config/database.yml
+  - psql -c 'create database cc_test;' -U cc
 script:
   RAILS_ENV=test bundle exec rake
