@@ -54,6 +54,26 @@ class JobsController < ApplicationController
     end
   end
 
+  def test
+    #TODO: task should know which system it concerns!
+    @task = Task.new(task_state: TaskState.take )
+
+    if params[:updates]
+      params[:updates].each do |updateID|
+        @task.system_updates << SystemUpdate.find( updateID )
+      end
+    end
+    @task.save
+
+    @job = Job.new(user: User.find(1),
+                   started_at: Time.new)
+    @job.tasks << @task
+    @job.save
+    p params
+    p params[:system_id]
+    redirect_to @job
+  end
+
   # DELETE /jobs/1
   # DELETE /jobs/1.json
   def destroy

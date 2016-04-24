@@ -36,11 +36,13 @@ Rails.application.routes.draw do
   resources :systems
   resources :system_groups
 
+  post '/jobs/test' => 'jobs#test'
+
   scope module: 'api' do
       namespace :v1 do
         match "/register" => "api#register", via: :post
         match "/system/:id/notify" => "api#updateSystem", via: :post
-        match "/task/:id/notify" => "api#updateTask", via: :post        
+        match "/task/:id/notify" => "api#updateTask", via: :post
         match "/system/:id/updateInstalled" => "api#updateInstalled", via: :post
       end
   end

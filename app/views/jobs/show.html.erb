@@ -45,7 +45,7 @@
   <tbody>
     <% @paginated_tasks.each do |task| %>
       <tr>
-        <td><%= task.task_state.name %></td>
+        <td><%= task.task_state.name if task.task_state %></td>
         <td><%= task.task_execution %></td>
         <td><%= link_to task.id, task %></td>
       </tr>

@@ -11,6 +11,7 @@ class TasksController < ApplicationController
   # GET /tasks/1
   # GET /tasks/1.json
   def show
+    @paginated_system_updates = @task.system_updates.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /tasks/new
@@ -70,6 +71,6 @@ class TasksController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def task_params
-      params.require(:task).permit(:task_state_id, :task_execution_id, :job_id)
+      params.require(:task).permit(:task_state_id, :task_execution_id, :job_id, :system_id)
     end
 end

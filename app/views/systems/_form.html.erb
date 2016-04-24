@@ -11,46 +11,46 @@
     </div>
   <% end %>
 
-<ul class="properties col_6">
-  <li>
-    <p>
-      <span class="property">Name</span>
-      <span class="value"><%= f.text_field :name %></span>
-    </p>
-  </li>
-  <li>
-    <p>
-      <span class="property">URN</span>
-      <span class="value"><%= f.text_field :urn %></span>
-    </p>
-  </li>
-  <li>
-    <p>
-      <span class="property">OS</span>
-      <span class="value"><%= f.text_field :os %></span>
-    </p>
-  </li>
-</ul>
-<ul class="properties col_6">
-  <li>
-    <p>
-      <span class="property"><%= f.label :reboot_required %></span>
-      <span class="value"><%= f.check_box :reboot_required %></span>
-    </p>
-  </li>
-  <li>
-    <p>
-      <span class="property"><%= f.label :address %></span>
-      <span class="value"><%= f.text_field :address %></span>
-    </p>
-  </li>
-  <li>
-    <p>
-      <span class="property"><%= f.label :system_group_id %></span>
-      <span class="value"><%= f.collection_select(:system_group_id, SystemGroup.all, :id, :name) %></span>
-    </p>
-  </li>
-</ul>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property">Name</span>
+        <span class="value"><%= f.text_field :name %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property">URN</span>
+        <span class="value"><%= f.text_field :urn %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property">OS</span>
+        <span class="value"><%= f.text_field :os %></span>
+      </p>
+    </li>
+  </ul>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :reboot_required %></span>
+        <span class="value"><%= f.check_box :reboot_required %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :address %></span>
+        <span class="value"><%= f.text_field :address %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :system_group_id %></span>
+        <span class="value"><%= f.collection_select(:system_group_id, SystemGroup.all, :id, :name) %></span>
+      </p>
+    </li>
+  </ul>
 
   <div class="actions">
     <%= f.button "Save", :class => "button" %>
