@@ -55,6 +55,7 @@ class JobsController < ApplicationController
   end
 
   def test
+
     #TODO: task should know which system it concerns!
     @task = Task.new(task_state: TaskState.take )
 

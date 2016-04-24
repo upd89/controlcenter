@@ -72,7 +72,7 @@
 
 <%= form_tag({controller: "jobs", action: "test"}, class: "nifty_form") do %>
   <% if @system_updates.length %>
-  <table>
+  <table class="availableUpdates">
     <thead>
       <tr>
         <th>Package</th>
@@ -87,17 +87,16 @@
           <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
           <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
           <td><%= system_update.system_update_state.name %></td>
-          <td><%= check_box_tag "updates[]", system_update.id %></td>
+          <td><%= check_box_tag "updates[]", system_update.id, false, class: 'checkboxInstallUpdate' %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
 
   <%= hidden_field_tag(:system_id, @system.id) %>
-  <%= submit_tag("Create Job") %>
 
   <div class="actions">
-    <%- #button_to "New", { action: "xxx" }, form_class: "new-thing",  :method => :get -%>
+    <%= submit_tag "Create Job", :id=>"createJobBtn" %>
   </div>
 
   <div class="digg_pagination">
