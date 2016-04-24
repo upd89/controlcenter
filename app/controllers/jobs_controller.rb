@@ -65,7 +65,7 @@ class JobsController < ApplicationController
     end
     @task.save
 
-    @job = Job.new(user: User.find(1),
+    @job = Job.new(user: User.take,
                    started_at: Time.new)
     @job.tasks << @task
     @job.save
