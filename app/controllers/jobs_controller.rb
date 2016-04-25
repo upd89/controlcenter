@@ -30,11 +30,18 @@ class JobsController < ApplicationController
     #TODO: task should know which system it concerns!
     @task = Task.new(task_state: TaskState.take )
 
-    if params[:updates]
-      params[:updates].each do |updateID|
-        @task.system_updates << SystemUpdate.find( updateID )
+    if params[:commit] == "all"
+      # get task IDs from system
+      @task.system_updates << System.find(params[:system_id]).systems.ids
+    else
+      # get task IDs from submitted array
+      if params[:updates]
+        params[:updates].each do |updateID|
+          @task.system_updates << SystemUpdate.find( updateID )
+        end
       end
     end
+
     @task.save
 
     # TODO: get current user, check if permitted

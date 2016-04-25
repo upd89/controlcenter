@@ -96,7 +96,8 @@
   <%= hidden_field_tag(:system_id, @system.id) %>
 
   <div class="actions">
-    <%= submit_tag "Create Job", :id=>"createJobBtn" %>
+    <%= submit_tag "Create Job for Selected", :id=>"createJobBtn", :name => 'specific' %>
+    <%= submit_tag "Create Job for all", :id=>"createJobBtnForAll", :name => 'all' %>
   </div>
 
   <div class="digg_pagination">
