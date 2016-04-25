@@ -32,7 +32,7 @@ class JobsController < ApplicationController
 
     if params[:commit] == "all"
       # get task IDs from system
-      @task.system_updates << System.find(params[:system_id]).systems.ids
+      @task.system_updates << System.find(params[:system_id]).system_updates.ids
     else
       # get task IDs from submitted array
       if params[:updates]
