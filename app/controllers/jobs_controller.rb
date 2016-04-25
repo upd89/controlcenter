@@ -72,6 +72,9 @@ class JobsController < ApplicationController
     @job.save
     p params
     p params[:system_id]
+
+    BackgroundSender.perform_async( @task )
+
     redirect_to @job
   end
 
