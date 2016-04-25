@@ -10,11 +10,13 @@ class BackgroundSender
       packageArray << { pkg_name: update.package_update.package.name, pdk_version: update.package_update.candidate_version}
     end
     system = task.system_updates.first().system
-    taskData = { task_id: task.id, urn: system.name, packages: packageArray }
+    taskData = { task_id: task.id.to_s, urn: system.name, packages: packageArray }
 
 
     #uri = URI.parse("http://upd89.org/api.php")
-    uri = URI.parse(system.address)
+
+    # add http:// in front of URLs
+    uri = URI.parse("http://" + system.address + ":80/task")
 
     http = Net::HTTP.new(uri.host, uri.port)
 
