@@ -31,8 +31,9 @@ class JobsController < ApplicationController
     @task = Task.new(task_state: TaskState.take )
 
     if params[:commit] == "all"
-      # get task IDs from system
-      @task.system_updates << System.find(params[:system_id]).system_updates.ids
+      # get task IDs from system, map to strings
+      @task.system_updates << System.find(params[:system_id]).system_updates.ids.map!{|i| i.to_s }
+
     else
       # get task IDs from submitted array
       if params[:updates]
@@ -53,18 +54,6 @@ class JobsController < ApplicationController
     BackgroundSender.perform_async( @task )
 
     redirect_to @job
-
-    #@job = Job.new(job_params)
-
-    #respond_to do |format|
-    #  if @job.save
-    #    format.html { redirect_to @job, notice: 'Job was successfully created.' }
-    #    format.json { render :show, status: :created, location: @job }
-    #  else
-    #    format.html { render :new }
-    #    format.json { render json: @job.errors, status: :unprocessable_entity }
-    #  end
-    #end
   end
 
   # PATCH/PUT /jobs/1
