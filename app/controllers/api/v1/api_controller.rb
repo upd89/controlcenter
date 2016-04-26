@@ -86,9 +86,17 @@ module Api::V1
         if JSON.parse( request.body.read )
           taskUpdate = JSON.parse request.body.read
           if taskUpdate["state"]
-            task.taskstate = taskUpdate["state"]
-            task.save()
-            render text: "OK"
+            state = TaskState.where(:name => taskUpdate["state"] ).first
+            if state
+              task.taskstate = state
+              # TODO + log
+              if task.save()
+                render text: "OK"
+              else
+                render text: "Couldn't save task"
+            else
+              render text "State not valid"
+            end
           else
             render text: "Missing params"
           end
