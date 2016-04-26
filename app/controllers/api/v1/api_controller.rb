@@ -32,8 +32,8 @@ module Api::V1
     def updateSystem
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
-          if JSON.parse( request.body.read )
-            sysUpdate = JSON.parse request.body.read
+        if JSON.parse( request.body.read )
+          sysUpdate = JSON.parse request.body.read
           if sysUpdate["urn"] && sysUpdate["os"]
             currentSys.name = sysUpdate["name"] if sysUpdate["name"]
             currentSys.urn = sysUpdate["urn"]
@@ -94,6 +94,7 @@ module Api::V1
                 render text: "OK"
               else
                 render text: "Couldn't save task"
+              end
             else
               render text "State not valid"
             end
