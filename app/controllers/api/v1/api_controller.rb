@@ -88,7 +88,7 @@ module Api::V1
           if taskUpdate["state"]
             state = TaskState.where(:name => taskUpdate["state"] ).first
             if state
-              task.taskstate = state
+              task.task_state = state
               # TODO + log
               if task.save()
                 render text: "OK"
