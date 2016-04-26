@@ -27,17 +27,44 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    @job = Job.new(job_params)
+    #TODO: task should know which system it concerns!
+    @task = Task.new(task_state: TaskState.take )
 
-    respond_to do |format|
-      if @job.save
-        format.html { redirect_to @job, notice: 'Job was successfully created.' }
-        format.json { render :show, status: :created, location: @job }
-      else
-        format.html { render :new }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
+    if params[:commit] == "all"
+      # get task IDs from system
+      @task.system_updates << System.find(params[:system_id]).system_updates.ids
+    else
+      # get task IDs from submitted array
+      if params[:updates]
+        params[:updates].each do |updateID|
+          @task.system_updates << SystemUpdate.find( updateID )
+        end
       end
     end
+
+    @task.save
+
+    # TODO: get current user, check if permitted
+    @job = Job.new(user: User.take,
+                   started_at: Time.new)
+    @job.tasks << @task
+    @job.save
+
+    BackgroundSender.perform_async( @task )
+
+    redirect_to @job
+
+    #@job = Job.new(job_params)
+
+    #respond_to do |format|
+    #  if @job.save
+    #    format.html { redirect_to @job, notice: 'Job was successfully created.' }
+    #    format.json { render :show, status: :created, location: @job }
+    #  else
+    #    format.html { render :new }
+    #    format.json { render json: @job.errors, status: :unprocessable_entity }
+    #  end
+    #end
   end
 
   # PATCH/PUT /jobs/1

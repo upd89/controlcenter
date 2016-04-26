@@ -13,7 +13,6 @@ class SystemsController < ApplicationController
   def show
     @system_updates = SystemUpdate.where(:system => @system)
     @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
-    #@paginated_system_updates = SystemUpdate.where(:system => @system).paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/new
