@@ -26,11 +26,6 @@ ActiveRecord::Schema.define(version: 20160424142041) do
   add_index "group_assignments", ["package_group_id"], name: "index_group_assignments_on_package_group_id", using: :btree
   add_index "group_assignments", ["package_id"], name: "index_group_assignments_on_package_id", using: :btree
 
-  create_table "job_creator_services", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "jobs", force: :cascade do |t|
     t.datetime "started_at"
     t.integer  "user_id"
