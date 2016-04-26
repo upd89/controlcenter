@@ -16,7 +16,7 @@ class BackgroundSender
     #uri = URI.parse("http://upd89.org/api.php")
 
     # add http:// in front of URLs
-    uri = URI.parse("http://" + system.address + ":80/task")
+    uri = URI.parse("http://" + system.address + "/task")
 
     http = Net::HTTP.new(uri.host, uri.port)
 
