@@ -7,8 +7,6 @@
   }]
 } %>
 
-<p id="notice"><%= notice %></p>
-
 <table>
   <thead>
     <tr>
@@ -25,7 +23,7 @@
       <tr>
         <td><%= task.task_state.name if task.task_state %></td>
         <td><%= task.task_execution %></td>
-        <td><%= task.job.id %></td>
+        <td><%= task.job.id if task.job %></td>
         <td><%= task.system_updates.length %></td>
         <td><%= link_to 'Show', task %></td>
         <td><%= link_to 'Edit', edit_task_path(task) %></td>
