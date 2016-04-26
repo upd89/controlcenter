@@ -8,6 +8,13 @@ namespace :db do
 
     puts "==  Data: generating sample data ".ljust(79, "=")
 
+    SystemUpdate.destroy_all
+    PackageInstallation.destroy_all
+    PackageUpdate.destroy_all
+    GroupAssignment.destroy_all
+    Package.destroy_all
+    System.destroy_all
+
     default = SystemGroup.first
 
     vm1 = System.create( { :name => "vm1", :urn => "vm1", :os => "ubuntu 14.04", :address => "127.0.0.1",
