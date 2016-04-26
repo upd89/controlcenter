@@ -8,7 +8,7 @@ module Api::V1
         sys = JSON.parse request.body.read
         if sys["urn"] && sys["os"] && sys["address"]
           if System.exists?(:urn => sys["urn"])
-            render text: "Duplicate"
+            render json: { status: "ERROR", message: "System already found", code: 3 }
           else
             newSys = System.new
             newSys.name = sys["name"] if sys["name"]
@@ -18,13 +18,13 @@ module Api::V1
             newSys.system_group = SystemGroup.first
             newSys.last_seen = DateTime.now
             newSys.save()
-            render text: "OK"
+            render json: { status: "OK" }
           end
         else
-          render text: "Missing params"
+          render json: { status: "ERROR", message: "Missing Params", code: 1 }
         end
       else
-        render text: "No JSON body"
+        render json: { status: "ERROR", message: "No JSON Body", code: 0 }
       end
     end
 
@@ -63,19 +63,20 @@ module Api::V1
                          :system_update_state => SystemUpdateState.first
                   } )
                 end
+                render json: { status: "OK" }
               else
                 # TODO: package not found... what to do now?
+                render json: { status: "ERROR", message: "Couldn't find package", code: 30 }
               end
             end
-            render text: "OK"
           else
-            render text: "Missing params"
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: "No JSON body"
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: "System doesn't exist"
+        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
       end
     end
 
@@ -91,21 +92,21 @@ module Api::V1
               task.task_state = state
               # TODO + log
               if task.save()
-                render text: "OK"
+                render json: { status: "OK" }
               else
-                render text: "Couldn't save task"
+                render json: { status: "ERROR", message: "Couldn't save task", code: 20 }
               end
             else
-              render text "State not valid"
+              render json: { status: "ERROR", message: "State not valid", code: 10 }
             end
           else
-            render text: "Missing params"
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: "No JSON body"
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: "Task doesn't exist"
+        render json: { status: "ERROR", message: "Task doesn't exist", code: -1 }
       end
     end
 
@@ -149,15 +150,15 @@ module Api::V1
                 })
               end
             end
-            render text: 'OK'
+            render json: { status: "OK" }
           else
-            render text: 'Missing params'
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: 'No JSON body'
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: 'System doesn\'t exist'
+        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
       end
     end
   end
