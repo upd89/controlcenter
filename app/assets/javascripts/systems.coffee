@@ -17,7 +17,7 @@ clickOnWholeRow = (e) ->
   if targetTag != 'td' && targetTag != 'tr'
     return;
   e.preventDefault()
-  window.location = $(this).find("a").attr("href");
+  window.location = $(e.target).parent().find("ul.button-bar li.first a").attr("href")
 
 disableCreateJobButton = ->
   enabled = $(".checkboxInstallUpdate:checked").length > 0

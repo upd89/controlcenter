@@ -1,0 +1,13 @@
+<%%= render :partial => "header", :object => {
+  "title" => "New <%= singular_table_name.titleize %>",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => <%= index_helper %>_path
+  }]
+} %>
+
+<%%= render 'form' %>
+
+<div class="floatFix"></div>
+
