@@ -38,10 +38,19 @@ Rails.application.routes.draw do
 
   scope module: 'api' do
       namespace :v1 do
-        match "/register" => "api#register", via: :post
-        match "/system/:id/notify" => "api#updateSystem", via: :post
-        match "/task/:id/notify" => "api#updateTask", via: :post
-        match "/system/:id/updateInstalled" => "api#updateInstalled", via: :post
+        match "/register"                          => "api#register", via: :post
+        match "/system/:id/notify"                 => "api#updateSystem", via: :post
+        match "/task/:id/notify"                   => "api#updateTask", via: :post
+        match "/system/:id/updateInstalled"        => "api#updateInstalled", via: :post
+      end
+
+      namespace :v2 do
+        match "/register"                          => "api#register", via: :post
+        match "/system/:urn/notify-hash"           => "api#updateSystemHash", via: :post
+        match "/system/:urn/notify"                => "api#updateSystem", via: :post
+        match "/system/:urn/update-installed"      => "api#updateInstalled", via: :post
+        match "/system/:urn/update-installed-hash" => "api#updateInstalledHash", via: :post
+        match "/task/:id/notify"                   => "api#updateTask", via: :post
       end
   end
 
