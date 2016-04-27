@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330124152) do
+ActiveRecord::Schema.define(version: 20160424142041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -141,6 +141,7 @@ ActiveRecord::Schema.define(version: 20160330124152) do
     t.integer  "job_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
+    t.integer  "system_update_id"
   end
 
   add_index "tasks", ["job_id"], name: "index_tasks_on_job_id", using: :btree
@@ -169,6 +170,7 @@ ActiveRecord::Schema.define(version: 20160330124152) do
   add_foreign_key "system_updates", "tasks"
   add_foreign_key "systems", "system_groups"
   add_foreign_key "tasks", "jobs"
+  add_foreign_key "tasks", "system_updates"
   add_foreign_key "tasks", "task_executions"
   add_foreign_key "tasks", "task_states"
   add_foreign_key "users", "roles"

@@ -70,3 +70,5 @@ gem 'administrate' #admin-interface
 gem 'config' #for fine-grained configurations, especially custom configs
 
 gem 'will_paginate' #easy pagination
+
+gem 'sucker_punch', '~> 2.0' # asynchronous background tasks

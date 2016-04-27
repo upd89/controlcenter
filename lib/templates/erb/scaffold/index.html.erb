@@ -1,0 +1,36 @@
+<%%= render :partial => "header", :object => {
+  "title" => "<%= plural_table_name.titleize %>",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New <%= human_name %>",
+    "path" => new_<%= singular_table_name %>_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+      <th><%= attribute.human_name %></th>
+<% end -%>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+      <tr>
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+        <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+<% end -%>
+        <td>
+          <ul class="button-bar">
+            <li><%%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, <%= singular_table_name %> %></li>
+            <li><%%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_<%= singular_table_name %>_path(<%= singular_table_name %>) %></li>
+            <li><%%= link_to '<i class="fa fa-remove"></i>'.html_safe, <%= singular_table_name %>, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <%% end %>
+  </tbody>
+</table>

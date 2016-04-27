@@ -32,6 +32,10 @@ module Cc
         :controller_specs => true,
         :request_specs => true
       g.fixture_replacement :factory_girl, :dir => "spec/factories"
+
+      g.orm             :active_record
+      g.template_engine :erb
+
     end
 
   end

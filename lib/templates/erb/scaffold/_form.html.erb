@@ -1,0 +1,45 @@
+<%%= form_for(@<%= singular_table_name %>) do |f| %>
+  <%% if @<%= singular_table_name %>.errors.any? %>
+    <div id="error_explanation">
+      <h2><%%= pluralize(@<%= singular_table_name %>.errors.count, "error") %> prohibited this <%= singular_table_name %> from being saved:</h2>
+
+      <ul>
+      <%% @<%= singular_table_name %>.errors.full_messages.each do |message| %>
+        <li><%%= message %></li>
+      <%% end %>
+      </ul>
+    </div>
+  <%% end %>
+
+  <ul class="properties col_6">
+  <% attributes.each do |attribute| -%>
+    <li>
+      <p>
+  <% if attribute.password_digest? -%>
+        <span class="property"><%%= f.label :password %></span>
+        <span class="value"><%%= f.password_field :password %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%%= f.label :password_confirmation %></span>
+        <span class="value"><%%= f.password_field :password_confirmation %></span>
+  <% else -%>
+    <%- if attribute.reference? -%>
+        <span class="property"><%= attribute.column_name %></span>
+        <span class="value"><%%= f.collection_select :<%= attribute.column_name %>, <%= attribute.name.camelize %>.all, :id, :name, prompt: true  %></span>
+    <%- else -%>
+        <span class="property"><%= attribute.column_name %></span>
+        <span class="value"><%%= f.<%= attribute.field_type %> :<%= attribute.column_name %> %></span>
+    <% end -%>
+  <% end -%>
+      </p>
+    </li>
+  <% end -%>
+  </ul>
+
+  <div class="actions">
+    <%%= f.button "Save", :class => "button" %>
+  </div>
+
+<%% end %>

@@ -8,7 +8,7 @@ module Api::V1
         sys = JSON.parse request.body.read
         if sys["urn"] && sys["os"] && sys["address"]
           if System.exists?(:urn => sys["urn"])
-            render text: "Duplicate"
+            render json: { status: "ERROR", message: "System already found", code: 3 }
           else
             newSys = System.new
             newSys.name = sys["name"] if sys["name"]
@@ -18,13 +18,13 @@ module Api::V1
             newSys.system_group = SystemGroup.first
             newSys.last_seen = DateTime.now
             newSys.save()
-            render text: "OK"
+            render json: { status: "OK" }
           end
         else
-          render text: "Missing params"
+          render json: { status: "ERROR", message: "Missing Params", code: 1 }
         end
       else
-        render text: "No JSON body"
+        render json: { status: "ERROR", message: "No JSON Body", code: 0 }
       end
     end
 
@@ -32,8 +32,8 @@ module Api::V1
     def updateSystem
       if System.exists?(urn: params[:id])
         currentSys = System.where(urn: params[:id])[0]
-          if JSON.parse( request.body.read )
-            sysUpdate = JSON.parse request.body.read
+        if JSON.parse( request.body.read )
+          sysUpdate = JSON.parse request.body.read
           if sysUpdate["urn"] && sysUpdate["os"]
             currentSys.name = sysUpdate["name"] if sysUpdate["name"]
             currentSys.urn = sysUpdate["urn"]
@@ -66,16 +66,16 @@ module Api::V1
               else
                 # TODO: package not found... what to do now?
               end
-            end
-            render text: "OK"
+            end #end of each
+            render json: { status: "OK" }
           else
-            render text: "Missing params"
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: "No JSON body"
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: "System doesn't exist"
+        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
       end
     end
 
@@ -86,17 +86,26 @@ module Api::V1
         if JSON.parse( request.body.read )
           taskUpdate = JSON.parse request.body.read
           if taskUpdate["state"]
-            task.taskstate = taskUpdate["state"]
-            task.save()
-            render text: "OK"
+            state = TaskState.where(:name => taskUpdate["state"] ).first
+            if state
+              task.task_state = state
+              # TODO + log
+              if task.save()
+                render json: { status: "OK" }
+              else
+                render json: { status: "ERROR", message: "Couldn't save task", code: 20 }
+              end
+            else
+              render json: { status: "ERROR", message: "State not valid", code: 10 }
+            end
           else
-            render text: "Missing params"
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: "No JSON body"
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: "Task doesn't exist"
+        render json: { status: "ERROR", message: "Task doesn't exist", code: -1 }
       end
     end
 
@@ -140,15 +149,15 @@ module Api::V1
                 })
               end
             end
-            render text: 'OK'
+            render json: { status: "OK" }
           else
-            render text: 'Missing params'
+            render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
         else
-          render text: 'No JSON body'
+          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
       else
-        render text: 'System doesn\'t exist'
+        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
       end
     end
   end

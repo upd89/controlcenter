@@ -70,31 +70,42 @@
   </li>
 </ul>
 
-<% if @system_updates.length %>
-<table>
-  <thead>
-    <tr>
-      <th>Package</th>
-      <th>Candidate Version</th>
-      <th>System update state</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @paginated_system_updates.each do |system_update| %>
+<%= form_tag({controller: "jobs", action: "create"}) do %>
+  <% if @system_updates.length %>
+  <table class="availableUpdates">
+    <thead>
       <tr>
-        <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
-        <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
-        <td><%= system_update.system_update_state.name %></td>
+        <th>Package</th>
+        <th>Candidate Version</th>
+        <th>System update state</th>
+        <th>Install?</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @paginated_system_updates.each do |system_update| %>
+        <tr>
+          <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
+          <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
+          <td><%= system_update.system_update_state.name %></td>
+          <td><%= check_box_tag "updates[]", system_update.id, false, class: 'checkboxInstallUpdate' %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 
-<div class="digg_pagination">
-  <div class="page_info">
-    <%= page_entries_info @paginated_system_updates %>
+  <%= hidden_field_tag(:system_id, @system.id) %>
+
+  <div class="actions">
+    <%= submit_tag "Create Job for Selected", :id=>"createJobBtn", :name => 'specific' %>
+    <%= submit_tag "Create Job for all", :id=>"createJobBtnForAll", :name => 'all' %>
   </div>
-  <%= will_paginate @paginated_system_updates, :container => false %>
-</div>
 
+  <div class="digg_pagination">
+    <div class="page_info">
+      <%= page_entries_info @paginated_system_updates %>
+    </div>
+    <%= will_paginate @paginated_system_updates, :container => false %>
+  </div>
+
+  <% end %>
 <% end %>

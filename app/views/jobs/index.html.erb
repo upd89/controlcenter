@@ -21,7 +21,7 @@
     <% @paginated_jobs.each do |job| %>
       <tr>
         <td><%= job.started_at %></td>
-        <td><%= job.user.name %></td>
+        <td><%= job.user.name if job.user %></td>
         <td><%= job.tasks.length %></td>
         <td><%= link_to 'Show', job %></td>
         <td><%= link_to 'Edit', edit_job_path(job) %></td>
