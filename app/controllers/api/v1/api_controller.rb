@@ -63,12 +63,11 @@ module Api::V1
                          :system_update_state => SystemUpdateState.first
                   } )
                 end
-                render json: { status: "OK" }
               else
                 # TODO: package not found... what to do now?
-                render json: { status: "ERROR", message: "Couldn't find package", code: 30 }
               end
-            end
+            end #end of each
+            render json: { status: "OK" }
           else
             render json: { status: "ERROR", message: "Missing Params", code: 1 }
           end
