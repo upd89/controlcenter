@@ -39,7 +39,7 @@ module Api::V1
             currentSys.urn = sysUpdate["urn"]
             currentSys.address = sysUpdate["address"] if sysUpdate["address"]
             currentSys.os = sysUpdate["os"]
-            currentSys.reboot_required = sysUpdate["reboot_required"] if sysUpdate["reboot_required"]
+            currentSys.reboot_required = sysUpdate["reboot_required"] if defined? sysUpdate["reboot_required"]
             currentSys.last_seen = DateTime.now
             currentSys.save()
             sysUpdate["packageupdates"].each do |update|
