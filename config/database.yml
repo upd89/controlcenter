@@ -21,6 +21,10 @@ default: &default
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5
 
+demo:
+  <<: *default
+  database: cc_demo
+
 development:
   <<: *default
   database: cc_development
