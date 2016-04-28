@@ -50,30 +50,6 @@ module Api::V2
       else
         render json: { status: "ERROR" }
       end
-      #sys = JSON.parse request.body.read
-      #if !(sys["urn"] && sys["os"] && sys["address"])
-      #  render json: { status: "ERROR" }
-      #  return
-      #end
-
-      #if System.exists?(:urn => sys["urn"])
-      #  render json: { status: "ERROR" }
-      #  return
-      #end
-
-      #newSys = System.new
-      #newSys.name = sys["name"] if sys["name"]
-      #newSys.urn = sys["urn"]
-      #newSys.os = sys["os"]
-      #newSys.address = sys["address"]
-      #newSys.system_group = SystemGroup.first
-      #newSys.last_seen = DateTime.now
-
-      #if newSys.save()
-      #  render json: { status: "OK" }
-      #else
-      #  render json: { status: "ERROR" }
-      #end
     end
 
     def updateSystemHash
