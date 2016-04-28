@@ -11,24 +11,37 @@ module Api::V2
       end
     end
 
+    def check_mandatory_json_params( data, params=[""] )
+      error = false
+
+      params.each do |param|
+        if !defined? data[ param ]
+          error = true
+        end
+      end
+
+      return error
+    end
+
     # /register
     def register
-      sys = JSON.parse request.body.read
-      if !(sys["urn"] && sys["os"] && sys["address"])
-        render json: { status: "ERROR" }
+      data = JSON.parse request.body.read
+
+      if check_mandatory_json_params(data, ["urn", "os", "address"])
+        render json: { status: "ERROR!" }
         return
       end
 
-      if System.exists?(:urn => sys["urn"])
+      if System.exists?(:urn => data["urn"])
         render json: { status: "ERROR" }
         return
       end
 
       newSys = System.new
-      newSys.name = sys["name"] if sys["name"]
-      newSys.urn = sys["urn"]
-      newSys.os = sys["os"]
-      newSys.address = sys["address"]
+      newSys.name = data["name"] if data["name"]
+      newSys.urn = data["urn"]
+      newSys.os = data["os"]
+      newSys.address = data["address"]
       newSys.system_group = SystemGroup.first
       newSys.last_seen = DateTime.now
 
@@ -37,6 +50,30 @@ module Api::V2
       else
         render json: { status: "ERROR" }
       end
+      #sys = JSON.parse request.body.read
+      #if !(sys["urn"] && sys["os"] && sys["address"])
+      #  render json: { status: "ERROR" }
+      #  return
+      #end
+
+      #if System.exists?(:urn => sys["urn"])
+      #  render json: { status: "ERROR" }
+      #  return
+      #end
+
+      #newSys = System.new
+      #newSys.name = sys["name"] if sys["name"]
+      #newSys.urn = sys["urn"]
+      #newSys.os = sys["os"]
+      #newSys.address = sys["address"]
+      #newSys.system_group = SystemGroup.first
+      #newSys.last_seen = DateTime.now
+
+      #if newSys.save()
+      #  render json: { status: "OK" }
+      #else
+      #  render json: { status: "ERROR" }
+      #end
     end
 
     def updateSystemHash
