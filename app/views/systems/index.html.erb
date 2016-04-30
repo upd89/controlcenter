@@ -16,7 +16,8 @@
       <th>Reboot required</th>
       <th>Address</th>
       <th>Last seen</th>
-      <th colspan="2">System group</th>
+      <th>System group</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -34,8 +35,8 @@
         <td>
       	  <ul class="button-bar">
       	    <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li>
-                  <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
-                  <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
       	  </ul>
          </td>
       </tr>

@@ -1,0 +1,32 @@
+<%= render :partial => "header", :object => {
+  "title" => "Concrete Package States",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Concrete package state",
+    "path" => new_concrete_package_state_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @concrete_package_states.each do |concrete_package_state| %>
+      <tr>
+        <td><%= concrete_package_state.name %></td>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, concrete_package_state %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_concrete_package_state_path(concrete_package_state) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, concrete_package_state, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

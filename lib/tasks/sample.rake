@@ -8,11 +8,12 @@ namespace :db do
 
     puts "==  Data: generating sample data ".ljust(79, "=")
 
-    SystemUpdate.destroy_all
-    PackageInstallation.destroy_all
-    PackageUpdate.destroy_all
+    ConcretePackageVersion.destroy_all
+    PackageVersion.destroy_all
     GroupAssignment.destroy_all
     Package.destroy_all
+    Repository.destroy_all
+    Distribution.destroy_all
     System.destroy_all
 
     default = SystemGroup.first
@@ -23,14 +24,12 @@ namespace :db do
                            :reboot_required => true, :system_group => default } )
     vm3 = System.create( { :name => "vm3", :urn => "vm3", :os => "ubuntu 14.04", :system_group => default } )
 
-    vim        = Package.create( { :name => "vim", :base_version => "2:7.4.712-2ubuntu4",
-                                   :architecture => "amd64", :section => "editors",
-                                   :repository => "Ubuntu_wily_main",
+    vim        = Package.create( { :name => "vim",
+                                   :section => "editors",
                                    :homepage => "http://www.vim.org/",
                                    :summary => "Vi IMproved - enhanced vi editor" } )
-    dnsutils   = Package.create( { :name => "dnsutils", :base_version => "1:9.9.5.dfsg-11ubuntu1",
-                                   :architecture => "amd64", :section => "net",
-                                   :repository => "Ubuntu_wily_main",
+    dnsutils   = Package.create( { :name => "dnsutils",
+                                   :section => "net",
                                    :summary => "Clients provided with BIND" } )
 
     uncrit = PackageGroup.first
@@ -38,19 +37,47 @@ namespace :db do
     GroupAssignment.create( { :package => vim, :package_group => uncrit } )
     GroupAssignment.create( { :package => dnsutils, :package_group => uncrit } )
 
-    PackageInstallation.create( { :system => vm1, :package => vim, :installed_version => "2:7.4.712-2ubuntu4" } )
-    PackageInstallation.create( { :system => vm1, :package => dnsutils, :installed_version => "1:9.9.5.dfsg-11ubuntu1.2" } )
+    repo = Repository.create( { :origin => "Foo", :archive => "Bar", :component => "Baz" } )
 
-    vim_upd      = PackageUpdate.create( { :package => vim, :repository => "Ubuntu_wily-updates_main",
-                                           :candidate_version => "2:7.4.712-2ubuntu666" } )
-    dnsutils_upd = PackageUpdate.create( { :package => dnsutils, :repository => "Ubuntu_wily-updates_main",
-                                           :candidate_version => "1:9.9.5.dfsg-11ubuntu1.3" } )
+    dist = Distribution.create( { :name => "FooBarRepo" } )
 
-    update_available = SystemUpdateState.first
-    update_queued = SystemUpdateState.second
+    vim_base      = PackageVersion.create( { :package => vim,
+                                             :repository => repo,
+                                             :sha256 => "be71358f6e29cd3defeeaa583fdf5cfbbc05f104027f939f6bdb1918b548bce9",
+                                             :version => "2:7.4.1-2ubuntu666",
+                                             :is_base_version => true,
+                                             :architecture => "amd64",
+                                             :distribution => dist } )
+    dnsutils_base = PackageVersion.create( { :package => dnsutils,
+                                             :repository => repo,
+                                             :sha256 => "20cd8d7855d00d1bf54ac16fd54d74f5c2ad1b1324221aa1896fc38c7cb8a22f",
+                                             :version => "1:9.9.1.dfsg-11ubuntu1.3",
+                                             :is_base_version => true,
+                                             :architecture => "amd64",
+                                             :distribution => dist } )
+    vim_upd       = PackageVersion.create( { :package => vim,
+                                             :repository => repo,
+                                             :sha256 => "d391f11b3b9f8ced025dfd5e1423d15ee2f90e7c71b9bd1c8d7737677211122e",
+                                             :version => "2:7.4.712-2ubuntu666",
+                                             :is_base_version => false,
+                                             :architecture => "amd64",
+                                             :distribution => dist } )
+    dnsutils_upd  = PackageVersion.create( { :package => dnsutils,
+                                             :repository => repo,
+                                             :sha256 => "64ab8908be1c0d955ad0cc47f4010aa8f309f3afd89a6898362c212ebfb65075",
+                                             :version => "1:9.9.5.dfsg-11ubuntu1.3",
+                                             :is_base_version => false,
+                                             :architecture => "amd64",
+                                             :distribution => dist } )
 
-    SystemUpdate.create( { :system => vm1, :package_update => vim_upd , :system_update_state => update_available } )
-    SystemUpdate.create( { :system => vm1, :package_update => dnsutils_upd, :system_update_state => update_queued } )
+    update_installed = ConcretePackageState.last
+    update_available = ConcretePackageState.first
+    update_queued = ConcretePackageState.second
+
+    ConcretePackageVersion.create( { :system => vm1, :package_version => vim_base , :concrete_package_state => update_installed } )
+    ConcretePackageVersion.create( { :system => vm1, :package_version => vim_upd , :concrete_package_state => update_available } )
+    ConcretePackageVersion.create( { :system => vm1, :package_version => dnsutils_base, :concrete_package_state => update_installed } )
+    ConcretePackageVersion.create( { :system => vm1, :package_version => dnsutils_upd, :concrete_package_state => update_queued } )
 
     puts "==  Data: generating sample data (done) ".ljust(79, "=") + "\n\n"
   end

@@ -65,8 +65,6 @@ end
 
 gem 'font-awesome-rails'  #for icons
 
-gem 'administrate' #admin-interface
-
 gem 'config' #for fine-grained configurations, especially custom configs
 
 gem 'will_paginate' #easy pagination

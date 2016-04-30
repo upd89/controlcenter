@@ -1,56 +1,30 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    resources :systems
-    resources :group_assignments
-    resources :jobs
-    resources :packages
-    resources :package_groups
-    resources :package_installations
-    resources :package_updates
-    resources :system_groups
-    resources :system_updates
-    resources :system_update_states
-    resources :tasks
-    resources :task_executions
-    resources :task_states
-    resources :roles
-    resources :users
-
-    root to: "systems#index"
-  end
-
   root 'systems#index'
-  resources :system_updates
   resources :tasks
   resources :jobs
   resources :task_executions
   resources :users
   resources :roles
-  resources :package_installations
-  resources :package_updates
-  resources :system_update_states
   resources :task_states
   resources :group_assignments
   resources :packages
   resources :package_groups
   resources :systems
   resources :system_groups
+  resources :concrete_package_versions
+  resources :concrete_package_states
+  resources :package_versions
+  resources :distributions
+  resources :repositories
+
+  post '/jobs/test' => 'jobs#test'
 
   scope module: 'api' do
       namespace :v1 do
-        match "/register"                          => "api#register", via: :post
-        match "/system/:id/notify"                 => "api#updateSystem", via: :post
-        match "/task/:id/notify"                   => "api#updateTask", via: :post
-        match "/system/:id/updateInstalled"        => "api#updateInstalled", via: :post
-      end
-
-      namespace :v2 do
-        match "/register"                          => "api#register", via: :post
-        match "/system/:urn/notify-hash"           => "api#updateSystemHash", via: :post
-        match "/system/:urn/notify"                => "api#updateSystem", via: :post
-        match "/system/:urn/update-installed"      => "api#updateInstalled", via: :post
-        match "/system/:urn/update-installed-hash" => "api#updateInstalledHash", via: :post
-        match "/task/:id/notify"                   => "api#updateTask", via: :post
+        match "/register" => "api#register", via: :post
+        match "/system/:id/notify" => "api#updateSystem", via: :post
+        match "/task/:id/notify" => "api#updateTask", via: :post
+        match "/system/:id/updateInstalled" => "api#updateInstalled", via: :post
       end
   end
 

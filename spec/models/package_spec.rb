@@ -1,11 +1,5 @@
-require 'spec_helper'
+require 'rails_helper'
 
 RSpec.describe Package, type: :model do
-    it "has a valid factory" do
-    FactoryGirl.create(:package).should be_valid
-  end
-
-  it "is invalid without a name" do
-    FactoryGirl.build(:package, name: nil).should_not be_valid
-  end
+  pending "add some examples to (or delete) #{__FILE__}"
 end

@@ -1,0 +1,44 @@
+<%= render :partial => "header", :object => {
+  "title" => "Package Versions",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Package version",
+    "path" => new_package_version_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+      <th>Sha256</th>
+      <th>Version</th>
+      <th>Architecture</th>
+      <th>Package</th>
+      <th>Distribution</th>
+      <th>Repository</th>
+      <th>Is base version</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @package_versions.each do |package_version| %>
+      <tr>
+        <td><%= package_version.sha256 %></td>
+        <td><%= package_version.version %></td>
+        <td><%= package_version.architecture %></td>
+        <td><%= package_version.package %></td>
+        <td><%= package_version.distribution %></td>
+        <td><%= package_version.repository %></td>
+        <td><%= package_version.is_base_version %></td>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_version %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_version_path(package_version) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -1,0 +1,45 @@
+<%= form_for(@concrete_package_version) do |f| %>
+  <% if @concrete_package_version.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@concrete_package_version.errors.count, "error") %> prohibited this concrete_package_version from being saved:</h2>
+
+      <ul>
+      <% @concrete_package_version.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul class="properties col_6">
+      <li>
+      <p>
+          <span class="property">system_id</span>
+        <span class="value"><%= f.collection_select :system_id, System.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">task_id</span>
+        <span class="value"><%= f.collection_select :task_id, Task.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">concrete_package_state_id</span>
+        <span class="value"><%= f.collection_select :concrete_package_state_id, ConcretePackageState.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">package_version_id</span>
+        <span class="value"><%= f.collection_select :package_version_id, PackageVersion.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+    </ul>
+
+  <div class="actions">
+    <%= f.button "Save", :class => "button" %>
+  </div>
+
+<% end %>

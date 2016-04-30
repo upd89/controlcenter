@@ -1,0 +1,39 @@
+<%= form_for(@repository) do |f| %>
+  <% if @repository.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@repository.errors.count, "error") %> prohibited this repository from being saved:</h2>
+
+      <ul>
+      <% @repository.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul class="properties col_6">
+      <li>
+      <p>
+          <span class="property">origin</span>
+        <span class="value"><%= f.text_field :origin %></span>
+            </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">archive</span>
+        <span class="value"><%= f.text_field :archive %></span>
+            </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">component</span>
+        <span class="value"><%= f.text_field :component %></span>
+            </p>
+    </li>
+    </ul>
+
+  <div class="actions">
+    <%= f.button "Save", :class => "button" %>
+  </div>
+
+<% end %>
