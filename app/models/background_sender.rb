@@ -7,7 +7,7 @@ class BackgroundSender
   def perform(task)
     packageArray = []
     task.system_updates.each do |update|
-      packageArray << { pkg_name: update.package_update.package.name, pdk_version: update.package_update.candidate_version}
+      packageArray << { pkg_name: update.package_update.package.name, pkg_version: update.package_update.candidate_version}
     end
     system = task.system_updates.first().system
     taskData = { task_id: task.id.to_s, urn: system.name, packages: packageArray }
