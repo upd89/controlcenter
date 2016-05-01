@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on "page:change", ->
-  $("table.clickableRows").on "click", "tr", (e) ->
+  $("table.clickableRows").on "click", "tbody tr", (e) ->
     clickOnWholeRow(e)
 
   $("table.availableUpdates").on "click", ".checkboxInstallUpdate", (e) ->
