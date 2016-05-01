@@ -65,29 +65,29 @@
   <li>
     <p>
       <span class="property">Updates</span>
-      <span class="value"><%= @system_updates.length %></span>
+      <span class="value"><%= @concrete_package_versions.length %></span>
     </p>
   </li>
 </ul>
 
 <%= form_tag({controller: "jobs", action: "create"}) do %>
-  <% if @system_updates.length %>
+  <% if @concrete_package_versions.length %>
   <table class="availableUpdates">
     <thead>
       <tr>
         <th>Package</th>
         <th>Candidate Version</th>
-        <th>System update state</th>
+        <th>Update state</th>
         <th>Install?</th>
       </tr>
     </thead>
     <tbody>
-      <% @paginated_system_updates.each do |system_update| %>
+      <% @paginated_concrete_package_versions.each do |concrete_pkg_version| %>
         <tr>
-          <td><%= link_to system_update.package_version.package.name, system_update.package_version.package %></td>
-          <td><%= link_to system_update.package_version.version, system_update.package_version %></td>
-          <td><%= system_update.concrete_package_state.name %></td>
-          <td><%= check_box_tag "updates[]", system_update.id, false, class: 'checkboxInstallUpdate' %></td>
+          <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
+          <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
+          <td><%= concrete_pkg_version.concrete_package_state.name %></td>
+          <td><%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %></td>
         </tr>
       <% end %>
     </tbody>
@@ -102,9 +102,9 @@
 
   <div class="digg_pagination">
     <div class="page_info">
-      <%= page_entries_info @paginated_system_updates %>
+      <%= page_entries_info @paginated_concrete_package_versions %>
     </div>
-    <%= will_paginate @paginated_system_updates, :container => false %>
+    <%= will_paginate @paginated_concrete_package_versions, :container => false %>
   </div>
 
   <% end %>

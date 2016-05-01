@@ -11,8 +11,8 @@ class SystemsController < ApplicationController
   # GET /systems/1
   # GET /systems/1.json
   def show
-    @system_updates = ConcretePackageVersion.where(:system => @system)
-    @paginated_system_updates = @system_updates.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @concrete_package_versions = ConcretePackageVersion.where(:system => @system)
+    @paginated_concrete_package_versions = @concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/new
