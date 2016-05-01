@@ -18,11 +18,25 @@ namespace :db do
 
     default = SystemGroup.first
 
-    vm1 = System.create( { :name => "vm1", :urn => "vm1", :os => "ubuntu 14.04", :address => "127.0.0.1",
-                           :last_seen => DateTime.now, :system_group => default } )
-    vm2 = System.create( { :name => "vm2", :urn => "vm2", :os => "ubuntu 14.04",
-                           :reboot_required => true, :system_group => default } )
-    vm3 = System.create( { :name => "vm3", :urn => "vm3", :os => "ubuntu 14.04", :system_group => default } )
+    vm1 = System.create( { :name => "vm1",
+                           :urn => "vm1",
+                           :os => "ubuntu 14.04",
+                           :address => "127.0.0.1",
+                           :last_seen => DateTime.now,
+                           :system_group => default } )
+    vm2 = System.create( { :name => "vm2",
+                           :urn => "vm2",
+                           :os => "ubuntu 14.04",
+                           :address => "1.2.3.4",
+                           :last_seen => 10.minutes.ago,
+                           :reboot_required => true,
+                           :system_group => default } )
+    vm3 = System.create( { :name => "vm3",
+                           :urn => "vm3",
+                           :os => "ubuntu 14.04",
+                           :address => "5.6.7.8",
+                           :last_seen => 30.minutes.ago,
+                           :system_group => default } )
 
     vim        = Package.create( { :name => "vim",
                                    :section => "editors",

@@ -11,13 +11,12 @@ $(document).on "page:change", ->
 
   disableCreateJobButton()
 
-
+# make the whole row clickable. trigger location change by getting the link from the details-button
 clickOnWholeRow = (e) ->
-  targetTag = e.target.tagName.toLowerCase()
-  if targetTag != 'td' && targetTag != 'tr'
+  if $(e.target).parents("ul.button-bar").length > 0
     return;
   e.preventDefault()
-  window.location = $(this).find("a").attr("href");
+  window.location = $(e.target).parents("tr").find("ul.button-bar li.first a").attr("href")
 
 disableCreateJobButton = ->
   enabled = $(".checkboxInstallUpdate:checked").length > 0

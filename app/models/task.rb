@@ -4,5 +4,5 @@ class Task < ActiveRecord::Base
   belongs_to :task_execution
   belongs_to :job
 
-  has_many :system_updates
+  has_many :concrete_package_versions
 end

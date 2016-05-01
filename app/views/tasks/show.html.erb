@@ -34,8 +34,8 @@
     <p>
       <span class="property">System</span>
       <span class="value">
-        <% if @task.system_updates.length > 0 %>
-          <%= link_to @task.system_updates.first.system.name, @task.system_updates.first.system %>
+        <% if @task.concrete_package_versions.length > 0 %>
+          <%= link_to @task.concrete_package_versions.first.system.name, @task.concrete_package_versions.first.system %>
         <% end %>
       </span>
     </p>
@@ -46,9 +46,15 @@
       <span class="value"><%= link_to @task.job.id, @task.job %></span>
     </p>
   </li>
+  <li>
+    <p>
+      <span class="property">Updates</span>
+      <span class="value"><%= @task.concrete_package_versions.length %></span>
+    </p>
+  </li>
 </ul>
 
-<% if @task.system_updates.length > 0 %>
+<% if @task.concrete_package_versions.length > 0 %>
   <table>
     <thead>
       <tr>
@@ -58,7 +64,7 @@
       </tr>
     </thead>
     <tbody>
-      <% @paginated_system_updates.each do |system_update| %>
+      <% @paginated_concrete_package_versions.each do |system_update| %>
         <tr>
           <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
           <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
@@ -70,9 +76,9 @@
 
   <div class="digg_pagination">
     <div class="page_info">
-      <%= page_entries_info @paginated_system_updates %>
+      <%= page_entries_info @paginated_concrete_package_versions %>
     </div>
-    <%= will_paginate @paginated_system_updates, :container => false %>
+    <%= will_paginate @paginated_concrete_package_versions, :container => false %>
   </div>
 <% end %>
 
