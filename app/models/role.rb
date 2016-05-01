@@ -5,4 +5,15 @@ class Role < ActiveRecord::Base
   validates_numericality_of :permission_level
 
   has_many :users, :dependent => :restrict_with_error
+
+  before_destroy :check_for_users
+
+  private
+
+  def check_for_users
+    if users.count > 0
+      errors.add :base, "cannot delete role while users with this role exist"
+      return false
+    end
+  end
 end
