@@ -87,7 +87,11 @@
           <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
           <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
           <td><%= concrete_pkg_version.concrete_package_state.name %></td>
-          <td><%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %></td>
+          <td>
+            <% if concrete_pkg_version.concrete_package_state == ConcretePackageState.first %>
+              <%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -96,8 +100,8 @@
   <%= hidden_field_tag(:system_id, @system.id) %>
 
   <div class="actions">
-    <%= submit_tag "Create Job for Selected", :id=>"createJobBtn", :name => 'specific' %>
-    <%= submit_tag "Create Job for all", :id=>"createJobBtnForAll", :name => 'all' %>
+    <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
+    <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
   </div>
 
   <div class="digg_pagination">

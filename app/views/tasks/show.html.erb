@@ -64,11 +64,11 @@
       </tr>
     </thead>
     <tbody>
-      <% @paginated_concrete_package_versions.each do |system_update| %>
+      <% @paginated_concrete_package_versions.each do |concrete_pkg_version| %>
         <tr>
-          <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
-          <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
-          <td><%= system_update.system_update_state.name %></td>
+          <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
+          <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
+          <td><%= concrete_pkg_version.concrete_package_state.name %></td>
         </tr>
       <% end %>
     </tbody>
