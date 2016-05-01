@@ -21,10 +21,10 @@
   <tbody>
     <% @concrete_package_versions.each do |concrete_package_version| %>
       <tr>
-        <td><%= concrete_package_version.system %></td>
+        <td><%= concrete_package_version.system.name %></td>
         <td><%= concrete_package_version.task %></td>
-        <td><%= concrete_package_version.concrete_package_state %></td>
-        <td><%= concrete_package_version.package_version %></td>
+        <td><%= concrete_package_version.concrete_package_state.name %></td>
+        <td><%= concrete_package_version.package_version.version %></td>
         <td>
           <ul class="button-bar">
             <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, concrete_package_version %></li>

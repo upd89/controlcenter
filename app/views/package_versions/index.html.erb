@@ -24,12 +24,12 @@
   <tbody>
     <% @package_versions.each do |package_version| %>
       <tr>
-        <td><%= package_version.sha256 %></td>
+        <td><%= package_version.sha256.last(10) %></td>
         <td><%= package_version.version %></td>
         <td><%= package_version.architecture %></td>
-        <td><%= package_version.package %></td>
-        <td><%= package_version.distribution %></td>
-        <td><%= package_version.repository %></td>
+        <td><%= package_version.package.name %></td>
+        <td><%= package_version.distribution.name if package_version.distribution %></td>
+        <td><%= package_version.repository.origin if package_version.repository %></td>
         <td><%= package_version.is_base_version %></td>
         <td>
           <ul class="button-bar">

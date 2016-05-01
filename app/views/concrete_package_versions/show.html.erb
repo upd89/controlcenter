@@ -21,28 +21,27 @@
   <li>
     <p>
       <span class="property">System</span>
-      <span class="value"><%= @concrete_package_version.system %></span>
+      <span class="value"><%= link_to @concrete_package_version.system.name, @concrete_package_version.system %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Task</span>
-      <span class="value"><%= @concrete_package_version.task %></span>
+      <span class="value"><%= @concrete_package_version.task ? (link_to @concrete_package_version.task ) : "-" %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Concrete package state</span>
-      <span class="value"><%= @concrete_package_version.concrete_package_state %></span>
+      <span class="value"><%= @concrete_package_version.concrete_package_state.name %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Package version</span>
-      <span class="value"><%= @concrete_package_version.package_version %></span>
+      <span class="value"><%= @concrete_package_version.package_version.version %></span>
     </p>
   </li>
 </ul>
 
 <div class="floatFix"></div>
-

@@ -39,19 +39,19 @@
   <li>
     <p>
       <span class="property">Package</span>
-      <span class="value"><%= @package_version.package %></span>
+      <span class="value"><%= link_to @package_version.package.name, @package_version.package %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Distribution</span>
-      <span class="value"><%= @package_version.distribution %></span>
+      <span class="value"><%= link_to @package_version.distribution.name, @package_version.distribution %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Repository</span>
-      <span class="value"><%= @package_version.repository %></span>
+      <span class="value"><%= link_to @package_version.repository.origin, @package_version.repository %></span>
     </p>
   </li>
   <li>
@@ -63,4 +63,3 @@
 </ul>
 
 <div class="floatFix"></div>
-
