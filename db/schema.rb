@@ -107,11 +107,14 @@ ActiveRecord::Schema.define(version: 20160430151923) do
 
   create_table "packages", force: :cascade do |t|
     t.string   "name"
+    t.string   "base_version"
+    t.string   "architecture"
     t.string   "section"
+    t.string   "repository"
     t.string   "homepage"
     t.string   "summary"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
   create_table "repositories", force: :cascade do |t|

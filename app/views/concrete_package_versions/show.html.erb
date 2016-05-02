@@ -27,7 +27,7 @@
   <li>
     <p>
       <span class="property">Task</span>
-      <span class="value"><%= @concrete_package_version.task ? (link_to @concrete_package_version.task ) : "-" %></span>
+      <span class="value"><%= @concrete_package_version.task ? (link_to @concrete_package_version.task.id, @concrete_package_version.task ) : "-" %></span>
     </p>
   </li>
   <li>
