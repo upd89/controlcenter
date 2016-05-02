@@ -136,13 +136,13 @@ module Api::V2
         else
 	  # 2nd best option: specific version is unknown, but package itself is known
           if Package.exists?( name: update['name'] )
-            pgk = Package.where( name: update['name'] )[0]
+            pkg = Package.where( name: update['name'] )[0]
 
             pkgVersion = PackageVersion.new
             pkgVersion.sha256 = update['sha256'] if update['sha256']
             pkgVersion.version = update['version'] if update['version']
             pkgVersion.architecture = update['architecture'] if update['architecture']
-            pkgVersion.package = pgk
+            pkgVersion.package = pkg
 
             if update['sha256'] == update['baseVersion']
               # this is a base_version
@@ -175,14 +175,22 @@ module Api::V2
             pkg.package_versions << pkgVersion
             error = true unless pkg.save()
 
-            assoc = ConcretePackageVersion.new
-            assoc.system = currentSys
-            assoc.concrete_package_state = stateAvailable
-            assoc.package_version = pkgVersion
-            error = true unless assoc.save()
+            # only create new CPV if it doesn't already exist!
+            if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+              # If it exists, set its state to Available
+              assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
+              assoc.concrete_package_state = stateAvailable
+              error = true unless assoc.save()
+ 	    else
+	      assoc = ConcretePackageVersion.new
+              assoc.system = currentSys
+              assoc.concrete_package_state = stateAvailable
+              assoc.package_version = pkgVersion
+              error = true unless assoc.save()
 
-            currentSys.concrete_package_versions << assoc
-            error = true unless currentSys.save()
+              currentSys.concrete_package_versions << assoc
+              error = true unless currentSys.save()
+            end
 
           else
             # send pkgUnknown!
@@ -195,7 +203,7 @@ module Api::V2
         render json: { status: "ERROR" }
       elsif unknownPackages
         render json: { status: "pkgUnknown" }
-      elsif currentSys.current_package_versions.count == data["updCount"]
+      elsif currentSys.concrete_package_versions.count != data["updCount"]
         render json: { status: "countMismatch" }
       else
         render json: { status: "OK" }
