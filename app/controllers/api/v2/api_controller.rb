@@ -15,11 +15,10 @@ module Api::V2
       error = false
 
       params.each do |param|
-        unless defined? data[ param ]
+        unless data.keys.include?(param)
           error = true
         end
       end
-
       return error
     end
 
