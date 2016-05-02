@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe "GroupAssignments", type: :request do
   describe "GET /group_assignments" do

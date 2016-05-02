@@ -13,11 +13,8 @@ module Api::V2
 
     def check_mandatory_json_params( data, params=[""] )
       error = false
-
       params.each do |param|
-        unless data.keys.include?(param)
-          error = true
-        end
+        error = true unless data.keys.include?(param)
       end
       return error
     end

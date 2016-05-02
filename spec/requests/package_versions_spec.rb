@@ -1,4 +1,4 @@
-require 'rails_helper'
+require 'spec_helper'
 
 RSpec.describe "PackageVersions", type: :request do
   describe "GET /package_versions" do
