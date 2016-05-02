@@ -59,7 +59,6 @@ module Api::V2
       end
 
       currentSys = System.where(urn: params[:urn])[0]
-      currentSys.save()
 
       unknownPackages = []
       knownPackages = []
@@ -67,28 +66,36 @@ module Api::V2
 
       data["packageUpdates"].each do |updHash|
         if PackageVersion.exists?( sha256: updHash )
+          knownPackages.push( updHash )
+
           pkgVersion = PackageVersion.where( sha256: updHash )[0]
 
-          assoc = ConcretePackageVersion.new
-          assoc.system = currentSys
-          assoc.concrete_package_state = stateAvailable
-          assoc.package_version = pkgVersion
-          assoc.save()
+          # only create new CPV if it doesn't already exist!
+	  if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+ 	    # If it exists, set its state to Available
+       	    assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
+            assoc.concrete_package_state = stateAvailable
+            assoc.save()
+	  else
+            assoc = ConcretePackageVersion.new
+            assoc.system = currentSys
+            assoc.concrete_package_state = stateAvailable
+            assoc.package_version = pkgVersion
+            assoc.save()
 
-          currentSys.concrete_package_versions << assoc
-          currentSys.save()
-
-          knownPackages.push( updHash )
+            currentSys.concrete_package_versions << assoc
+          end
         else
           unknownPackages.push( updHash )
         end
       end
+      currentSys.save()
 
       if unknownPackages.length > 0
         render json: { status: "infoIncomplete", knownPackages: knownPackages }
       else
-        if currentSys.current_package_versions.count == data["updCount"]
-          render json: { status: "countMismatch", knownPackages: knownPackages  }
+        if currentSys.concrete_package_versions.count != data["updCount"]
+          render json: { status: "countMismatch", knownPackages: knownPackages }
         else
           render json: { status: "OK", knownPackages: knownPackages  }
         end
@@ -114,6 +121,7 @@ module Api::V2
 
 
       data["packageUpdates"].each do |update|
+	# best case: CC already knows the version that's available
         if PackageVersion.exists?( sha256: update['hash'] )
           pkgVersion = PackageVersion.where( sha256: update['hash'] )[0]
 
@@ -126,6 +134,7 @@ module Api::V2
           currentSys.concrete_package_versions << assoc
           error = true unless currentSys.save()
         else
+	  # 2nd best option: specific version is unknown, but package itself is known
           if Package.exists?( name: update['name'] )
             pgk = Package.where( name: update['name'] )[0]
 
@@ -154,7 +163,13 @@ module Api::V2
               pkgVersion.repository = newRepo
             end
 
-            pkgVersion.distribution = currentSys.os
+	    # TODO: refactor distro handling
+	    if currentSys.os
+   	      if Distribution.exists?(name: currentSys.os)
+  		dist = Distribution.where(name: currentSys.os)[0]
+                pkgVersion.distribution = dist
+              end
+            end
             error = true unless pkgVersion.save()
 
             pkg.package_versions << pkgVersion
