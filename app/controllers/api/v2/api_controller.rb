@@ -6,7 +6,7 @@ module Api::V2
 
     def require_valid_json
       unless JSON.parse( request.body.read)
-        render json: { status: "ERROR!" }
+        render json: { status: "ERROR" }
         return
       end
     end
@@ -15,7 +15,7 @@ module Api::V2
       error = false
 
       params.each do |param|
-        if !defined? data[ param ]
+        unless defined? data[ param ]
           error = true
         end
       end
@@ -23,25 +23,26 @@ module Api::V2
       return error
     end
 
-    # /register
+    def apply_system_properties( sys, data )
+      sys.name = data["name"] if data["name"]
+      sys.urn = data["urn"] if data["urn"]
+      sys.os = data["os"] if data["os"]
+      sys.address = data["address"] if data["address"]
+      sys.reboot_required = data["rebootRequired"] if data["rebootRequired"]
+      sys.last_seen = DateTime.now
+    end
+
+    # v2/register
     def register
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["urn", "os", "address"])
-        render json: { status: "ERROR!" }
-        return
-      end
-
-      if System.exists?(:urn => data["urn"])
+      if check_mandatory_json_params(data, ["name", "urn", "os", "address", "certificate"]) || System.exists?(:urn => data["urn"])
         render json: { status: "ERROR" }
         return
       end
 
       newSys = System.new
-      newSys.name = data["name"] if data["name"]
-      newSys.urn = data["urn"]
-      newSys.os = data["os"]
-      newSys.address = data["address"]
+      apply_system_properties( newSys, data )
       newSys.system_group = SystemGroup.first
       newSys.last_seen = DateTime.now
 
@@ -52,158 +53,256 @@ module Api::V2
       end
     end
 
+    # v2/system/:urn/notify-hash
     def updateSystemHash
+      data = JSON.parse request.body.read
 
-    end
+      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
+        render json: { status: "ERROR" }
+        return
+      end
 
-    def updateSystem
+      currentSys = System.where(urn: params[:urn])[0]
+      currentSys.save()
 
-    end
+      unknownPackages = []
+      knownPackages = []
+      stateAvailable = ConcretePackageState.first
 
-    def updateInstalled
+      data["packageUpdates"].each do |updHash|
+        if PackageVersion.exists?( sha256: updHash )
+          pkgVersion = PackageVersion.where( sha256: updHash )[0]
 
-    end
+          assoc = ConcretePackageVersion.new
+          assoc.system = currentSys
+          assoc.concrete_package_state = stateAvailable
+          assoc.package_version = pkgVersion
+          assoc.save()
 
-    def updateInstalledHash
+          currentSys.concrete_package_versions << assoc
+          currentSys.save()
 
-    end
-
-    def updateTask
-
-    end
-
-    # /system/:id/notify
-    def updateSystem
-      if System.exists?(urn: params[:id])
-        currentSys = System.where(urn: params[:id])[0]
-        if JSON.parse( request.body.read )
-          sysUpdate = JSON.parse request.body.read
-          if sysUpdate["urn"] && sysUpdate["os"]
-            currentSys.name = sysUpdate["name"] if sysUpdate["name"]
-            currentSys.urn = sysUpdate["urn"]
-            currentSys.address = sysUpdate["address"] if sysUpdate["address"]
-            currentSys.os = sysUpdate["os"]
-            currentSys.reboot_required = sysUpdate["reboot_required"] if sysUpdate["reboot_required"]
-            currentSys.last_seen = DateTime.now
-            currentSys.save()
-            sysUpdate["packageupdates"].each do |update|
-              if Package.exists?(name: update['name'], base_version: update['baseversion'])
-                currentPkg = Package.where(name: update['name'], base_version: update['baseversion'])[0]
-                if PackageUpdate.exists?(:package => currentPkg, :candidate_version => update['version'])
-                  currentUpdate = PackageUpdate.where(:package => currentPkg, :candidate_version => update['version'])[0]
-                else
-                  # creating update
-                  currentUpdate = PackageUpdate.create( {
-                         :package           => currentPkg,
-                         :candidate_version => update['version'],
-                         :repository        => update['repository']
-                  } )
-                end
-                if ! SystemUpdate.exists?(:system => currentSys, :package_update => currentUpdate)
-                  # linking update
-                  SystemUpdate.create( {
-                         :system              => currentSys,
-                         :package_update      => currentUpdate,
-                         :system_update_state => SystemUpdateState.first
-                  } )
-                end
-                render json: { status: "OK" }
-              else
-                # TODO: package not found... what to do now?
-                render json: { status: "ERROR", message: "Couldn't find package", code: 30 }
-              end
-            end
-          else
-            render json: { status: "ERROR", message: "Missing Params", code: 1 }
-          end
+          knownPackages.push( updHash )
         else
-          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
+          unknownPackages.push( updHash )
         end
+      end
+
+      if unknownPackages.length > 0
+        render json: { status: "infoIncomplete", knownPackages: knownPackages }
       else
-        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
+        if currentSys.current_package_versions.count == data["updCount"]
+          render json: { status: "countMismatch", knownPackages: knownPackages  }
+        else
+          render json: { status: "OK", knownPackages: knownPackages  }
+        end
       end
     end
 
-    # /task/:id/notify
-    def updateTask
-      if Task.exists?(params[:id])
-        task = Task.find(params[:id])
-        if JSON.parse( request.body.read )
-          taskUpdate = JSON.parse request.body.read
-          if taskUpdate["state"]
-            state = TaskState.where(:name => taskUpdate["state"] ).first
-            if state
-              task.task_state = state
-              # TODO + log
-              if task.save()
-                render json: { status: "OK" }
-              else
-                render json: { status: "ERROR", message: "Couldn't save task", code: 20 }
-              end
+    # v2/system/:urn/notify
+    def updateSystem
+      data = JSON.parse request.body.read
+
+      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
+        render json: { status: "ERROR" }
+        return
+      end
+
+      stateAvailable = ConcretePackageState.first
+      error = false
+      unknownPackages = false
+
+      currentSys = System.where(urn: params[:urn])[0]
+      apply_system_properties( currentSys, data )
+      error = true unless currentSys.save()
+
+
+      data["packageUpdates"].each do |update|
+        if PackageVersion.exists?( sha256: update['hash'] )
+          pkgVersion = PackageVersion.where( sha256: update['hash'] )[0]
+
+          assoc = ConcretePackageVersion.new
+          assoc.system = currentSys
+          assoc.concrete_package_state = stateAvailable
+          assoc.package_version = pkgVersion
+          error = true unless assoc.save()
+
+          currentSys.concrete_package_versions << assoc
+          error = true unless currentSys.save()
+        else
+          if Package.exists?( name: update['name'] )
+            pgk = Package.where( name: update['name'] )[0]
+
+            pkgVersion = PackageVersion.new
+            pkgVersion.sha256 = update['sha256'] if update['sha256']
+            pkgVersion.version = update['version'] if update['version']
+            pkgVersion.architecture = update['architecture'] if update['architecture']
+            pkgVersion.package = pgk
+
+            if update['sha256'] == update['baseVersion']
+              # this is a base_version
+            elsif PackageVersion.exists?( sha256: update['baseVersion'] )
+              pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersion'] )[0]
             else
-              render json: { status: "ERROR", message: "State not valid", code: 10 }
+              # send pkgUnknown!
+              unknownPackages = true
             end
+
+            if update['repository']
+              rep = update['repository']
+              if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+                newRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+              else
+                newRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+              end
+              pkgVersion.repository = newRepo
+            end
+
+            pkgVersion.distribution = currentSys.os
+            error = true unless pkgVersion.save()
+
+            pkg.package_versions << pkgVersion
+            error = true unless pkg.save()
+
+            assoc = ConcretePackageVersion.new
+            assoc.system = currentSys
+            assoc.concrete_package_state = stateAvailable
+            assoc.package_version = pkgVersion
+            error = true unless assoc.save()
+
+            currentSys.concrete_package_versions << assoc
+            error = true unless currentSys.save()
+
           else
-            render json: { status: "ERROR", message: "Missing Params", code: 1 }
+            # send pkgUnknown!
+            unknownPackages = true
           end
-        else
-          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
         end
+      end
+
+      if error
+        render json: { status: "ERROR" }
+      elsif unknownPackages
+        render json: { status: "pkgUnknown" }
+      elsif currentSys.current_package_versions.count == data["updCount"]
+        render json: { status: "countMismatch" }
       else
-        render json: { status: "ERROR", message: "Task doesn't exist", code: -1 }
+        render json: { status: "OK" }
       end
     end
 
-    # /system/:id/updateInstalled
-    def updateInstalled
-      if System.exists?(urn: params[:id])
-        currentSys = System.where(urn: params[:id])[0]
+    # v2/system/:urn/refresh-installed-hash
+    def refreshInstalledHash
+      data = JSON.parse request.body.read
 
-        if JSON.parse(request.body.read)
-          sysUpdate = JSON.parse request.body.read
-          if sysUpdate["packages"]
-
-            sysUpdate["packages"].each do |package|
-
-              if Package.exists?(name: package['name'], base_version: package['baseversion'])
-                currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
-              else
-                # creating package
-                currentPkg = Package.create( {
-                       :name         =>  package['name'],
-                       :base_version =>  package['baseversion'],
-                       :architecture =>  package['architecture'],
-                       :section      =>  package['section'],
-                       :repository   =>  package['repository'],
-                       :homepage     =>  package['homepage'],
-                       :summary      =>  package['summary']
-                } )
-              end
-
-              if PackageInstallation.exists?(:system => currentSys, :package => currentPkg)
-                # updating link system <=> package
-                currentInstall = PackageInstallation.where(:system => currentSys, :package => currentPkg)[0]
-                currentInstall.installed_version = package['version']
-                currentInstall.save
-              else
-                # creating link system <=> package
-                PackageInstallation.create({
-                       :system            => currentSys,
-                       :package           => currentPkg,
-                       :installed_version => package['version']
-                })
-              end
-            end
-            render json: { status: "OK" }
-          else
-            render json: { status: "ERROR", message: "Missing Params", code: 1 }
-          end
-        else
-          render json: { status: "ERROR", message: "No JSON Body", code: 0 }
-        end
-      else
-        render json: { status: "ERROR", message: "System doesn't exist", code: -1 }
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => data["urn"])
+        render json: { status: "ERROR" }
+        return
       end
+
+      unknownPackages = []
+      knownPackages = []
+      error = false
+      stateInstalled = ConcretePackageState.last
+
+      currentSys = System.where(urn: params[:urn])[0]
+      error = true unless currentSys.save()
+
+      data["packages"].each do |pkgHash|
+        if PackageVersion.exists?( sha256: pkgHash )
+          pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
+
+          assoc = ConcretePackageVersion.create({
+            :system => currentSys,
+            :concrete_package_state => stateInstalled,
+            :package_version => pkgVersion
+          })
+
+          currentSys.concrete_package_versions << assoc
+          error = true unless currentSys.save()
+
+          knownPackages.push( pkgHash )
+        else
+          unknownPackages.push( pkgHash )
+        end
+      end
+
+      if error
+        render json: { status: "ERROR" }
+      elsif unknownPackages.length > 0
+        render json: { status: "infoIncomplete", knownPackages: knownPackages }
+      elsif currentSys.current_package_versions.count == data["pkgCount"]
+        render json: { status: "countMismatch", knownPackages: knownPackages  }
+      else
+        render json: { status: "OK", knownPackages: knownPackages  }
+      end
+    end
+
+    # v2/system/:urn/refresh-installed
+    def refreshInstalled
+      data = JSON.parse request.body.read
+
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => data["urn"])
+        render json: { status: "ERROR" }
+        return
+      end
+
+      currentSys = System.where(urn: params[:id])[0]
+
+      data["packages"].each do |package|
+
+        if Package.exists?(name: package['name'], base_version: package['baseversion'])
+          currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
+        else
+          # creating package
+          currentPkg = Package.create( {
+                 :name         =>  package['name'],
+                 :base_version =>  package['baseversion'],
+                 :architecture =>  package['architecture'],
+                 :section      =>  package['section'],
+                 :repository   =>  package['repository'],
+                 :homepage     =>  package['homepage'],
+                 :summary      =>  package['summary']
+          } )
+        end
+
+        if PackageVersion.exists?(:system => currentSys, :package => currentPkg)
+          # updating link system <=> package
+          currentInstall = PackageVersion.where(:system => currentSys, :package => currentPkg)[0]
+          currentInstall.installed_version = package['version']
+          currentInstall.save
+        else
+          # creating link system <=> package
+          PackageVersion.create({
+                 :system            => currentSys,
+                 :package           => currentPkg,
+                 :installed_version => package['version']
+          })
+        end
+      end
+      render json: { status: "OK" }
+    end
+
+    # v2/task/:id/notify
+    def updateTask
+      data = JSON.parse request.body.read
+
+      if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(params[:id])
+        render json: { status: "ERROR" }
+        return
+      end
+
+      task = Task.find(params[:id])
+      state = TaskState.where(:name => data["state"] ).first
+      if state
+        task.task_state = state
+        # TODO + log
+        if task.save()
+          render json: { status: "OK" }
+          return
+        end
+      end
+      render json: { status: "ERROR" }
     end
   end
 end

@@ -26,6 +26,15 @@ Rails.application.routes.draw do
         match "/task/:id/notify" => "api#updateTask", via: :post
         match "/system/:id/updateInstalled" => "api#updateInstalled", via: :post
       end
+
+      namespace :v2 do
+        match "/register"                           => "api#register", via: :post
+        match "/system/:urn/notify-hash"            => "api#updateSystemHash", via: :post
+        match "/system/:urn/notify"                 => "api#updateSystem", via: :post
+        match "/system/:urn/refresh-installed-hash" => "api#refreshInstalledHash", via: :post
+        match "/system/:urn/refresh-installed"      => "api#refreshInstalled", via: :post
+        match "/task/:id/notify"                    => "api#updateTask", via: :post
+      end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
