@@ -1,0 +1,23 @@
+<%= render :partial => "header", :object => {
+  "title" => "Edit Repository",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => repositories_path
+  }, {
+    "icon" => "eye",
+    "text" => "",
+    "path" => @repository
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @repository,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this Repository?"
+  }]
+} %>
+
+<%= render 'form' %>
+
+<div class="floatFix"></div>
+

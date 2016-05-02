@@ -1,0 +1,32 @@
+<%= render :partial => "header", :object => {
+  "title" => "Distributions",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Distribution",
+    "path" => new_distribution_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @distributions.each do |distribution| %>
+      <tr>
+        <td><%= distribution.name %></td>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, distribution %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_distribution_path(distribution) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, distribution, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

@@ -12,21 +12,22 @@
   <% end %>
 
   <ul class="properties col_6">
-    <li>
+      <li>
       <p>
-        <span class="property"><%= f.label :package_group_id %></span>
-        <span class="value"><%= f.collection_select(:package_group_id, PackageGroup.all, :id, :name) %></span>
-      </p>
+          <span class="property">package_group_id</span>
+        <span class="value"><%= f.collection_select :package_group_id, PackageGroup.all, :id, :name, prompt: true  %></span>
+        </p>
     </li>
-    <li>
+      <li>
       <p>
-        <span class="property"><%= f.label :package_id %></span>
-        <span class="value"><%= f.collection_select(:package_id, Package.all, :id, :name) %></span>
-      </p>
+          <span class="property">package_id</span>
+        <span class="value"><%= f.collection_select :package_id, Package.all, :id, :name, prompt: true  %></span>
+        </p>
     </li>
-  </ul>
+    </ul>
 
   <div class="actions">
     <%= f.button "Save", :class => "button" %>
   </div>
+
 <% end %>

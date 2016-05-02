@@ -1,0 +1,23 @@
+<%= render :partial => "header", :object => {
+  "title" => "Edit Concrete Package Version",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => concrete_package_versions_path
+  }, {
+    "icon" => "eye",
+    "text" => "",
+    "path" => @concrete_package_version
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @concrete_package_version,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this Concrete Package Version?"
+  }]
+} %>
+
+<%= render 'form' %>
+
+<div class="floatFix"></div>
+

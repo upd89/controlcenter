@@ -1,5 +1,5 @@
 <%= render :partial => "header", :object => {
-  "title" => "Edit " + @system.name,
+  "title" => "Edit System",
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -13,8 +13,11 @@
     "text" => "",
     "path" => @system,
     "method" => :delete,
-    "confirm" => "Are you sure you want to delete this system?"
+    "confirm" => "Are you sure you want to delete this System?"
   }]
 } %>
 
 <%= render 'form' %>
+
+<div class="floatFix"></div>
+

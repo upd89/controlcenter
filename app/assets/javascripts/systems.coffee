@@ -3,7 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on "page:change", ->
-  $("table.clickableRows").on "click", "tr", (e) ->
+  $("table.clickableRows").on "click", "tbody tr", (e) ->
     clickOnWholeRow(e)
 
   $("table.availableUpdates").on "click", ".checkboxInstallUpdate", (e) ->
@@ -11,13 +11,12 @@ $(document).on "page:change", ->
 
   disableCreateJobButton()
 
-
+# make the whole row clickable. trigger location change by getting the link from the details-button
 clickOnWholeRow = (e) ->
-  targetTag = e.target.tagName.toLowerCase()
-  if targetTag != 'td' && targetTag != 'tr'
+  if $(e.target).parents("ul.button-bar").length > 0
     return;
   e.preventDefault()
-  window.location = $(e.target).parent().find("ul.button-bar li.first a").attr("href")
+  window.location = $(e.target).parents("tr").find("ul.button-bar li.first a").attr("href")
 
 disableCreateJobButton = ->
   enabled = $(".checkboxInstallUpdate:checked").length > 0

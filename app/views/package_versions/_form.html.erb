@@ -1,0 +1,63 @@
+<%= form_for(@package_version) do |f| %>
+  <% if @package_version.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@package_version.errors.count, "error") %> prohibited this package_version from being saved:</h2>
+
+      <ul>
+      <% @package_version.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul class="properties col_6">
+      <li>
+      <p>
+          <span class="property">sha256</span>
+        <span class="value"><%= f.text_field :sha256 %></span>
+            </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">version</span>
+        <span class="value"><%= f.text_field :version %></span>
+            </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">architecture</span>
+        <span class="value"><%= f.text_field :architecture %></span>
+            </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">package_id</span>
+        <span class="value"><%= f.collection_select :package_id, Package.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">distribution_id</span>
+        <span class="value"><%= f.collection_select :distribution_id, Distribution.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">repository_id</span>
+        <span class="value"><%= f.collection_select :repository_id, Repository.all, :id, :name, prompt: true  %></span>
+        </p>
+    </li>
+      <li>
+      <p>
+          <span class="property">is_base_version</span>
+        <span class="value"><%= f.check_box :is_base_version %></span>
+            </p>
+    </li>
+    </ul>
+
+  <div class="actions">
+    <%= f.button "Save", :class => "button" %>
+  </div>
+
+<% end %>

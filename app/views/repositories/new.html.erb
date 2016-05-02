@@ -1,0 +1,13 @@
+<%= render :partial => "header", :object => {
+  "title" => "New Repository",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => repositories_path
+  }]
+} %>
+
+<%= render 'form' %>
+
+<div class="floatFix"></div>
+

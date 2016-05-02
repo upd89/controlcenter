@@ -1,0 +1,27 @@
+<%= form_for(@distribution) do |f| %>
+  <% if @distribution.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@distribution.errors.count, "error") %> prohibited this distribution from being saved:</h2>
+
+      <ul>
+      <% @distribution.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <ul class="properties col_6">
+      <li>
+      <p>
+          <span class="property">name</span>
+        <span class="value"><%= f.text_field :name %></span>
+            </p>
+    </li>
+    </ul>
+
+  <div class="actions">
+    <%= f.button "Save", :class => "button" %>
+  </div>
+
+<% end %>

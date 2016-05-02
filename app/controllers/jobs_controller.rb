@@ -30,15 +30,14 @@ class JobsController < ApplicationController
     #TODO: task should know which system it concerns!
     @task = Task.new(task_state: TaskState.take )
 
-    if params[:commit] == "all"
+    if params[:all]
       # get task IDs from system, map to strings
-      @task.system_updates << System.find(params[:system_id]).system_updates.ids.map!{|i| i.to_s }
-
+      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: ConcretePackageState.first )
     else
       # get task IDs from submitted array
       if params[:updates]
         params[:updates].each do |updateID|
-          @task.system_updates << SystemUpdate.find( updateID )
+          @task.concrete_package_versions << ConcretePackageVersion.find( updateID )
         end
       end
     end

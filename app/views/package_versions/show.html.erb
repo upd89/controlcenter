@@ -1,0 +1,65 @@
+<%= render :partial => "header", :object => {
+  "title" => "Package Version",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => package_versions_path
+  }, {
+    "icon" => "pencil",
+    "text" => "",
+    "path" => edit_package_version_path(@package_version)
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @package_version,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this Package Version?"
+  }]
+} %>
+
+<ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Sha256</span>
+      <span class="value"><%= @package_version.sha256 %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Version</span>
+      <span class="value"><%= @package_version.version %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Architecture</span>
+      <span class="value"><%= @package_version.architecture %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Package</span>
+      <span class="value"><%= link_to @package_version.package.name, @package_version.package %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Distribution</span>
+      <span class="value"><%= link_to @package_version.distribution.name, @package_version.distribution %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Repository</span>
+      <span class="value"><%= link_to @package_version.repository.origin, @package_version.repository %></span>
+    </p>
+  </li>
+  <li>
+    <p>
+      <span class="property">Is base version</span>
+      <span class="value"><%= @package_version.is_base_version %></span>
+    </p>
+  </li>
+</ul>
+
+<div class="floatFix"></div>

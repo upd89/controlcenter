@@ -10,11 +10,8 @@
 <table class="striped tight sortable clickableRows">
   <thead>
     <tr>
-      <th colspan="2">Name</th>
-      <th>Base version</th>
-      <th>Architecture</th>
+      <th>Name</th>
       <th>Section</th>
-      <th>Repository</th>
       <th>Homepage</th>
       <th colspan="2">Summary</th>
     </tr>
@@ -24,11 +21,7 @@
     <% @paginated_packages.each do |package| %>
       <tr class="relPos">
         <td><%= package.name %></td>
-        <td class="hiddenFirstCol"><%= link_to '', package, class:"row-link"  %></td>
-        <td><%= package.base_version %></td>
-        <td><%= package.architecture %></td>
         <td><%= package.section %></td>
-        <td><%= package.repository %></td>
         <td><a href="<%= package.homepage %>"><%= package.homepage %></a></td>
         <td><%= package.summary %></td>
         <td>
@@ -49,5 +42,3 @@
   </div>
   <%= will_paginate @paginated_packages, :container => false %>
 </div>
-
-<br>

@@ -1,0 +1,38 @@
+<%= render :partial => "header", :object => {
+  "title" => "Concrete Package Versions",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Concrete package version",
+    "path" => new_concrete_package_version_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+      <th>System</th>
+      <th>Task</th>
+      <th>Concrete package state</th>
+      <th>Package version</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @concrete_package_versions.each do |concrete_package_version| %>
+      <tr>
+        <td><%= concrete_package_version.system.name %></td>
+        <td><%= concrete_package_version.task ? concrete_package_version.task.id : "" %></td>
+        <td><%= concrete_package_version.concrete_package_state.name %></td>
+        <td><%= concrete_package_version.package_version.version %></td>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, concrete_package_version %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_concrete_package_version_path(concrete_package_version) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, concrete_package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

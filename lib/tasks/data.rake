@@ -9,9 +9,8 @@ namespace :db do
     puts "==  Data: generating base data ".ljust(79, "=")
 
     GroupAssignment.destroy_all
-    SystemUpdate.destroy_all
-    PackageUpdate.destroy_all
-    PackageInstallation.destroy_all
+    ConcretePackageVersion.destroy_all
+    PackageVersion.destroy_all
     Package.destroy_all
     PackageGroup.destroy_all
     System.destroy_all
@@ -22,7 +21,9 @@ namespace :db do
     Task.destroy_all
     TaskState.destroy_all
     Job.destroy_all
-    SystemUpdateState.destroy_all
+    Distribution.destroy_all
+    Repository.destroy_all
+    ConcretePackageState.destroy_all
 
     unassigned       = SystemGroup.create( { :name => "Unassigned-System", :permission_level => 1 } )
     default          = SystemGroup.create( { :name => "Default-System",    :permission_level => 1 } )
@@ -34,16 +35,16 @@ namespace :db do
     dbcrit           = PackageGroup.create( { :name => "DB Critical", :permission_level => 6 } )
     hacrit           = PackageGroup.create( { :name => "HA Critical", :permission_level => 7 } )
 
-    update_available = SystemUpdateState.create( { :name => "Available" } ) 
-    update_queued    = SystemUpdateState.create( { :name => "Queued for Installation" } ) 
-    update_failed    = SystemUpdateState.create( { :name => "Failed" } ) 
-    update_outdated  = SystemUpdateState.create( { :name => "Outdated" } ) 
-    update_installed = SystemUpdateState.create( { :name => "Installed" } ) 
+    update_available = ConcretePackageState.create( { :name => "Available" } )
+    update_queued    = ConcretePackageState.create( { :name => "Queued for Installation" } )
+    update_failed    = ConcretePackageState.create( { :name => "Failed" } )
+    update_outdated  = ConcretePackageState.create( { :name => "Outdated" } )
+    update_installed = ConcretePackageState.create( { :name => "Installed" } )
 
-    task_pending     = TaskState.create( { :name => "Pending" } ) 
-    task_queued      = TaskState.create( { :name => "Queued" } ) 
-    task_failed      = TaskState.create( { :name => "Failed" } ) 
-    task_done        = TaskState.create( { :name => "Done" } ) 
+    task_pending     = TaskState.create( { :name => "Pending" } )
+    task_queued      = TaskState.create( { :name => "Queued" } )
+    task_failed      = TaskState.create( { :name => "Failed" } )
+    task_done        = TaskState.create( { :name => "Done" } )
 
     admin            = Role.create( { :name => "Admin", :permission_level => 9 } )
     readonly         = Role.create( { :name => "Readonly", :permission_level => 0 } )

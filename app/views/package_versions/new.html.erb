@@ -1,0 +1,13 @@
+<%= render :partial => "header", :object => {
+  "title" => "New Package Version",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => package_versions_path
+  }]
+} %>
+
+<%= render 'form' %>
+
+<div class="floatFix"></div>
+

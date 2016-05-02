@@ -59,35 +59,39 @@
   <li>
     <p>
       <span class="property">System Group</span>
-      <span class="value"><%= link_to @system.system_group.name, @system.system_group %></span>
+      <span class="value"><%= @system.system_group ? (link_to @system.system_group.name, @system.system_group) : "-" %></span>
     </p>
   </li>
   <li>
     <p>
       <span class="property">Updates</span>
-      <span class="value"><%= @system_updates.length %></span>
+      <span class="value"><%= @concrete_package_versions.length %></span>
     </p>
   </li>
 </ul>
 
 <%= form_tag({controller: "jobs", action: "create"}) do %>
-  <% if @system_updates.length %>
+  <% if @concrete_package_versions.length %>
   <table class="availableUpdates">
     <thead>
       <tr>
         <th>Package</th>
         <th>Candidate Version</th>
-        <th>System update state</th>
+        <th>Update state</th>
         <th>Install?</th>
       </tr>
     </thead>
     <tbody>
-      <% @paginated_system_updates.each do |system_update| %>
+      <% @paginated_concrete_package_versions.each do |concrete_pkg_version| %>
         <tr>
-          <td><%= link_to system_update.package_update.package.name, system_update.package_update.package %></td>
-          <td><%= link_to system_update.package_update.candidate_version, system_update.package_update %></td>
-          <td><%= system_update.system_update_state.name %></td>
-          <td><%= check_box_tag "updates[]", system_update.id, false, class: 'checkboxInstallUpdate' %></td>
+          <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
+          <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
+          <td><%= concrete_pkg_version.concrete_package_state.name %></td>
+          <td>
+            <% if concrete_pkg_version.concrete_package_state == ConcretePackageState.first %>
+              <%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %>
+            <% end %>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -96,15 +100,15 @@
   <%= hidden_field_tag(:system_id, @system.id) %>
 
   <div class="actions">
-    <%= submit_tag "Create Job for Selected", :id=>"createJobBtn", :name => 'specific' %>
-    <%= submit_tag "Create Job for all", :id=>"createJobBtnForAll", :name => 'all' %>
+    <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
+    <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
   </div>
 
   <div class="digg_pagination">
     <div class="page_info">
-      <%= page_entries_info @paginated_system_updates %>
+      <%= page_entries_info @paginated_concrete_package_versions %>
     </div>
-    <%= will_paginate @paginated_system_updates, :container => false %>
+    <%= will_paginate @paginated_concrete_package_versions, :container => false %>
   </div>
 
   <% end %>

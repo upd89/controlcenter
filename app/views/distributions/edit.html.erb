@@ -1,0 +1,23 @@
+<%= render :partial => "header", :object => {
+  "title" => "Edit Distribution",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => distributions_path
+  }, {
+    "icon" => "eye",
+    "text" => "",
+    "path" => @distribution
+  }, {
+    "icon" => "remove",
+    "text" => "",
+    "path" => @distribution,
+    "method" => :delete,
+    "confirm" => "Are you sure you want to delete this Distribution?"
+  }]
+} %>
+
+<%= render 'form' %>
+
+<div class="floatFix"></div>
+
