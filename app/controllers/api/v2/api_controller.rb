@@ -122,17 +122,29 @@ module Api::V2
 
       data["packageUpdates"].each do |update|
 	# best case: CC already knows the version that's available
-        if PackageVersion.exists?( sha256: update['hash'] )
-          pkgVersion = PackageVersion.where( sha256: update['hash'] )[0]
 
-          assoc = ConcretePackageVersion.new
-          assoc.system = currentSys
-          assoc.concrete_package_state = stateAvailable
-          assoc.package_version = pkgVersion
-          error = true unless assoc.save()
+        logger.debug( PackageVersion.exists?( sha256: update['sha256'] ) ? "YES!!!!" : "NO!!!!!")
 
-          currentSys.concrete_package_versions << assoc
-          error = true unless currentSys.save()
+        if PackageVersion.exists?( sha256: update['sha256'] )
+          pkgVersion = PackageVersion.where( sha256: update['sha256'] )[0]
+
+	  # TODO: refactor CPV creation (DRY yo)
+          # only create new CPV if it doesn't already exist!
+          if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+            # If it exists, set its state to Available
+            assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
+            assoc.concrete_package_state = stateAvailable
+            error = true unless assoc.save()
+          else
+            assoc = ConcretePackageVersion.new
+            assoc.system = currentSys
+            assoc.concrete_package_state = stateAvailable
+            assoc.package_version = pkgVersion
+            error = true unless assoc.save()
+
+            currentSys.concrete_package_versions << assoc
+            error = true unless currentSys.save()
+          end
         else
 	  # 2nd best option: specific version is unknown, but package itself is known
           if Package.exists?( name: update['name'] )
@@ -148,7 +160,7 @@ module Api::V2
               # this is a base_version
             elsif PackageVersion.exists?( sha256: update['baseVersion'] )
               pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersion'] )[0]
-            else
+	            else
               # send pkgUnknown!
               unknownPackages = true
             end
@@ -167,8 +179,10 @@ module Api::V2
 	    if currentSys.os
    	      if Distribution.exists?(name: currentSys.os)
   		dist = Distribution.where(name: currentSys.os)[0]
-                pkgVersion.distribution = dist
+    	      else
+		dist = Distribution.create(name: currentSys.os)
               end
+              pkgVersion.distribution = dist
             end
             error = true unless pkgVersion.save()
 

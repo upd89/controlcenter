@@ -45,7 +45,7 @@
   <li>
     <p>
       <span class="property">Distribution</span>
-      <span class="value"><%= link_to @package_version.distribution.name, @package_version.distribution %></span>
+      <span class="value"><%= @package_version.distribution ? (link_to @package_version.distribution.name, @package_version.distribution) : "" %></span>
     </p>
   </li>
   <li>
