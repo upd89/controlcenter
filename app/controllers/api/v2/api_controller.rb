@@ -324,6 +324,7 @@ module Api::V2
     # v2/task/:id/notify
     def updateTask
       data = JSON.parse request.body.read
+      error = false
 
       if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(params[:id])
         render json: { status: "ERROR" }
@@ -335,12 +336,15 @@ module Api::V2
       if state
         task.task_state = state
         # TODO + log
-        if task.save()
-          render json: { status: "OK" }
-          return
-        end
+        error = true unless task.save()
       end
-      render json: { status: "ERROR" }
+
+      if error
+        render json: { status: "ERROR" }
+      else
+        render json: { status: "OK"  }
+      end
+
     end
   end
 end

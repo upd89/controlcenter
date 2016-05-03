@@ -39,6 +39,8 @@
     <tr>
       <th>State</th>
       <th>Execution</th>
+      <th>System</th>
+      <th># of Updates</th>
       <th></th>
     </tr>
   </thead>
@@ -47,6 +49,8 @@
       <tr>
         <td><%= task.task_state.name if task.task_state %></td>
         <td><%= task.task_execution %></td>
+        <td><%= task.concrete_package_versions.first.system.name if task.concrete_package_versions.length %></td>
+        <td><%= task.concrete_package_versions.length %></td>
         <td><%= link_to task.id, task %></td>
       </tr>
     <% end %>
