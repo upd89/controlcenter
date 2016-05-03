@@ -28,6 +28,29 @@ module Api::V2
       sys.last_seen = DateTime.now
     end
 
+    def create_new_concrete_package_version( pkgVersion, sys, state )
+      # TODO: service to get package states...
+      state = ConcretePackageState.first unless defined? state
+
+      if ConcretePackageVersion.exists?( package_version: pkgVersion, system: sys )
+        assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: sys )[0]
+        assoc.concrete_package_state = state
+        assoc.save()
+      else
+        assoc = ConcretePackageVersion.new
+        assoc.system = sys
+        assoc.package_version = pkgVersion
+        assoc.concrete_package_state = state
+        assoc.save()
+
+        sys.concrete_package_versions << assoc
+        sys.save()
+      end
+
+      # TODO: assoc needed? maybe just error
+      return assoc
+    end
+
     # v2/register
     def register
       data = JSON.parse request.body.read
@@ -70,21 +93,7 @@ module Api::V2
 
           pkgVersion = PackageVersion.where( sha256: updHash )[0]
 
-          # only create new CPV if it doesn't already exist!
-      	  if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-       	    # If it exists, set its state to Available
-       	    assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
-            assoc.concrete_package_state = stateAvailable
-            assoc.save()
-          else
-            assoc = ConcretePackageVersion.new
-            assoc.system = currentSys
-            assoc.concrete_package_state = stateAvailable
-            assoc.package_version = pkgVersion
-            assoc.save()
-
-            currentSys.concrete_package_versions << assoc
-          end
+          create_new_concrete_package_version( pkgVersion, currentSys, stateAvailable )
         else
           unknownPackages.push( updHash )
         end
@@ -171,22 +180,7 @@ module Api::V2
           pkg.package_versions << pkgVersion
           error = true unless pkg.save()
 
-          # only create new CPV if it doesn't already exist!
-          if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-            # If it exists, set its state to Available
-            assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
-            assoc.concrete_package_state = stateAvailable
-            error = true unless assoc.save()
-          else
-    	    assoc = ConcretePackageVersion.new
-            assoc.system = currentSys
-            assoc.concrete_package_state = stateAvailable
-            assoc.package_version = pkgVersion
-            error = true unless assoc.save()
-
-            currentSys.concrete_package_versions << assoc
-            error = true unless currentSys.save()
-          end
+          create_new_concrete_package_version( pkgVersion, currentSys, stateAvailable )
         end
       end
 
@@ -221,23 +215,8 @@ module Api::V2
       data["packages"].each do |pkgHash|
         if PackageVersion.exists?( sha256: pkgHash )
           pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
+          create_new_concrete_package_version( pkgVersion, currentSys, stateInstalled )
 
-          # create CPV if not existing
-          if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-            # If it exists, set its state to Installed
-            assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
-            assoc.concrete_package_state = stateInstalled
-            error = true unless assoc.save()
-          else
-            assoc = ConcretePackageVersion.create({
-              :system => currentSys,
-              :concrete_package_state => stateInstalled,
-              :package_version => pkgVersion
-            })
-
-            currentSys.concrete_package_versions << assoc
-            error = true unless currentSys.save()
-          end
           knownPackages.push( pkgHash )
         else
           unknownPackages.push( pkgHash )
@@ -329,22 +308,7 @@ module Api::V2
           error = true unless pkgVersion.save()
         end
 
-        # create CPV if not existing
-        if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-          # If it exists, set its state to Installed
-          assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
-          assoc.concrete_package_state = stateInstalled
-          error = true unless assoc.save()
-        else
-          assoc = ConcretePackageVersion.create({
-            :system => currentSys,
-            :concrete_package_state => stateInstalled,
-            :package_version => pkgVersion
-          })
-
-          currentSys.concrete_package_versions << assoc
-          error = true unless currentSys.save()
-        end
+        create_new_concrete_package_version( pkgVersion, currentSys, stateInstalled )
 
         if !package['isBaseVersion']
           baseVersionJSON = package['baseVersion']
@@ -378,22 +342,7 @@ module Api::V2
               error = true unless baseVersion.save()
             end
 
-            # create CPV if not existing
-            if ConcretePackageVersion.exists?( package_version: baseVersion, system: currentSys )
-              # If it exists, set its state to Installed
-              assoc = ConcretePackageVersion.where( package_version: baseVersion, system: currentSys )[0]
-              assoc.concrete_package_state = stateInstalled
-              error = true unless assoc.save()
-            else
-              assoc = ConcretePackageVersion.create({
-                :system => currentSys,
-                :concrete_package_state => stateInstalled,
-                :package_version => baseVersion
-              })
-
-              currentSys.concrete_package_versions << assoc
-              error = true unless currentSys.save()
-            end
+            create_new_concrete_package_version( baseVersion, currentSys, stateInstalled )
 
             pkgVersion.base_version = baseVersion
             error = true unless pkgVersion.save()
