@@ -269,7 +269,7 @@ module Api::V2
         render json: { status: "ERROR" }
       elsif unknownPackages.length > 0
         render json: { status: "infoIncomplete", knownPackages: knownPackages }
-      elsif currentSys.concrete_package_versions.count != data["pkgCount"]
+      elsif currentSys.packages.count != data["pkgCount"]
         render json: { status: "countMismatch", knownPackages: knownPackages  }
       else
         render json: { status: "OK", knownPackages: knownPackages  }
@@ -378,10 +378,9 @@ module Api::V2
 
       end
 
-      # TODO: don't count CPVs but unique Packages per system
       if error
         render json: { status: "ERROR" }
-      elsif currentSys.concrete_package_versions.count != data["pkgCount"]
+      elsif currentSys.packages.count != data["pkgCount"]
         render json: { status: "countMismatch" }
       else
         render json: { status: "OK" }

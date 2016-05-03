@@ -68,6 +68,12 @@
       <span class="value"><%= @concrete_package_versions.length %></span>
     </p>
   </li>
+  <li>
+    <p>
+      <span class="property">Packages</span>
+      <span class="value"><%= @system.packages.length %></span>
+    </p>
+  </li>
 </ul>
 
 <%= form_tag({controller: "jobs", action: "create"}) do %>
