@@ -318,7 +318,7 @@ module Api::V2
 
         # check if specified version exists
         if PackageVersion.exists?(package: currentPkg, sha256: package['sha256'])
-          pkgVersion = PackageVersion.where(system: currentSys, sha256: package['sha256'])[0]
+          pkgVersion = PackageVersion.where(package: currentPkg, sha256: package['sha256'])[0]
           pkgVersion.version      = package['version']      if package['version']
           pkgVersion.architecture = package['architecture'] if package['architecture']
         else
@@ -328,6 +328,17 @@ module Api::V2
              :sha256       => package['sha256'],
              :architecture => package['architecture']
           })
+        end
+
+        # this is already the base version of baseVersion's hash is the same as this version's
+        if package['baseVersion'] != pkgVersion.sha256
+          if PackageVersion.exists?(sha256: package['baseVersion'])
+            pkgVersion.base_version = PackageVersion.where(sha256: package['baseVersion'])[0]
+            error = true unless pkgVersion.save()
+          else
+            error = true
+            # TODO - what now?
+          end
         end
 
         # set or update distro
