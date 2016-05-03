@@ -225,7 +225,7 @@ module Api::V2
     def refreshInstalledHash
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => data["urn"])
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => params["urn"])
         render json: { status: "ERROR" }
         return
       end
@@ -238,19 +238,27 @@ module Api::V2
       currentSys = System.where(urn: params[:urn])[0]
       error = true unless currentSys.save()
 
+      # for each hash, check if this corresponds to a known version
       data["packages"].each do |pkgHash|
         if PackageVersion.exists?( sha256: pkgHash )
           pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
 
-          assoc = ConcretePackageVersion.create({
-            :system => currentSys,
-            :concrete_package_state => stateInstalled,
-            :package_version => pkgVersion
-          })
+          # create CPV if not existing
+          if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+            # If it exists, set its state to Available
+            assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
+            assoc.concrete_package_state = stateInstalled
+            error = true unless assoc.save()
+          else
+            assoc = ConcretePackageVersion.create({
+              :system => currentSys,
+              :concrete_package_state => stateInstalled,
+              :package_version => pkgVersion
+            })
 
-          currentSys.concrete_package_versions << assoc
-          error = true unless currentSys.save()
-
+            currentSys.concrete_package_versions << assoc
+            error = true unless currentSys.save()
+          end
           knownPackages.push( pkgHash )
         else
           unknownPackages.push( pkgHash )
@@ -261,7 +269,7 @@ module Api::V2
         render json: { status: "ERROR" }
       elsif unknownPackages.length > 0
         render json: { status: "infoIncomplete", knownPackages: knownPackages }
-      elsif currentSys.current_package_versions.count == data["pkgCount"]
+      elsif currentSys.concrete_package_versions.count != data["pkgCount"]
         render json: { status: "countMismatch", knownPackages: knownPackages  }
       else
         render json: { status: "OK", knownPackages: knownPackages  }
@@ -272,12 +280,12 @@ module Api::V2
     def refreshInstalled
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => data["urn"])
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => params["urn"])
         render json: { status: "ERROR" }
         return
       end
 
-      currentSys = System.where(urn: params[:id])[0]
+      currentSys = System.where(urn: params[:urn])[0]
 
       data["packages"].each do |package|
 
