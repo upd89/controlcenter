@@ -11,6 +11,8 @@ class PackagesController < ApplicationController
   # GET /packages/1
   # GET /packages/1.json
   def show
+    @package_versions = PackageVersion.where(:package => @package)
+    @paginated_package_versions = @package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /packages/new

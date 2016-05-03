@@ -45,4 +45,36 @@
     </p>
   </li>
 </ul>
+
+<% if @package_versions.length %>
+  <table class="package_versions">
+    <thead>
+      <tr>
+        <th>SHA256</th>
+        <th>Version</th>
+        <th>Is base version</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @paginated_package_versions.each do |pkg_version| %>
+        <tr>
+          <td><%= pkg_version.sha256.last(10) %></td>
+          <td><%= pkg_version.version %></td>
+          <td><%= pkg_version.is_base_version ? "yes" : "no" %></td>
+          <td><%= link_to pkg_version.id, pkg_version %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="digg_pagination">
+    <div class="page_info">
+      <%= page_entries_info @paginated_package_versions %>
+    </div>
+    <%= will_paginate @paginated_package_versions, :container => false %>
+  </div>
+
+  <% end %>
+
 <div class="floatFix"></div>
