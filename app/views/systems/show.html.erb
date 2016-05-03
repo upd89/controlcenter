@@ -1,5 +1,5 @@
 <%= render :partial => "header", :object => {
-  "title" => "System " + @system.name,
+  "title" => "System " + (@system.name ? @system.name : "") ,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -105,10 +105,12 @@
 
   <%= hidden_field_tag(:system_id, @system.id) %>
 
+  <% if @concrete_package_versions.any?{|cpv| cpv.concrete_package_state == ConcretePackageState.first } %>
   <div class="actions">
     <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
     <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
   </div>
+  <% end %>
 
   <div class="digg_pagination">
     <div class="page_info">
