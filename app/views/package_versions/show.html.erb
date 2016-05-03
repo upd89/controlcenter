@@ -56,8 +56,8 @@
   </li>
   <li>
     <p>
-      <span class="property">Is base version</span>
-      <span class="value"><%= @package_version.is_base_version %></span>
+      <span class="property">Base version</span>
+      <span class="value"><%= @package_version.base_version ? (link_to @package_version.base_version.version, @package_version.base_version) : "this" %></span>
     </p>
   </li>
 </ul>
