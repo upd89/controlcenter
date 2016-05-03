@@ -71,12 +71,12 @@ module Api::V2
           pkgVersion = PackageVersion.where( sha256: updHash )[0]
 
           # only create new CPV if it doesn't already exist!
-	  if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
- 	    # If it exists, set its state to Available
+      	  if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+       	    # If it exists, set its state to Available
        	    assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
             assoc.concrete_package_state = stateAvailable
             assoc.save()
-	  else
+          else
             assoc = ConcretePackageVersion.new
             assoc.system = currentSys
             assoc.concrete_package_state = stateAvailable
@@ -165,11 +165,11 @@ module Api::V2
             if update['repository']
               rep = update['repository']
               if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-                newRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+                currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
               else
-                newRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+                currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
               end
-              pkgVersion.repository = newRepo
+              pkgVersion.repository = currentRepo
             end
 
             # TODO: refactor distro handling
@@ -245,7 +245,7 @@ module Api::V2
 
           # create CPV if not existing
           if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-            # If it exists, set its state to Available
+            # If it exists, set its state to Installed
             assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
             assoc.concrete_package_state = stateInstalled
             error = true unless assoc.save()
@@ -285,40 +285,96 @@ module Api::V2
         return
       end
 
+      error = false
+      stateInstalled = ConcretePackageState.last
       currentSys = System.where(urn: params[:urn])[0]
 
-      data["packages"].each do |package|
+      if currentSys.os
+        if Distribution.exists?(name: currentSys.os)
+          dist = Distribution.where(name: currentSys.os)[0]
+        else
+          dist = Distribution.create(name: currentSys.os)
+        end
+      end
 
-        if Package.exists?(name: package['name'], base_version: package['baseversion'])
-          currentPkg = Package.where(name: package['name'], base_version: package['baseversion'])[0]
+      data["packages"].each do |package|
+        # best case: we know the package (by name)
+        if Package.exists?( name: package['name'] )
+          currentPkg = Package.where( name: package['name'] )[0]
+          # update package information if specified
+          currentPkg.section  = package['section']  if package['section']
+          currentPkg.homepage = package['homepage'] if package['homepage']
+          currentPkg.summary  = package['summary']  if package['summary']
+          error = true unless currentPkg.save()
         else
           # creating package
           currentPkg = Package.create( {
                  :name         =>  package['name'],
-                 :base_version =>  package['baseversion'],
-                 :architecture =>  package['architecture'],
                  :section      =>  package['section'],
-                 :repository   =>  package['repository'],
                  :homepage     =>  package['homepage'],
                  :summary      =>  package['summary']
           } )
         end
 
-        if PackageVersion.exists?(:system => currentSys, :package => currentPkg)
-          # updating link system <=> package
-          currentInstall = PackageVersion.where(:system => currentSys, :package => currentPkg)[0]
-          currentInstall.installed_version = package['version']
-          currentInstall.save
+        # check if specified version exists
+        if PackageVersion.exists?(package: currentPkg, sha256: package['sha256'])
+          pkgVersion = PackageVersion.where(system: currentSys, sha256: package['sha256'])[0]
+          pkgVersion.version      = package['version']      if package['version']
+          pkgVersion.architecture = package['architecture'] if package['architecture']
         else
-          # creating link system <=> package
-          PackageVersion.create({
-                 :system            => currentSys,
-                 :package           => currentPkg,
-                 :installed_version => package['version']
+          pkgVersion = PackageVersion.create({
+             :package      => currentPkg,
+             :version      => package['version'],
+             :sha256       => package['sha256'],
+             :architecture => package['architecture']
           })
         end
+
+        # set or update distro
+        if dist
+          pkgVersion.distribution = dist
+          error = true unless pkgVersion.save()
+        end
+
+        # set or update repository
+        if package['repository']
+          rep = package['repository']
+          if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+            currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+          else
+            currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+          end
+          pkgVersion.repository = currentRepo
+          error = true unless pkgVersion.save()
+        end
+
+        # create CPV if not existing
+        if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
+          # If it exists, set its state to Installed
+          assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
+          assoc.concrete_package_state = stateInstalled
+          error = true unless assoc.save()
+        else
+          assoc = ConcretePackageVersion.create({
+            :system => currentSys,
+            :concrete_package_state => stateInstalled,
+            :package_version => pkgVersion
+          })
+
+          currentSys.concrete_package_versions << assoc
+          error = true unless currentSys.save()
+        end
+
       end
-      render json: { status: "OK" }
+
+      # TODO: don't count CPVs but unique Packages per system
+      if error
+        render json: { status: "ERROR" }
+      elsif currentSys.concrete_package_versions.count != data["pkgCount"]
+        render json: { status: "countMismatch" }
+      else
+        render json: { status: "OK" }
+      end
     end
 
     # v2/task/:id/notify
