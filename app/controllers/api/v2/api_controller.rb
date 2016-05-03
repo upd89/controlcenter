@@ -119,13 +119,58 @@ module Api::V2
       apply_system_properties( currentSys, data )
       error = true unless currentSys.save()
 
-
       data["packageUpdates"].each do |update|
-        # best case: CC already knows the version that's available
-        if PackageVersion.exists?( sha256: update['sha256'] )
-          pkgVersion = PackageVersion.where( sha256: update['sha256'] )[0]
+        if !Package.exists?( name: update['name'] )
+          unknownPackages = true
+        else 
+          pkg = Package.where( name: update['name'] )[0]
+          newVersion = update['candidateVersion']
 
-          # TODO: refactor CPV creation (DRY yo)
+          if PackageVersion.exists?( sha256: newVersion['sha256'] )
+            pkgVersion = PackageVersion.where( sha256: newVersion['sha256'] )[0]
+          else
+            pkgVersion = PackageVersion.create( {
+              :sha256       => newVersion['sha256'],
+              :version      => newVersion['version'],
+              :architecture => newVersion['architecture'],
+              :package      => pkg
+            } )
+          end
+
+          if newVersion['sha256'] == update['baseVersionHash']
+            # this is a base_version already, don't do anything
+          elsif PackageVersion.exists?( sha256: update['baseVersionHash'] )
+            pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersionHash'] )[0]
+            error = true unless pkgVersion.save()
+          else
+            # send pkgUnknown because the base version of this package is unknown
+            unknownPackages = true
+          end
+
+          if update['repository']
+            rep = update['repository']
+            if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+              currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+            else
+              currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+            end
+            pkgVersion.repository = currentRepo
+          end
+
+          # TODO: refactor distro handling
+          if currentSys.os
+            if Distribution.exists?(name: currentSys.os)
+              dist = Distribution.where(name: currentSys.os)[0]
+            else
+              dist = Distribution.create(name: currentSys.os)
+            end
+            pkgVersion.distribution = dist
+          end
+          error = true unless pkgVersion.save()
+
+          pkg.package_versions << pkgVersion
+          error = true unless pkg.save()
+
           # only create new CPV if it doesn't already exist!
           if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
             # If it exists, set its state to Available
@@ -133,7 +178,7 @@ module Api::V2
             assoc.concrete_package_state = stateAvailable
             error = true unless assoc.save()
           else
-            assoc = ConcretePackageVersion.new
+    	    assoc = ConcretePackageVersion.new
             assoc.system = currentSys
             assoc.concrete_package_state = stateAvailable
             assoc.package_version = pkgVersion
@@ -141,71 +186,6 @@ module Api::V2
 
             currentSys.concrete_package_versions << assoc
             error = true unless currentSys.save()
-          end
-        else
-          # 2nd best option: specific version is unknown, but package itself is known
-          if Package.exists?( name: update['name'] )
-            pkg = Package.where( name: update['name'] )[0]
-
-            pkgVersion = PackageVersion.new
-            pkgVersion.sha256 = update['sha256'] if update['sha256']
-            pkgVersion.version = update['version'] if update['version']
-            pkgVersion.architecture = update['architecture'] if update['architecture']
-            pkgVersion.package = pkg
-
-            if update['sha256'] == update['baseVersion']
-              # this is a base_version
-            elsif PackageVersion.exists?( sha256: update['baseVersion'] )
-              pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersion'] )[0]
-	            else
-              # send pkgUnknown!
-              unknownPackages = true
-            end
-
-            if update['repository']
-              rep = update['repository']
-              if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-                currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-              else
-                currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-              end
-              pkgVersion.repository = currentRepo
-            end
-
-            # TODO: refactor distro handling
-            if currentSys.os
-              if Distribution.exists?(name: currentSys.os)
-                dist = Distribution.where(name: currentSys.os)[0]
-              else
-                dist = Distribution.create(name: currentSys.os)
-              end
-              pkgVersion.distribution = dist
-            end
-            error = true unless pkgVersion.save()
-
-            pkg.package_versions << pkgVersion
-            error = true unless pkg.save()
-
-            # only create new CPV if it doesn't already exist!
-            if ConcretePackageVersion.exists?( package_version: pkgVersion, system: currentSys )
-              # If it exists, set its state to Available
-              assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: currentSys )[0]
-              assoc.concrete_package_state = stateAvailable
-              error = true unless assoc.save()
-       	    else
-      	      assoc = ConcretePackageVersion.new
-              assoc.system = currentSys
-              assoc.concrete_package_state = stateAvailable
-              assoc.package_version = pkgVersion
-              error = true unless assoc.save()
-
-              currentSys.concrete_package_versions << assoc
-              error = true unless currentSys.save()
-            end
-
-          else
-            # send pkgUnknown!
-            unknownPackages = true
           end
         end
       end
@@ -236,7 +216,6 @@ module Api::V2
       stateInstalled = ConcretePackageState.last
 
       currentSys = System.where(urn: params[:urn])[0]
-      error = true unless currentSys.save()
 
       # for each hash, check if this corresponds to a known version
       data["packages"].each do |pkgHash|
@@ -316,29 +295,20 @@ module Api::V2
           } )
         end
 
+        installedVersion = package['installedVersion']
+
         # check if specified version exists
-        if PackageVersion.exists?(package: currentPkg, sha256: package['sha256'])
-          pkgVersion = PackageVersion.where(package: currentPkg, sha256: package['sha256'])[0]
-          pkgVersion.version      = package['version']      if package['version']
-          pkgVersion.architecture = package['architecture'] if package['architecture']
+        if PackageVersion.exists?(package: currentPkg, sha256: installedVersion['sha256'])
+          pkgVersion = PackageVersion.where(package: currentPkg, sha256: installedVersion['sha256'])[0]
+          pkgVersion.version      = installedVersion['version']      if installedVersion['version']
+          pkgVersion.architecture = installedVersion['architecture'] if installedVersion['architecture']
         else
           pkgVersion = PackageVersion.create({
              :package      => currentPkg,
-             :version      => package['version'],
-             :sha256       => package['sha256'],
-             :architecture => package['architecture']
+             :version      => installedVersion['version'],
+             :sha256       => installedVersion['sha256'],
+             :architecture => installedVersion['architecture']
           })
-        end
-
-        # this is already the base version of baseVersion's hash is the same as this version's
-        if package['baseVersion'] != pkgVersion.sha256
-          if PackageVersion.exists?(sha256: package['baseVersion'])
-            pkgVersion.base_version = PackageVersion.where(sha256: package['baseVersion'])[0]
-            error = true unless pkgVersion.save()
-          else
-            error = true
-            # TODO - what now?
-          end
         end
 
         # set or update distro
@@ -374,6 +344,61 @@ module Api::V2
 
           currentSys.concrete_package_versions << assoc
           error = true unless currentSys.save()
+        end
+
+        if !package['isBaseVersion']
+          baseVersionJSON = package['baseVersion']
+          if PackageVersion.exists?(sha256: baseVersionJSON['sha256'])
+            pkgVersion.base_version = PackageVersion.where(sha256: baseVersionJSON['sha256'])[0]
+            error = true unless pkgVersion.save()
+          else
+            # TODO: extract creation of new package version + concrete package version!!!
+            baseVersion = PackageVersion.create({
+               :package      => currentPkg,
+               :version      => baseVersionJSON['version'],
+               :sha256       => baseVersionJSON['sha256'],
+               :architecture => baseVersionJSON['architecture']
+            })
+
+            # set or update distro
+            if dist
+              baseVersion.distribution = dist
+              error = true unless baseVersion.save()
+            end
+
+            # set or update repository
+            if baseVersionJSON['repository']
+              rep = baseVersionJSON['repository']
+              if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+                currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+              else
+                currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+              end
+              baseVersion.repository = currentRepo
+              error = true unless baseVersion.save()
+            end
+
+            # create CPV if not existing
+            if ConcretePackageVersion.exists?( package_version: baseVersion, system: currentSys )
+              # If it exists, set its state to Installed
+              assoc = ConcretePackageVersion.where( package_version: baseVersion, system: currentSys )[0]
+              assoc.concrete_package_state = stateInstalled
+              error = true unless assoc.save()
+            else
+              assoc = ConcretePackageVersion.create({
+                :system => currentSys,
+                :concrete_package_state => stateInstalled,
+                :package_version => baseVersion
+              })
+
+              currentSys.concrete_package_versions << assoc
+              error = true unless currentSys.save()
+            end
+
+            pkgVersion.base_version = baseVersion
+            error = true unless pgkVersion.save()
+
+          end
         end
 
       end

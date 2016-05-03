@@ -51,7 +51,7 @@
   <li>
     <p>
       <span class="property">Repository</span>
-      <span class="value"><%= link_to @package_version.repository.origin, @package_version.repository %></span>
+      <span class="value"><%= @package_version.repository ? (link_to @package_version.repository.origin, @package_version.repository) : "" %></span>
     </p>
   </li>
   <li>
