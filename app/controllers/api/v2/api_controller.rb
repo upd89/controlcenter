@@ -122,7 +122,7 @@ module Api::V2
       data["packageUpdates"].each do |update|
         if !Package.exists?( name: update['name'] )
           unknownPackages = true
-        else 
+        else
           pkg = Package.where( name: update['name'] )[0]
           newVersion = update['candidateVersion']
 
@@ -396,7 +396,7 @@ module Api::V2
             end
 
             pkgVersion.base_version = baseVersion
-            error = true unless pgkVersion.save()
+            error = true unless pkgVersion.save()
 
           end
         end
