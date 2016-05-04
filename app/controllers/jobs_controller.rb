@@ -42,6 +42,14 @@ class JobsController < ApplicationController
       end
     end
 
+    if ( ConcretePackageState.exists?(name: "Queued for Installation") )
+      stateQueued = ConcretePackageState.where(name: "Queued for Installation")[0]
+      @task.concrete_package_versions.each do |update|
+        update.concrete_package_state = stateQueued
+        update.save()
+      end
+    end
+
     @task.save
 
     # TODO: get current user, check if permitted
