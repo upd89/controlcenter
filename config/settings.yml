@@ -1,5 +1,2 @@
-Administrate:
-  Sidebar:
-    filtered_resources: [ "Group Assignments", "Task States", "System Update States" ]
 Pagination:
   NoOfEntriesPerPage: 15

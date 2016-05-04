@@ -107,12 +107,10 @@ module Api::V2
 
       if unknownPackages.length > 0
         render json: { status: "infoIncomplete", knownPackages: knownPackages }
+      elsif currentSys.concrete_package_versions.where(concrete_package_state: ConcretePackageState.where(name: "Available")[0]).count != data["updCount"]
+        render json: { status: "countMismatch", knownPackages: knownPackages }
       else
-        if currentSys.concrete_package_versions.count != data["updCount"]
-          render json: { status: "countMismatch", knownPackages: knownPackages }
-        else
-          render json: { status: "OK", knownPackages: knownPackages  }
-        end
+        render json: { status: "OK", knownPackages: knownPackages  }
       end
     end
 
@@ -193,7 +191,7 @@ module Api::V2
         render json: { status: "ERROR" }
       elsif unknownPackages
         render json: { status: "pkgUnknown" }
-      elsif currentSys.concrete_package_versions.count != data["updCount"]
+      elsif currentSys.concrete_package_versions.where(concrete_package_state: ConcretePackageState.where(name: "Available")[0]).count != data["updCount"]
         render json: { status: "countMismatch" }
       else
         render json: { status: "OK" }

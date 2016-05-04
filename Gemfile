@@ -45,6 +45,7 @@ group :development, :demo, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'rubocop' # style guide checking
+  gem 'faker'
 end
 
 group :development do
@@ -57,7 +58,6 @@ end
 
 group :test do
   gem 'rake'
-  gem 'faker'
   gem 'capybara'
   gem 'guard-rspec'
   gem 'launchy'
