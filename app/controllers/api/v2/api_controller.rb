@@ -55,8 +55,13 @@ module Api::V2
     def register
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["name", "urn", "os", "address", "certificate"]) || System.exists?(:urn => data["urn"])
+      if check_mandatory_json_params(data, ["name", "urn", "os", "address", "certificate"])
         render json: { status: "ERROR" }
+        return
+      end
+
+      if System.exists?(:urn => data["urn"])
+        render json: { status: "OK" }
         return
       end
 
