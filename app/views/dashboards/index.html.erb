@@ -1,0 +1,30 @@
+<%= render :partial => "header", :object => {
+  "title" => "Dashboards",
+  "actions" =>[{
+    "icon" => "plus",
+    "text" => "New Dashboard",
+    "path" => new_dashboard_path
+  }]
+} %>
+
+<table class="striped tight sortable clickableRows">
+  <thead>
+    <tr>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @dashboards.each do |dashboard| %>
+      <tr>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, dashboard %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_dashboard_path(dashboard) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, dashboard, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
