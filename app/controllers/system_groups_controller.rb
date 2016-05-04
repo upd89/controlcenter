@@ -10,6 +10,8 @@ class SystemGroupsController < ApplicationController
   # GET /system_groups/1
   # GET /system_groups/1.json
   def show
+    @systems = System.where(:system_group => @system_group)
+    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /system_groups/new

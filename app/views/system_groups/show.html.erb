@@ -32,5 +32,31 @@
   </li>
 </ul>
 
-<div class="floatFix"></div>
+<% if @systems.length > 0 %>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @paginated_systems.each do |system| %>
+      <tr>
+        <td><%= system.name %></td>
+        <td><%= link_to system.id, system %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
 
+<div class="digg_pagination">
+  <div class="page_info">
+    <%= page_entries_info @paginated_systems %>
+  </div>
+  <%= will_paginate @paginated_systems, :container => false %>
+</div>
+
+<% end %>
+
+<div class="floatFix"></div>

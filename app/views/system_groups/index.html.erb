@@ -12,6 +12,7 @@
     <tr>
       <th>Name</th>
       <th>Permission level</th>
+      <th>Systems</th>
       <th></th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
       <tr>
         <td><%= system_group.name %></td>
         <td><%= system_group.permission_level %></td>
+        <td><%= system_group.systems.count %></td>
         <td>
           <ul class="button-bar">
             <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_group %></li>
