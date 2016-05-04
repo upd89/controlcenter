@@ -111,7 +111,7 @@ describe "ControlCenter API v2" do
 
       reply = JSON.parse response.body
       expect( reply["status"] ).to eq("infoIncomplete")
-      expect( @system.packages.count ).to eq(1)
+      expect( @system.packages.count ).to eq(0)
     end
 
     it 'checks if sending an already connected hash has no influence' do
