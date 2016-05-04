@@ -11,7 +11,8 @@ class SystemsController < ApplicationController
   # GET /systems/1
   # GET /systems/1.json
   def show
-    @concrete_package_versions = ConcretePackageVersion.where(:system => @system)
+    #@concrete_package_versions = ConcretePackageVersion.where(system: @system )
+    @concrete_package_versions = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
     @paginated_concrete_package_versions = @concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
