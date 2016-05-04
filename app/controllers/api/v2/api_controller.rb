@@ -379,6 +379,12 @@ module Api::V2
         error = true unless task.save()
       end
 
+      stateInstalled = ConcretePackageState.where(name: "Installed").first
+      task.concrete_package_versions.each |cpv| do
+        cpv.concrete_package_state = stateInstalled
+        error = true unless cpv.save()
+      end
+
       if error
         render json: { status: "ERROR" }
       else
