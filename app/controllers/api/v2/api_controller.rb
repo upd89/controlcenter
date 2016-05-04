@@ -380,7 +380,7 @@ module Api::V2
       end
 
       stateInstalled = ConcretePackageState.where(name: "Installed").first
-      task.concrete_package_versions.each |cpv| do
+      task.concrete_package_versions.each do |cpv|
         cpv.concrete_package_state = stateInstalled
         error = true unless cpv.save()
       end
