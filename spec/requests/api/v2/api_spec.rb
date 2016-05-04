@@ -99,7 +99,7 @@ describe "ControlCenter API v2" do
       expect( reply["status"] ).to eq("OK")
     end
 
-    it 'checks if an unknown hash results in an error' do
+    it 'checks if an unknown hash results results in a requst for more information' do
       params = {
         updCount: 1,
         packageUpdates: ["fakeSHA256hash"]
@@ -129,6 +129,23 @@ describe "ControlCenter API v2" do
       expect( @system.packages.count ).to eq(1)
     end
 
+    it 'checks if the update count checker works' do
+      params = {
+        updCount: 111,
+        packageUpdates: []
+      }
+
+      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+
+      expect(response).to be_success
+
+      reply = JSON.parse response.body
+      expect( reply["status"] ).to eq("countMismatch")
+    end
+
+  end
+
+  describe "Notify Full" do
 
   end
 
