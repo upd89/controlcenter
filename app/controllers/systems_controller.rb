@@ -1,8 +1,6 @@
 class SystemsController < ApplicationController
   before_action :set_system, only: [:show, :edit, :update, :destroy]
-
-  rescue_from ActiveRecord::RecordNotFound, with: :go_to_index
-
+  
   # GET /systems
   # GET /systems.json
   def index
@@ -65,10 +63,6 @@ class SystemsController < ApplicationController
       format.html { redirect_to systems_url, notice: 'System was successfully destroyed.' }
       format.json { head :no_content }
     end
-  end
-
-  def go_to_index
-    redirect_to systems_url, notice: 'System not found'
   end
 
   private
