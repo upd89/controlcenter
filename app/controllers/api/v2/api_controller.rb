@@ -55,6 +55,7 @@ module Api::V2
     def register
       data = JSON.parse request.body.read
 
+      #if check_mandatory_json_params(data, ["name", "urn", "os", "address"]) || !request.headers['X-Api-Client-Cert'] #TODO deny if no client cert was given
       if check_mandatory_json_params(data, ["name", "urn", "os", "address"])
         render json: { status: "ERROR" }
         return
