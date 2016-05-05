@@ -55,7 +55,7 @@ module Api::V2
     def register
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["name", "urn", "os", "address", "certificate"])
+      if check_mandatory_json_params(data, ["name", "urn", "os", "address"])
         render json: { status: "ERROR" }
         return
       end
@@ -69,6 +69,7 @@ module Api::V2
       apply_system_properties( newSys, data )
       newSys.system_group = SystemGroup.first
       newSys.last_seen = DateTime.now
+      newSys.certificate = request.headers['X-Api-Client-Cert']
 
       if newSys.save()
         render json: { status: "OK" }
