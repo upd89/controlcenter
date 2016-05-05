@@ -19,7 +19,8 @@ Rails.application.routes.draw do
 
   post '/jobs/test' => 'jobs#test'
 
-  scope module: 'api' do
+  scope '/api' do
+    scope module: 'api' do
       namespace :v1 do
         match "/register" => "api#register", via: :post
         match "/system/:id/notify" => "api#updateSystem", via: :post
@@ -35,6 +36,7 @@ Rails.application.routes.draw do
         match "/system/:urn/refresh-installed"      => "api#refreshInstalled", via: :post
         match "/task/:id/notify"                    => "api#updateTask", via: :post
       end
+    end
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
