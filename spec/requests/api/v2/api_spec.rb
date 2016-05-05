@@ -147,6 +147,10 @@ describe "ControlCenter API v2" do
 
   describe "Notify Full" do
 
+    it 'sends a wrong updCount' do
+    end
+
+    
   end
 
 end

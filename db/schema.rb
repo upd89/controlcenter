@@ -68,27 +68,6 @@ ActiveRecord::Schema.define(version: 20160502131445) do
     t.datetime "updated_at",       null: false
   end
 
-  create_table "package_installations", force: :cascade do |t|
-    t.string   "installed_version"
-    t.integer  "package_id"
-    t.integer  "system_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
-  add_index "package_installations", ["package_id"], name: "index_package_installations_on_package_id", using: :btree
-  add_index "package_installations", ["system_id"], name: "index_package_installations_on_system_id", using: :btree
-
-  create_table "package_updates", force: :cascade do |t|
-    t.string   "candidate_version"
-    t.string   "repository"
-    t.integer  "package_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-  end
-
-  add_index "package_updates", ["package_id"], name: "index_package_updates_on_package_id", using: :btree
-
   create_table "package_versions", force: :cascade do |t|
     t.string   "sha256"
     t.string   "version"
@@ -137,26 +116,6 @@ ActiveRecord::Schema.define(version: 20160502131445) do
     t.datetime "updated_at",       null: false
   end
 
-  create_table "system_update_states", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "system_updates", force: :cascade do |t|
-    t.integer  "system_update_state_id"
-    t.integer  "package_update_id"
-    t.integer  "system_id"
-    t.integer  "task_id"
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  add_index "system_updates", ["package_update_id"], name: "index_system_updates_on_package_update_id", using: :btree
-  add_index "system_updates", ["system_id"], name: "index_system_updates_on_system_id", using: :btree
-  add_index "system_updates", ["system_update_state_id"], name: "index_system_updates_on_system_update_state_id", using: :btree
-  add_index "system_updates", ["task_id"], name: "index_system_updates_on_task_id", using: :btree
-
   create_table "systems", force: :cascade do |t|
     t.string   "name"
     t.string   "urn"
@@ -189,7 +148,6 @@ ActiveRecord::Schema.define(version: 20160502131445) do
     t.integer  "job_id"
     t.datetime "created_at",        null: false
     t.datetime "updated_at",        null: false
-    t.integer  "system_update_id"
   end
 
   add_index "tasks", ["job_id"], name: "index_tasks_on_job_id", using: :btree
@@ -213,19 +171,11 @@ ActiveRecord::Schema.define(version: 20160502131445) do
   add_foreign_key "group_assignments", "package_groups"
   add_foreign_key "group_assignments", "packages"
   add_foreign_key "jobs", "users"
-  add_foreign_key "package_installations", "packages"
-  add_foreign_key "package_installations", "systems"
-  add_foreign_key "package_updates", "packages"
   add_foreign_key "package_versions", "distributions"
   add_foreign_key "package_versions", "packages"
   add_foreign_key "package_versions", "repositories"
-  add_foreign_key "system_updates", "package_updates"
-  add_foreign_key "system_updates", "system_update_states"
-  add_foreign_key "system_updates", "systems"
-  add_foreign_key "system_updates", "tasks"
   add_foreign_key "systems", "system_groups"
   add_foreign_key "tasks", "jobs"
-  add_foreign_key "tasks", "system_updates"
   add_foreign_key "tasks", "task_executions"
   add_foreign_key "tasks", "task_states"
   add_foreign_key "users", "roles"
