@@ -73,7 +73,7 @@ module Api::V2
       apply_system_properties( newSys, data )
       newSys.system_group = SystemGroup.first
       newSys.last_seen = DateTime.now
-      newSys.certificate = request.headers['X-Api-Client-Cert']
+      #newSys.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
 
       if newSys.save()
         render json: { status: "OK" }
