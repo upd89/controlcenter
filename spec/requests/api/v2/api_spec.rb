@@ -11,7 +11,8 @@ describe "ControlCenter API v2" do
         address: Faker::Internet.public_ip_v4_address,
         certificate: ""
       }
-      post '/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      # TODO: Change URL (/api)
+      post '/api/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -27,8 +28,8 @@ describe "ControlCenter API v2" do
         address: Faker::Internet.public_ip_v4_address,
         certificate: ""
       }
-      post '/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
-      post '/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -39,7 +40,7 @@ describe "ControlCenter API v2" do
     it 'checks if registering with a missing param returns ERROR' do
       params = { name: Faker::StarWars.planet }
 
-      post '/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -63,7 +64,7 @@ describe "ControlCenter API v2" do
         packageUpdates: []
       }
 
-      post '/v2/system/' + "almost" + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + "almost" + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -77,7 +78,7 @@ describe "ControlCenter API v2" do
         packageUpdates: []
       }
 
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -91,7 +92,7 @@ describe "ControlCenter API v2" do
         packageUpdates: [@packageVersion.sha256]
       }
 
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -105,7 +106,7 @@ describe "ControlCenter API v2" do
         packageUpdates: ["fakeSHA256hash"]
       }
 
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -119,8 +120,8 @@ describe "ControlCenter API v2" do
         updCount: 1,
         packageUpdates: [@packageVersion.sha256]
       }
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
@@ -135,7 +136,7 @@ describe "ControlCenter API v2" do
         packageUpdates: []
       }
 
-      post '/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
+      post '/api/v2/system/' + @system.urn + '/notify-hash', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
 
