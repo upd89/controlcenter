@@ -31,6 +31,20 @@
       </p>
     </li>
   </ul>
+  <ul class="properties col_6">
+    <li>
+      <p>
+        <span class="property"><%= f.label :password %></span>
+        <span class="value"><%= f.password_field :password%></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"><%= f.label :password_confirmation %></span>
+        <span class="value"><%= f.password_field :password_confirmation%></span>
+      </p>
+    </li>
+  </ul>
   <div class="actions">
     <%= f.button "Save", :class => "button" %>
   </div>
