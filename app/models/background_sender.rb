@@ -23,6 +23,9 @@ class BackgroundSender
         #      :ca_path => '/usr/lib/ssl/certs',  #original SSL dir
         #      :ca_path => '/opt/upd89/ca/keys',  #original upd89 cert dir
         :ca_path => 'config/certs',         #relative dir
+        :client_cert => OpenSSL::X509::Certificate.new(File.read('config/clientCert/upd89-02.nine.ch.crt')),
+        :client_key => OpenSSL::PKey::RSA.new(File.read('config/clientCert/upd89-02.nine.ch.key')),
+        :version => 'TLSv1_2',
         :verify => true
       }
 
@@ -35,7 +38,7 @@ class BackgroundSender
       logger.debug( "------------BODY---------" )
       logger.debug( result.body )
 
-      if ( result.body == "OK")
+      if ( result.body.downcase == "ok")
         task.task_state = TaskState.where(name: "Queued")[0]
       end
     rescue Faraday::Error::ConnectionFailed => e #TODO: other possible errors

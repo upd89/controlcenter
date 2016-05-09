@@ -42,3 +42,6 @@ build/
 config/settings.local.yml
 config/settings/*.local.yml
 config/environments/*.local.yml
+config/clientCert/*.*
+
+public/report.html
