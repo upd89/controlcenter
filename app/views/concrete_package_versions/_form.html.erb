@@ -12,31 +12,31 @@
   <% end %>
 
   <ul class="properties col_6">
-      <li>
+    <li>
       <p>
-          <span class="property">system_id</span>
+        <span class="property">System</span>
         <span class="value"><%= f.collection_select :system_id, System.all, :id, :name, prompt: true  %></span>
-        </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">task_id</span>
-        <span class="value"><%= f.collection_select :task_id, Task.all, :id, :name, prompt: true  %></span>
-        </p>
+        <span class="property">Task ID</span>
+        <span class="value"><%= f.collection_select :task_id, Task.all, :id, :id, prompt: true  %></span>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">concrete_package_state_id</span>
+        <span class="property">Concrete Package State</span>
         <span class="value"><%= f.collection_select :concrete_package_state_id, ConcretePackageState.all, :id, :name, prompt: true  %></span>
-        </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">package_version_id</span>
-        <span class="value"><%= f.collection_select :package_version_id, PackageVersion.all, :id, :name, prompt: true  %></span>
-        </p>
+        <span class="property">Package Version</span>
+        <span class="value"><%= f.collection_select :package_version_id, PackageVersion.all, :id, :version, prompt: true  %></span>
+      </p>
     </li>
-    </ul>
+  </ul>
 
   <div class="actions">
     <%= f.button "Save", :class => "button" %>

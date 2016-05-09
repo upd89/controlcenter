@@ -27,11 +27,11 @@ class JobsController < ApplicationController
   # POST /jobs
   # POST /jobs.json
   def create
-    @task = Task.new(task_state: TaskState.take )
+    @task = Task.new(task_state: TaskState.where(name: "Pending")[0] )
 
     if params[:all]
       # get task IDs from system, map to strings
-      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: ConcretePackageState.first )
+      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: ConcretePackageState.first ) #TODO: centralised state manager
     else
       # get task IDs from submitted array
       if params[:updates]
@@ -49,6 +49,7 @@ class JobsController < ApplicationController
       end
     end
 
+    @task.tries = 0
     @task.save
 
     # TODO: get current user, check if permitted

@@ -1,2 +1,5 @@
 Pagination:
   NoOfEntriesPerPage: 15
+BackgroundTask:
+  SecondsBetweenTries: 20
+  MaximumAmountOfTries: 3

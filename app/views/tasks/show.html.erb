@@ -61,6 +61,7 @@
         <th>Package</th>
         <th>Candidate Version</th>
         <th>System update state</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -69,6 +70,7 @@
           <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
           <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
           <td><%= concrete_pkg_version.concrete_package_state.name %></td>
+          <td><%= link_to concrete_pkg_version.id, concrete_pkg_version %></td>
         </tr>
       <% end %>
     </tbody>
