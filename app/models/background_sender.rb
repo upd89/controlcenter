@@ -39,13 +39,20 @@ class BackgroundSender
       if ( result.body.downcase == "ok")
         task.task_state = TaskState.where(name: "Queued")[0]
       end
-    rescue Faraday::Error::ConnectionFailed => e #TODO: other possible errors
-      logger.debug( "Connection failed: #{e}" ) #TODO: log exception!
+    #rescue Faraday::Error::ConnectionFailed => e #TODO: other possible errors
+    rescue
+      logger.debug( "Connection failed" ) #TODO: log exception!
       if task.tries.to_i < Settings.BackgroundTask.MaximumAmountOfTries
         logger.debug( "RESTARTING TASK " + task.tries.to_s )
         BackgroundSender.perform_in(Settings.BackgroundTask.SecondsBetweenTries, task )
       else
         task.task_state = TaskState.where(name: "Not Delivered")[0]
+        stateAvailable = ConcretePackageState.where(name: "Available")[0]
+        task.concrete_package_versions.each do |pkgVersion|
+          pkgVersion.concrete_package_state = stateAvailable
+          pkgVersion.save()
+        end
+  
       end
     ensure
       task.save()
