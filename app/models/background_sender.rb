@@ -14,9 +14,7 @@ class BackgroundSender
     taskData = { task_id: task.id.to_s, urn: system.name, packages: packageArray }
     task.tries = task.tries.to_i + 1
 
-    #url = 'https:' + system.address                 #will work when Agent is ready
-    #url = 'https://upd89-01.nine.ch:8080'           #already works hardcoded
-    url = "https://" + system.name + ".nine.ch:8080" #workaround for now
+    url = 'https:' + system.address
 
     begin
       connection = Faraday::Connection.new url, :ssl => {
