@@ -28,7 +28,7 @@ class PackageGroupsController < ApplicationController
 
     respond_to do |format|
       if @package_group.save
-        format.html { redirect_to @package_group, notice: 'Package group was successfully created.' }
+        format.html { redirect_to @package_group, success: 'Package group was successfully created.' }
         format.json { render :show, status: :created, location: @package_group }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class PackageGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @package_group.update(package_group_params)
-        format.html { redirect_to @package_group, notice: 'Package group was successfully updated.' }
+        format.html { redirect_to @package_group, success: 'Package group was successfully updated.' }
         format.json { render :show, status: :ok, location: @package_group }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class PackageGroupsController < ApplicationController
   def destroy
     @package_group.destroy
     respond_to do |format|
-      format.html { redirect_to package_groups_url, notice: 'Package group was successfully destroyed.' }
+      format.html { redirect_to package_groups_url, success: 'Package group was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

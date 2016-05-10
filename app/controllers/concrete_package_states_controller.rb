@@ -28,7 +28,7 @@ class ConcretePackageStatesController < ApplicationController
 
     respond_to do |format|
       if @concrete_package_state.save
-        format.html { redirect_to @concrete_package_state, notice: 'Concrete package state was successfully created.' }
+        format.html { redirect_to @concrete_package_state, success: 'Concrete package state was successfully created.' }
         format.json { render :show, status: :created, location: @concrete_package_state }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class ConcretePackageStatesController < ApplicationController
   def update
     respond_to do |format|
       if @concrete_package_state.update(concrete_package_state_params)
-        format.html { redirect_to @concrete_package_state, notice: 'Concrete package state was successfully updated.' }
+        format.html { redirect_to @concrete_package_state, success: 'Concrete package state was successfully updated.' }
         format.json { render :show, status: :ok, location: @concrete_package_state }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class ConcretePackageStatesController < ApplicationController
   def destroy
     @concrete_package_state.destroy
     respond_to do |format|
-      format.html { redirect_to concrete_package_states_url, notice: 'Concrete package state was successfully destroyed.' }
+      format.html { redirect_to concrete_package_states_url, success: 'Concrete package state was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

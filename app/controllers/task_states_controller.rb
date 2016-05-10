@@ -28,7 +28,7 @@ class TaskStatesController < ApplicationController
 
     respond_to do |format|
       if @task_state.save
-        format.html { redirect_to @task_state, notice: 'Task state was successfully created.' }
+        format.html { redirect_to @task_state, success: 'Task state was successfully created.' }
         format.json { render :show, status: :created, location: @task_state }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class TaskStatesController < ApplicationController
   def update
     respond_to do |format|
       if @task_state.update(task_state_params)
-        format.html { redirect_to @task_state, notice: 'Task state was successfully updated.' }
+        format.html { redirect_to @task_state, success: 'Task state was successfully updated.' }
         format.json { render :show, status: :ok, location: @task_state }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class TaskStatesController < ApplicationController
   def destroy
     @task_state.destroy
     respond_to do |format|
-      format.html { redirect_to task_states_url, notice: 'Task state was successfully destroyed.' }
+      format.html { redirect_to task_states_url, success: 'Task state was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -1,5 +1,6 @@
-<h1 class="col_9">Login</h1>
+<%= render :partial => "header", :object => {
+  "title" => "Login",
+  "actions" =>[]
+} %>
 
 <%= render 'form' %>
-
-<%= link_to 'Back', user_sessions_path %>

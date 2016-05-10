@@ -28,7 +28,7 @@ class GroupAssignmentsController < ApplicationController
 
     respond_to do |format|
       if @group_assignment.save
-        format.html { redirect_to @group_assignment, notice: 'Group assignment was successfully created.' }
+        format.html { redirect_to @group_assignment, success: 'Group assignment was successfully created.' }
         format.json { render :show, status: :created, location: @group_assignment }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class GroupAssignmentsController < ApplicationController
   def update
     respond_to do |format|
       if @group_assignment.update(group_assignment_params)
-        format.html { redirect_to @group_assignment, notice: 'Group assignment was successfully updated.' }
+        format.html { redirect_to @group_assignment, success: 'Group assignment was successfully updated.' }
         format.json { render :show, status: :ok, location: @group_assignment }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class GroupAssignmentsController < ApplicationController
   def destroy
     @group_assignment.destroy
     respond_to do |format|
-      format.html { redirect_to group_assignments_url, notice: 'Group assignment was successfully destroyed.' }
+      format.html { redirect_to group_assignments_url, success: 'Group assignment was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

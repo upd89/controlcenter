@@ -13,4 +13,30 @@
   </ul>
 </header>
 
-<p id="notice"><%= notice %></p>
+<div id="notices">
+
+  <% if success %>
+    <div class="notice success">
+      <i class="leftIcon fa fa-check"></i> <%= success %> <a href="#close" class="icon-remove"><i class="fa fa-close"></i></a>
+     </div>
+  <% end %>
+
+  <% if warning %>
+    <div class="notice warning">
+      <i class="leftIcon fa fa-exclamation"></i> <%= warning %> <a href="#close" class="icon-remove"><i class="fa fa-close"></i></a>
+     </div>
+  <% end %>
+
+  <% if info %>
+    <div class="notice info">
+      <i class="leftIcon fa fa-info"></i> <%= info %> <a href="#close" class="icon-remove"><i class="fa fa-close"></i></a>
+    </div>
+  <% end %>
+
+  <% if error %>
+    <div class="notice error">
+      <i class="leftIcon fa fa-exclamation"></i> <%= error %> <a href="#close" class="icon-remove"><i class="fa fa-close"></i></a>
+    </div>
+  <% end %>
+
+</div>

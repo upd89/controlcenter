@@ -28,7 +28,7 @@ class RepositoriesController < ApplicationController
 
     respond_to do |format|
       if @repository.save
-        format.html { redirect_to @repository, notice: 'Repository was successfully created.' }
+        format.html { redirect_to @repository, success: 'Repository was successfully created.' }
         format.json { render :show, status: :created, location: @repository }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class RepositoriesController < ApplicationController
   def update
     respond_to do |format|
       if @repository.update(repository_params)
-        format.html { redirect_to @repository, notice: 'Repository was successfully updated.' }
+        format.html { redirect_to @repository, success: 'Repository was successfully updated.' }
         format.json { render :show, status: :ok, location: @repository }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class RepositoriesController < ApplicationController
   def destroy
     @repository.destroy
     respond_to do |format|
-      format.html { redirect_to repositories_url, notice: 'Repository was successfully destroyed.' }
+      format.html { redirect_to repositories_url, success: 'Repository was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

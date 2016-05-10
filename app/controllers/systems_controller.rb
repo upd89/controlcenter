@@ -32,7 +32,7 @@ class SystemsController < ApplicationController
 
     respond_to do |format|
       if @system.save
-        format.html { redirect_to @system, notice: 'System was successfully created.' }
+        format.html { redirect_to @system, success: 'System was successfully created.' }
         format.json { render :show, status: :created, location: @system }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class SystemsController < ApplicationController
   def update
     respond_to do |format|
       if @system.update(system_params)
-        format.html { redirect_to @system, notice: 'System was successfully updated.' }
+        format.html { redirect_to @system, success: 'System was successfully updated.' }
         format.json { render :show, status: :ok, location: @system }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class SystemsController < ApplicationController
   def destroy
     @system.destroy
     respond_to do |format|
-      format.html { redirect_to systems_url, notice: 'System was successfully destroyed.' }
+      format.html { redirect_to systems_url, success: 'System was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -30,7 +30,7 @@ class SystemGroupsController < ApplicationController
 
     respond_to do |format|
       if @system_group.save
-        format.html { redirect_to @system_group, notice: 'System group was successfully created.' }
+        format.html { redirect_to @system_group, success: 'System group was successfully created.' }
         format.json { render :show, status: :created, location: @system_group }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class SystemGroupsController < ApplicationController
   def update
     respond_to do |format|
       if @system_group.update(system_group_params)
-        format.html { redirect_to @system_group, notice: 'System group was successfully updated.' }
+        format.html { redirect_to @system_group, success: 'System group was successfully updated.' }
         format.json { render :show, status: :ok, location: @system_group }
       else
         format.html { render :edit }
@@ -58,7 +58,7 @@ class SystemGroupsController < ApplicationController
   def destroy
     @system_group.destroy
     respond_to do |format|
-      format.html { redirect_to system_groups_url, notice: 'System group was successfully destroyed.' }
+      format.html { redirect_to system_groups_url, success: 'System group was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

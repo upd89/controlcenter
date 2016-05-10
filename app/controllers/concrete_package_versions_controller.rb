@@ -28,7 +28,7 @@ class ConcretePackageVersionsController < ApplicationController
 
     respond_to do |format|
       if @concrete_package_version.save
-        format.html { redirect_to @concrete_package_version, notice: 'Concrete package version was successfully created.' }
+        format.html { redirect_to @concrete_package_version, success: 'Concrete package version was successfully created.' }
         format.json { render :show, status: :created, location: @concrete_package_version }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class ConcretePackageVersionsController < ApplicationController
   def update
     respond_to do |format|
       if @concrete_package_version.update(concrete_package_version_params)
-        format.html { redirect_to @concrete_package_version, notice: 'Concrete package version was successfully updated.' }
+        format.html { redirect_to @concrete_package_version, success: 'Concrete package version was successfully updated.' }
         format.json { render :show, status: :ok, location: @concrete_package_version }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class ConcretePackageVersionsController < ApplicationController
   def destroy
     @concrete_package_version.destroy
     respond_to do |format|
-      format.html { redirect_to concrete_package_versions_url, notice: 'Concrete package version was successfully destroyed.' }
+      format.html { redirect_to concrete_package_versions_url, success: 'Concrete package version was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

@@ -30,7 +30,7 @@ class TaskExecutionsController < ApplicationController
 
     respond_to do |format|
       if @task_execution.save
-        format.html { redirect_to @task_execution, notice: 'Task execution was successfully created.' }
+        format.html { redirect_to @task_execution, success: 'Task execution was successfully created.' }
         format.json { render :show, status: :created, location: @task_execution }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class TaskExecutionsController < ApplicationController
   def update
     respond_to do |format|
       if @task_execution.update(task_execution_params)
-        format.html { redirect_to @task_execution, notice: 'Task execution was successfully updated.' }
+        format.html { redirect_to @task_execution, success: 'Task execution was successfully updated.' }
         format.json { render :show, status: :ok, location: @task_execution }
       else
         format.html { render :edit }
@@ -58,7 +58,7 @@ class TaskExecutionsController < ApplicationController
   def destroy
     @task_execution.destroy
     respond_to do |format|
-      format.html { redirect_to task_executions_url, notice: 'Task execution was successfully destroyed.' }
+      format.html { redirect_to task_executions_url, success: 'Task execution was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

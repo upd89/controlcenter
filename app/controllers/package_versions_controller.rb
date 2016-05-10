@@ -28,7 +28,7 @@ class PackageVersionsController < ApplicationController
 
     respond_to do |format|
       if @package_version.save
-        format.html { redirect_to @package_version, notice: 'Package version was successfully created.' }
+        format.html { redirect_to @package_version, success: 'Package version was successfully created.' }
         format.json { render :show, status: :created, location: @package_version }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class PackageVersionsController < ApplicationController
   def update
     respond_to do |format|
       if @package_version.update(package_version_params)
-        format.html { redirect_to @package_version, notice: 'Package version was successfully updated.' }
+        format.html { redirect_to @package_version, success: 'Package version was successfully updated.' }
         format.json { render :show, status: :ok, location: @package_version }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class PackageVersionsController < ApplicationController
   def destroy
     @package_version.destroy
     respond_to do |format|
-      format.html { redirect_to package_versions_url, notice: 'Package version was successfully destroyed.' }
+      format.html { redirect_to package_versions_url, success: 'Package version was successfully destroyed.' }
       format.json { head :no_content }
     end
   end

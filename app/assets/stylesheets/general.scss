@@ -37,7 +37,7 @@ header {
     text-align: right;
   }
 
-  h1 { 
+  h1 {
     font-size: 2.5em;
   }
 }
@@ -63,6 +63,28 @@ table {
 
   ul.button-bar {
     min-width: 105px;
+  }
+}
+
+#notices {
+  .icon-remove {
+    text-decoration: none;
+    font-size: 12px;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    left: auto;
+    color: inherit;
+    margin-top: 0;
+    left: auto;
+  }
+
+  i.leftIcon {
+    position: absolute;
+    top: 50%;
+    left: 0.8em;
+    margin-top: -0.4em;
+    font-size: 1.5em;
   }
 }
 
