@@ -70,8 +70,8 @@ class System < ActiveRecord::Base
   def self.options_for_sorted_by
     [
       ['Name (a-z)', 'name_asc'],
-      ['Registration date (newest first)', 'created_at_desc'],
-      ['Registration date (oldest first)', 'created_at_asc']
+      ['Registration date (newest first)', 'registered_at_desc'],
+      ['Registration date (oldest first)', 'registered_at_asc']
     ]
   end
 
