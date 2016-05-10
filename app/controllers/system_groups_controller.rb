@@ -56,10 +56,15 @@ class SystemGroupsController < ApplicationController
   # DELETE /system_groups/1
   # DELETE /system_groups/1.json
   def destroy
-    @system_group.destroy
-    respond_to do |format|
-      format.html { redirect_to system_groups_url, success: 'System group was successfully destroyed.' }
-      format.json { head :no_content }
+    if @system_group.destroy
+      respond_to do |format|
+        format.html { redirect_to system_groups_url, success: 'System group was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to system_groups_url, warning: 'Can\'t delete a group that\'s not empty.' }
+      end
     end
   end
 

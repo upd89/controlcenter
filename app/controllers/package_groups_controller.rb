@@ -54,10 +54,15 @@ class PackageGroupsController < ApplicationController
   # DELETE /package_groups/1
   # DELETE /package_groups/1.json
   def destroy
-    @package_group.destroy
-    respond_to do |format|
-      format.html { redirect_to package_groups_url, success: 'Package group was successfully destroyed.' }
-      format.json { head :no_content }
+    if @package_group.destroy
+      respond_to do |format|
+        format.html { redirect_to package_groups_url, success: 'Package group was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to system_groups_url, warning: 'Can\'t delete a group that\'s not empty.' }
+      end
     end
   end
 
