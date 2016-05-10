@@ -63,6 +63,9 @@ RSpec.configure do |config|
   # JSON parser
   config.include Requests::JsonHelpers, type: :request
 
+  config.include Capybara::DSL
+
+
   config.include Sorcery::TestHelpers::Rails::Controller
   config.include Sorcery::TestHelpers::Rails::Integration
 end
