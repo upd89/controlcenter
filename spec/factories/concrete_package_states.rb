@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :concrete_package_state do
-    name "MyString"
+    name Faker::Hacker.adjective
   end
 end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :distribution do
-    name "MyString"
+    name Faker::App.name
   end
 end

@@ -8,6 +8,6 @@ FactoryGirl.define do
     f.package nil
     f.distribution nil
     f.repository nil
-    f.is_base_version false
+    f.is_base_version Faker::Boolean.boolean
   end
 end

@@ -31,17 +31,16 @@ describe User do
   it "requires at least 8 chars" do
     expect(FactoryGirl.build(
       :user,
-      role: FactoryGirl.create(:role),
+      role: FactoryGirl.build(:role),
       password: "1",
       password_confirmation: "1"
     )).to be_invalid
   end
 
   it "makes sure that emails are unique" do
-    @user = FactoryGirl.create(:user)
-    expect(FactoryGirl.build(
-      :user,
-      email: @user.email
-    )).to be_invalid
+    role = FactoryGirl.build(:role)
+    user1 = FactoryGirl.create(:user, email: "asd", role: role)
+    user2 = FactoryGirl.build(:user, email: "asd", role: role)
+    expect( user2 ).to be_invalid
   end
 end

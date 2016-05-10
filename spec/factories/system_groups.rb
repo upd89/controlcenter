@@ -1,6 +1,8 @@
+require 'faker'
+
 FactoryGirl.define do
   factory :system_group do
-    name "MyString"
-    permission_level 1
+    name Faker::Hacker.abbreviation
+    permission_level Faker::Number.between(0, 100)
   end
 end
