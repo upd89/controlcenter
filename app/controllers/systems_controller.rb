@@ -1,11 +1,24 @@
 class SystemsController < ApplicationController
   before_action :set_system, only: [:show, :edit, :update, :destroy]
-  
+
   # GET /systems
   # GET /systems.json
   def index
-    @systems = System.all
-    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @filterrific = initialize_filterrific(
+      System,
+      params[:filterrific],
+      :select_options => {
+        sorted_by: System.options_for_sorted_by
+      }
+    ) or return
+    @systems = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
+    #@systems = System.all
+    #@paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/1

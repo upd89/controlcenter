@@ -74,3 +74,5 @@ gem 'sucker_punch', '~> 2.0' # asynchronous background tasks
 gem 'faraday' #https helper
 
 gem 'sorcery' #simple password authentication
+
+gem 'filterrific' #filter, order, etc!

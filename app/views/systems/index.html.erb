@@ -7,48 +7,32 @@
   }]
 } %>
 
-<table class="striped tight sortable clickableRows">
-  <thead>
-    <tr>
-      <th colspan="2">Name</th>
-      <th>Urn</th>
-      <th>Os</th>
-      <th>Reboot required</th>
-      <th>Address</th>
-      <th>Last seen</th>
-      <th>System group</th>
-      <th></th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @paginated_systems.each do |system| %>
-      <tr class="relPos">
-        <td><%= system.name %></td>
-        <td class="hiddenFirstCol"><%= link_to '', system, class:"row-link"  %></td>
-        <td><%= system.urn %></td>
-        <td><%= system.os %></td>
-        <td><%= system.reboot_required ? "yes" : "no" %></td>
-        <td><%= system.address %></td>
-        <td><%= system.last_seen %></td>
-        <td><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
-        <td>
-      	  <ul class="button-bar">
-      	    <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-      	  </ul>
-         </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<div class="digg_pagination">
-  <div class="page_info">
-    <%= page_entries_info @paginated_systems %>
+<%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
+  <div class="col_3">
+    <label for="search_query">Search</label>
+    <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
+    <%= f.text_field(
+      :search_query,
+      class: 'filterrific-periodically-observed',
+      id: 'search_query'
+    ) %>
   </div>
-  <%= will_paginate @paginated_systems, :container => false %>
+  <div class="col_3">
+    <label for="sort_by">Sorted by</label>
+    <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by], id: 'sort_by') %>
+  </div>
+  <div class="col_3 right">
+    <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+  </div>
+  
+  <%= render_filterrific_spinner %>
+<% end %>
+
+<div id="filterrific_table" class="col_12">
+  <%= render(
+    partial: 'systems/list',
+    locals: { systems: @systems }
+  ) %>
 </div>
 
-<br>
+<div class="floatFix"></div>

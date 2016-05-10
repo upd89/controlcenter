@@ -3,8 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 $(document).on "page:change", ->
-  $("table.clickableRows").on "click", "tbody tr", (e) ->
-    clickOnWholeRow(e)
+  makeRowClickable()
 
   $("table.availableUpdates").on "click", ".checkboxInstallUpdate", (e) ->
     disableCreateJobButton()
@@ -16,7 +15,9 @@ clickOnWholeRow = (e) ->
   if $(e.target).parents("ul.button-bar").length > 0
     return;
   e.preventDefault()
-  window.location = $(e.target).parents("tr").find("ul.button-bar li.first a").attr("href")
+  trgt = $(e.target).parents("tr").find("ul.button-bar li.first a").attr("href")
+  if trgt != undefined
+    window.location = trgt
 
 disableCreateJobButton = ->
   enabled = $(".checkboxInstallUpdate:checked").length > 0
@@ -24,3 +25,7 @@ disableCreateJobButton = ->
     $("#createJobBtn").removeAttr('disabled')
   else
     $("#createJobBtn").attr('disabled', 'disabled')
+
+makeRowClickable = ->
+  $("table.clickableRows").on "click", "tbody tr", (e) ->
+    clickOnWholeRow(e)

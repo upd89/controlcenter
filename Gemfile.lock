@@ -78,6 +78,8 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
+    filterrific (2.0.5)
+      rails (>= 3.1.0)
     font-awesome-rails (4.6.1.0)
       railties (>= 3.2, < 5.1)
     formatador (0.2.5)
@@ -265,6 +267,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   faraday
+  filterrific
   font-awesome-rails
   guard-rspec
   jbuilder (~> 2.0)
