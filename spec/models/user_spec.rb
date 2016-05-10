@@ -2,14 +2,46 @@ require 'spec_helper'
 
 describe User do
   it "has a valid factory" do
-    role = FactoryGirl.create(:role)
-    FactoryGirl.create(:user, role: role).should be_valid
+    expect(FactoryGirl.create(
+      :user,
+      role: FactoryGirl.create(:role),
+      password: "asdasdasd",
+      password_confirmation: "asdasdasd"
+    )).to be_valid
   end
 
   it "is invalid without a name" do
-    FactoryGirl.build(:user, name: nil).should_not be_valid
+    expect(FactoryGirl.build(
+      :user,
+      name: nil,
+      password: "asdasdasd",
+      password_confirmation: "asdasdasd"
+    )).to be_invalid
   end
+
   it "is invalid without a role" do
-    FactoryGirl.build(:user, role: nil).should_not be_valid
+    expect(FactoryGirl.build(
+      :user,
+      role: nil,
+      password: "asdasdasd",
+      password_confirmation: "asdasdasd"
+    )).to be_invalid
+  end
+
+  it "requires at least 8 chars" do
+    expect(FactoryGirl.build(
+      :user,
+      role: FactoryGirl.create(:role),
+      password: "1",
+      password_confirmation: "1"
+    )).to be_invalid
+  end
+
+  it "makes sure that emails are unique" do
+    @user = FactoryGirl.create(:user)
+    expect(FactoryGirl.build(
+      :user,
+      email: @user.email
+    )).to be_invalid
   end
 end

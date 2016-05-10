@@ -1,5 +1,7 @@
 require 'spec_helper'
 
 RSpec.describe PackageVersion, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "has a valid factory" do
+    expect(FactoryGirl.create(:package_version)).to be_valid
+  end
 end
