@@ -48,7 +48,9 @@ class System < ActiveRecord::Base
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     case sort_option.to_s
-    when /^registered_at_/
+    when /^created_at_/
+      order("systems.created_at #{ direction }")
+      when /^registered_at_/
         order("systems.created_at #{ direction }")
       when /^name_/
         order("LOWER(systems.name) #{ direction }")
