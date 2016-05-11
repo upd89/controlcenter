@@ -47,8 +47,9 @@ class System < ActiveRecord::Base
   scope :sorted_by, lambda { |sort_option|
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
-    logger.debug( sort_option.to_s )
     case sort_option.to_s
+      when /^created_at_/
+        order("systems.created_at #{ direction }")
       when /^registered_at_/
         order("systems.created_at #{ direction }")
       when /^name_/
