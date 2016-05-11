@@ -375,6 +375,8 @@ module Api::V2
       data = JSON.parse request.body.read
       error = false
 
+      #TODO: check if task was already set to done or failed!
+
       if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(params[:id])
         render json: { status: "ERROR" }
         return

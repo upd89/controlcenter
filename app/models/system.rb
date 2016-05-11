@@ -9,7 +9,7 @@ class System < ActiveRecord::Base
   validates_presence_of :urn
 
   filterrific(
-    default_filter_params: { sorted_by: 'created_at_desc' },
+    default_filter_params: { sorted_by: 'registered_at_desc' },
     available_filters: [
       :sorted_by,
       :search_query,
@@ -49,8 +49,6 @@ class System < ActiveRecord::Base
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     case sort_option.to_s
-      when /^created_at_/
-        order("systems.created_at #{ direction }")
       when /^registered_at_/
         order("systems.created_at #{ direction }")
       when /^name_/

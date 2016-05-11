@@ -25,9 +25,23 @@ class SystemsController < ApplicationController
   # GET /systems/1
   # GET /systems/1.json
   def show
+    @filterrific_show = initialize_filterrific(
+      ConcretePackageVersion.where(system: @system ),
+      params[:filterrific],
+      :select_options => {
+        with_state_id: ConcretePackageState.options_for_select
+      }
+    ) or return
+    @concrete_package_versions = @filterrific_show.find.page(params[:page])
+    @installableCPVs = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
     #@concrete_package_versions = ConcretePackageVersion.where(system: @system )
-    @concrete_package_versions = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
-    @paginated_concrete_package_versions = @concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    #@concrete_package_versions = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
+    #@paginated_concrete_package_versions = @concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/new

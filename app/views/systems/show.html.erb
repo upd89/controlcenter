@@ -65,7 +65,7 @@
   <li>
     <p>
       <span class="property">Updates</span>
-      <span class="value"><%= @concrete_package_versions.length %></span>
+      <span class="value"><%= @installableCPVs.length %></span>
     </p>
   </li>
   <li>
@@ -76,48 +76,74 @@
   </li>
 </ul>
 
-<%= form_tag({controller: "jobs", action: "create"}) do %>
-  <% if @concrete_package_versions.length %>
-  <table class="availableUpdates">
-    <thead>
-      <tr>
-        <th>Package</th>
-        <th>Candidate Version</th>
-        <th>Update state</th>
-        <th>Install?</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @paginated_concrete_package_versions.each do |concrete_pkg_version| %>
+<% if false %>
+  <%= form_tag({controller: "jobs", action: "create"}) do %>
+    <% if @concrete_package_versions.length %>
+    <table class="availableUpdates">
+      <thead>
         <tr>
-          <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
-          <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
-          <td><%= concrete_pkg_version.concrete_package_state.name %></td>
-          <td>
-            <% if concrete_pkg_version.concrete_package_state == ConcretePackageState.first %>
-              <%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %>
-            <% end %>
-          </td>
+          <th>Package</th>
+          <th>Candidate Version</th>
+          <th>Update state</th>
+          <th>Install?</th>
         </tr>
-      <% end %>
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        <% @paginated_concrete_package_versions.each do |concrete_pkg_version| %>
+          <tr>
+            <td><%= link_to concrete_pkg_version.package_version.package.name, concrete_pkg_version.package_version.package %></td>
+            <td><%= link_to concrete_pkg_version.package_version.version, concrete_pkg_version.package_version %></td>
+            <td><%= concrete_pkg_version.concrete_package_state.name %></td>
+            <td>
+              <% if concrete_pkg_version.concrete_package_state == ConcretePackageState.first %>
+                <%= check_box_tag "updates[]", concrete_pkg_version.id, false, class: 'checkboxInstallUpdate' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
-  <%= hidden_field_tag(:system_id, @system.id) %>
+    <%= hidden_field_tag(:system_id, @system.id) %>
 
-  <% if @concrete_package_versions.any?{|cpv| cpv.concrete_package_state == ConcretePackageState.first } %>
-  <div class="actions">
-    <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
-    <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
-  </div>
-  <% end %>
-
-  <div class="digg_pagination">
-    <div class="page_info">
-      <%= page_entries_info @paginated_concrete_package_versions %>
+    <% if @concrete_package_versions.any?{|cpv| cpv.concrete_package_state == ConcretePackageState.first } %>
+    <div class="actions">
+      <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
+      <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
     </div>
-    <%= will_paginate @paginated_concrete_package_versions, :container => false %>
-  </div>
+    <% end %>
 
+    <div class="digg_pagination">
+      <div class="page_info">
+        <%= page_entries_info @paginated_concrete_package_versions %>
+      </div>
+      <%= will_paginate @paginated_concrete_package_versions, :container => false %>
+    </div>
+
+    <% end %>
   <% end %>
 <% end %>
+
+<%= form_for_filterrific @filterrific_show, html: { class:"col_12" } do |f| %>
+
+  <div class="col_3">
+    <label for="state_select">State</label>
+    <%= f.select( :with_state_id, @filterrific_show.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_select') %>
+  </div>
+
+  <div class="col_3 right">
+    <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+  </div>
+
+  <%= render_filterrific_spinner %>
+<% end %>
+
+
+  <div id="filterrific_table" class="col_12">
+    <%= render(
+      partial: 'systems/list_show',
+      locals: { concrete_package_versions: @concrete_package_versions }
+    ) %>
+  </div>
+
+<div class="floatFix"></div>
