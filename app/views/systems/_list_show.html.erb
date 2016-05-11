@@ -4,7 +4,7 @@
       <thead>
         <tr>
           <th>Package</th>
-          <th>Candidate Version</th>
+          <th>Version</th>
           <th>Update state</th>
           <th>Install?</th>
         </tr>
@@ -33,7 +33,7 @@
       <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>
     </div>
     <% end %>
-    
+
     <div class="pagination col_12">
       <div class="page_info col_6">
         <%= page_entries_info @concrete_package_versions %>
