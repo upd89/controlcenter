@@ -52,15 +52,19 @@ class JobsController < ApplicationController
     @task.tries = 0
     @task.save
 
-    # TODO: get current user, check if permitted
-    @job = Job.new(user: User.take,
-                   started_at: Time.new)
-    @job.tasks << @task
-    @job.save
+    if current_user
+      @job = Job.new(user: current_user,
+                     started_at: Time.new)
+      @job.tasks << @task
+      @job.save
 
-    BackgroundSender.perform_async( @task )
+      BackgroundSender.perform_async( @task )
 
-    redirect_to @job
+      redirect_to @job
+    else
+      #TODO: log!
+    end
+
   end
 
   # PATCH/PUT /jobs/1
