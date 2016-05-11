@@ -115,3 +115,12 @@ table {
     .button { margin-top: 7px; }
   }
 }
+
+
+@media (max-width: 768px) and (min-width: 480px) {
+  #filterrific_results {
+    .mHide {
+      display: none;
+    }
+  }
+}
