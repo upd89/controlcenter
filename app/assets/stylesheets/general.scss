@@ -118,7 +118,9 @@ table {
 
 
 @media (max-width: 768px) and (min-width: 480px) {
-  #filterrific_results {
+  #filterrific_results table {
+    width: 100%;
+
     .mHide {
       display: none;
     }
