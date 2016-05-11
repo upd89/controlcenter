@@ -12,19 +12,19 @@
       <% if current_user %>
         <li><%= link_to 'Systems', systems_path %></li>
         <li><%= link_to 'Packages', packages_path %></li>
-        <li><a href=""><span class="icon" data-icon="R"></span>Groups</a>
+        <li><a href=""><i class="fa fa-object-group"></i><span class="icon" data-icon="R"></span>Groups</a>
           <ul>
             <li><%= link_to 'System Groups', system_groups_path %></li>
             <li><%= link_to 'Package Groups', package_groups_path %></li>
           </ul>
         </li>
-        <li><a href=""><span class="icon" data-icon="R"></span>User Management</a>
+        <li><a href=""><i class="fa fa-users"></i>User/Roles</a>
           <ul>
             <li><%= link_to 'Roles', roles_path %></li>
             <li><%= link_to 'Users', users_path %></li>
           </ul>
         </li>
-        <li><a href=""><span class="icon" data-icon="R"></span>Jobs/Tasks</a>
+        <li><a href=""><i class="fa fa-check-square-o"></i></span>Jobs/Tasks</a>
           <ul>
             <li><%= link_to 'Jobs', jobs_path %></li>
             <li><%= link_to 'Tasks', tasks_path %></li>
