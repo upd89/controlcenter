@@ -1,0 +1,7 @@
+<% js = escape_javascript(
+  render(partial: 'packages/list', locals: { packages: @packages })
+) %>
+$("#filterrific_table").html("<%= js %>");
+
+// make sure rows are clickable!
+$(document).trigger("page:change")

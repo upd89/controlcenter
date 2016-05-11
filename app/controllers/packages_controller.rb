@@ -4,8 +4,20 @@ class PackagesController < ApplicationController
   # GET /packages
   # GET /packages.json
   def index
-    @packages = Package.all
-    @paginated_packages = @packages.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @filterrific = initialize_filterrific(
+      Package,
+      params[:filterrific],
+      :select_options => {
+        sorted_by: Package.options_for_sorted_by,
+        with_package_group_id: PackageGroup.options_for_select
+      }
+    ) or return
+    @packages = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /packages/1
