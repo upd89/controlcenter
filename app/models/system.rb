@@ -12,7 +12,8 @@ class System < ActiveRecord::Base
     default_filter_params: { sorted_by: 'created_at_desc' },
     available_filters: [
       :sorted_by,
-      :search_query
+      :search_query,
+      :with_system_group_id
     ]
   )
 
@@ -70,6 +71,9 @@ class System < ActiveRecord::Base
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
   }
+  scope :with_system_group_id, lambda { |system_group_ids|
+    where(:system_group_id => [*system_group_ids])
+  }
 
   # This method provides select options for the `sorted_by` filter select input.
   # It is called in the controller as part of `initialize_filterrific`.
@@ -82,6 +86,7 @@ class System < ActiveRecord::Base
   end
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
+
 
   def decorated_created_at
       created_at.to_formatted_s(:short)

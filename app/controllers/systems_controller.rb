@@ -8,7 +8,8 @@ class SystemsController < ApplicationController
       System,
       params[:filterrific],
       :select_options => {
-        sorted_by: System.options_for_sorted_by
+        sorted_by: System.options_for_sorted_by,
+        with_system_group_id: SystemGroup.options_for_select
       }
     ) or return
     @systems = @filterrific.find.page(params[:page])
