@@ -387,7 +387,10 @@ module Api::V2
       if state
         task.task_state = state
         # TODO + log
-        error = true unless task.save()
+      end
+
+      if data["log"]
+        task.task_execution = TaskExecution.create(log: data["log"] )
       end
 
       if data["state"].downcase == "done"
@@ -399,6 +402,8 @@ module Api::V2
         cpv.concrete_package_state = pkg_state
         error = true unless cpv.save()
       end
+
+      error = true unless task.save()
 
       if error
         render json: { status: "ERROR" }
