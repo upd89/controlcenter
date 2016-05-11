@@ -50,8 +50,9 @@ namespace :db do
     admin              = Role.create( { :name => "Admin", :permission_level => 9 } )
     readonly           = Role.create( { :name => "Readonly", :permission_level => 0 } )
 
-    pchriste           = User.create( { :name => "pchriste", :email => "some@address", :role => admin } )
-    ubosshar           = User.create( { :name => "ubosshar", :email => "other@address",:role => admin } )
+    adminUser          = User.create( { :name => "admin", :email => "admin", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
+    pchriste           = User.create( { :name => "pchriste", :email => "some@address", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
+    ubosshar           = User.create( { :name => "ubosshar", :email => "other@address",:role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
 
     puts "==  Data: generating sample data (done) ".ljust(79, "=") + "\n\n"
   end
