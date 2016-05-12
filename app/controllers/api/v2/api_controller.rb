@@ -52,6 +52,39 @@ module Api::V2
       return assoc
     end
 
+    def get_maybe_create_distro(distro)
+        if Distribution.exists?(name: distro)
+            distro_obj = Distribution.where(name: distro)[0]
+        else
+            distro_obj = Distribution.create(name: distro)
+        end
+        return distro_obj
+    end
+
+    def get_maybe_create_packageversion(pkgVersion, pkg)
+        if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
+            pkgVersion_obj = PackageVersion.where( sha256: pkgVersion['sha256'] )[0]
+        else
+            pkgVersion_obj = PackageVersion.create( {
+              :sha256       => pkgVersion['sha256'],
+              :version      => pkgVersion['version'],
+              :architecture => pkgVersion['architecture'],
+              :package      => pkg
+            } )
+        end
+        return pkgVersion_obj
+    end
+
+    def get_maybe_create_repo(rep)
+        if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+            repo_obj = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
+        else
+            repo_obj = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
+        end
+        return repo_obj
+    end
+
+
     # v2/register
     def register
       data = JSON.parse request.body.read
@@ -144,16 +177,7 @@ module Api::V2
           pkg = Package.where( name: update['name'] )[0]
           newVersion = update['candidateVersion']
 
-          if PackageVersion.exists?( sha256: newVersion['sha256'] )
-            pkgVersion = PackageVersion.where( sha256: newVersion['sha256'] )[0]
-          else
-            pkgVersion = PackageVersion.create( {
-              :sha256       => newVersion['sha256'],
-              :version      => newVersion['version'],
-              :architecture => newVersion['architecture'],
-              :package      => pkg
-            } )
-          end
+          pkgVersion = get_maybe_create_packageversion(newVersion, pkg)
 
           if newVersion['sha256'] == update['baseVersionHash']
             # this is a base_version already, don't do anything
@@ -166,23 +190,11 @@ module Api::V2
           end
 
           if update['repository']
-            rep = update['repository']
-            if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-              currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-            else
-              currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-            end
-            pkgVersion.repository = currentRepo
+            pkgVersion.repository = get_maybe_create_repo(update['repository'])
           end
 
-          # TODO: refactor distro handling
           if currentSys.os
-            if Distribution.exists?(name: currentSys.os)
-              dist = Distribution.where(name: currentSys.os)[0]
-            else
-              dist = Distribution.create(name: currentSys.os)
-            end
-            pkgVersion.distribution = dist
+            pkgVersion.distribution = get_maybe_create_distro(currentSys.os)
           end
           error = true unless pkgVersion.save()
 
@@ -257,10 +269,7 @@ module Api::V2
       currentSys = System.where(urn: params[:urn])[0]
 
       if currentSys.os
-        if Distribution.exists?(name: currentSys.os)
-          dist = Distribution.where(name: currentSys.os)[0]
-        else
-          dist = Distribution.create(name: currentSys.os)
+          dist = get_maybe_create_distro(currentSys.os)
         end
       end
 
@@ -307,13 +316,7 @@ module Api::V2
 
         # set or update repository
         if package['repository']
-          rep = package['repository']
-          if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-            currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-          else
-            currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-          end
-          pkgVersion.repository = currentRepo
+          pkgVersion.repository = get_maybe_create_repo(package['repository'])
           error = true unless pkgVersion.save()
         end
 
@@ -341,13 +344,7 @@ module Api::V2
 
             # set or update repository
             if baseVersionJSON['repository']
-              rep = baseVersionJSON['repository']
-              if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-                currentRepo = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-              else
-                currentRepo = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-              end
-              baseVersion.repository = currentRepo
+              baseVersion.repository = get_maybe_create_repo(baseVersionJSON['repository'])
               error = true unless baseVersion.save()
             end
 
