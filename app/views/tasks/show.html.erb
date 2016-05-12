@@ -27,7 +27,7 @@
   <li>
     <p>
       <span class="property">Task execution</span>
-      <span class="value"><%= @task.task_execution %></span>
+      <span class="value"><%= link_to @task.task_execution.log[0..26], @task.task_execution if @task.task_execution %></span>
     </p>
   </li>
   <li>
