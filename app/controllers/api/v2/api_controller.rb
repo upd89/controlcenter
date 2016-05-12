@@ -300,10 +300,7 @@ module Api::V2
 
       data["packages"].each do |package|
         currentPkg = get_maybe_create_package(package)
-
-        installedVersion = package['installedVersion']
-
-        pkgVersion = get_maybe_create_packageversion(installedVersion, pkg)
+        pkgVersion = get_maybe_create_packageversion(package['installedVersion'], currentPkg)
 
         # set or update distro
         if dist
