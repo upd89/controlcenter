@@ -309,6 +309,7 @@ module Api::V2
         end
 
         # set or update repository
+        # TODO: fix -> repo is stored in package['installedVersion']['repository']
         if package['repository']
           pkgVersion.repository = get_maybe_create_repo(package['repository'])
           error = true unless pkgVersion.save()
