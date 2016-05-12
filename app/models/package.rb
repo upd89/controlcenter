@@ -1,3 +1,5 @@
+require 'addressable/uri'
+
 class Package < ActiveRecord::Base
   has_many :package_versions
   has_many :concrete_package_versions, -> { distinct }, through: :package_versions
@@ -77,5 +79,17 @@ class Package < ActiveRecord::Base
 
   def get_group_names
     package_groups.all.map{ |p| p.name }.join(', ')
+  end
+
+  def nice_url
+    if homepage
+      if Addressable::URI.parse(homepage)
+        Addressable::URI.parse(homepage).host
+      else
+        homepage.first(15)
+      end
+    else
+      ""
+    end
   end
 end
