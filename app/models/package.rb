@@ -7,6 +7,8 @@ class Package < ActiveRecord::Base
   has_many :group_assignments
   has_many :package_groups, through: :group_assignments
 
+  validates_presence_of :name
+
   filterrific(
     default_filter_params: { sorted_by: 'name_desc' },
     available_filters: [
