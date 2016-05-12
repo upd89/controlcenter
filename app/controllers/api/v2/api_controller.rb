@@ -61,6 +61,27 @@ module Api::V2
         return distro_obj
     end
 
+    def get_maybe_create_package(package)
+        if Package.exists?( name: package['name'] )
+          package_obj = Package.where( name: package['name'] )[0]
+          # update package information if specified
+          package_obj.section  = package['section']  if package['section']
+          package_obj.homepage = package['homepage'] if package['homepage']
+          package_obj.summary  = package['summary']  if package['summary']
+          package_obj.save()
+        else
+          # creating package
+          package_obj = Package.create( {
+                 :name         =>  package['name'],
+                 :section      =>  package['section'],
+                 :homepage     =>  package['homepage'],
+                 :summary      =>  package['summary']
+          } )
+        end
+        return package_obj
+    end
+
+
     def get_maybe_create_packageversion(pkgVersion, pkg)
         if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
             pkgVersion_obj = PackageVersion.where( sha256: pkgVersion['sha256'] )[0]
@@ -270,43 +291,14 @@ module Api::V2
 
       if currentSys.os
           dist = get_maybe_create_distro(currentSys.os)
-        end
       end
 
       data["packages"].each do |package|
-        # best case: we know the package (by name)
-        if Package.exists?( name: package['name'] )
-          currentPkg = Package.where( name: package['name'] )[0]
-          # update package information if specified
-          currentPkg.section  = package['section']  if package['section']
-          currentPkg.homepage = package['homepage'] if package['homepage']
-          currentPkg.summary  = package['summary']  if package['summary']
-          error = true unless currentPkg.save()
-        else
-          # creating package
-          currentPkg = Package.create( {
-                 :name         =>  package['name'],
-                 :section      =>  package['section'],
-                 :homepage     =>  package['homepage'],
-                 :summary      =>  package['summary']
-          } )
-        end
+        currentPkg = get_maybe_create_package(package)
 
         installedVersion = package['installedVersion']
 
-        # check if specified version exists
-        if PackageVersion.exists?(package: currentPkg, sha256: installedVersion['sha256'])
-          pkgVersion = PackageVersion.where(package: currentPkg, sha256: installedVersion['sha256'])[0]
-          pkgVersion.version      = installedVersion['version']      if installedVersion['version']
-          pkgVersion.architecture = installedVersion['architecture'] if installedVersion['architecture']
-        else
-          pkgVersion = PackageVersion.create({
-             :package      => currentPkg,
-             :version      => installedVersion['version'],
-             :sha256       => installedVersion['sha256'],
-             :architecture => installedVersion['architecture']
-          })
-        end
+        pkgVersion = get_maybe_create_packageversion(installedVersion, pkg)
 
         # set or update distro
         if dist
@@ -324,36 +316,29 @@ module Api::V2
 
         if !package['isBaseVersion']
           baseVersionJSON = package['baseVersion']
-          if PackageVersion.exists?(sha256: baseVersionJSON['sha256'])
-            pkgVersion.base_version = PackageVersion.where(sha256: baseVersionJSON['sha256'])[0]
-            error = true unless pkgVersion.save()
-          else
-            # TODO: extract creation of new package version + concrete package version!!!
-            baseVersion = PackageVersion.create({
-               :package      => currentPkg,
-               :version      => baseVersionJSON['version'],
-               :sha256       => baseVersionJSON['sha256'],
-               :architecture => baseVersionJSON['architecture']
-            })
 
-            # set or update distro
-            if dist
+          baseVersion = get_maybe_create_packageversion(baseVersionJSON, currentPkg)
+
+          pkgVersion.base_version = baseVersion
+          error = true unless pkgVersion.save()
+
+          # set or update distro
+          if dist
               baseVersion.distribution = dist
               error = true unless baseVersion.save()
-            end
+          end
 
-            # set or update repository
-            if baseVersionJSON['repository']
+          # set or update repository
+          if baseVersionJSON['repository']
               baseVersion.repository = get_maybe_create_repo(baseVersionJSON['repository'])
               error = true unless baseVersion.save()
-            end
-
-            create_new_concrete_package_version( baseVersion, currentSys, stateInstalled )
-
-            pkgVersion.base_version = baseVersion
-            error = true unless pkgVersion.save()
-
           end
+
+          create_new_concrete_package_version( baseVersion, currentSys, stateInstalled )
+
+          pkgVersion.base_version = baseVersion
+          error = true unless pkgVersion.save()
+
         end
 
       end
