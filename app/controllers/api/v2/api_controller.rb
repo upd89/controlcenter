@@ -64,7 +64,7 @@ module Api::V2
 
     def get_maybe_create_system(system)
         if System.exists?(:urn => system["urn"])
-            system_obj = System.where(:urn)[0]
+            system_obj = System.where(urn: system["urn"])[0]
         else
             system_obj = System.new
             apply_system_properties( system_obj, system )
