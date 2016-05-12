@@ -44,8 +44,9 @@ module Api::V2
         assoc.concrete_package_state = state
         assoc.save()
 
-        sys.concrete_package_versions << assoc
-        sys.save()
+        # should alredy be set by setting system in assoc 
+        #sys.concrete_package_versions << assoc
+        #sys.save()
       end
 
       # TODO: assoc needed? maybe just error
@@ -60,6 +61,20 @@ module Api::V2
         end
         return distro_obj
     end
+
+    def get_maybe_create_system(system)
+        if System.exists?(:urn => system["urn"])
+            system_obj = System.where(:urn)[0]
+        else
+            system_obj = System.new
+            apply_system_properties( system_obj, system )
+            system_obj.system_group = SystemGroup.first
+            system_obj.last_seen = DateTime.now
+            system_obj.save()
+        end
+        return system_obj
+    end
+
 
     def get_maybe_create_package(package)
         if Package.exists?( name: package['name'] )
@@ -119,22 +134,11 @@ module Api::V2
         return
       end
 
-      if System.exists?(:urn => data["urn"])
-        render json: { status: "OK" }
-        return
-      end
+      system = get_maybe_create_system(data)
+      #system.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
 
-      newSys = System.new
-      apply_system_properties( newSys, data )
-      newSys.system_group = SystemGroup.first
-      newSys.last_seen = DateTime.now
-      #newSys.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
+      render json: { status: "OK" }
 
-      if newSys.save()
-        render json: { status: "OK" }
-      else
-        render json: { status: "ERROR" }
-      end
     end
 
     # v2/system/:urn/notify-hash
@@ -219,8 +223,9 @@ module Api::V2
           end
           error = true unless pkgVersion.save()
 
-          pkg.package_versions << pkgVersion
-          error = true unless pkg.save()
+          # should alredy be set by creating the package version
+          #pkg.package_versions << pkgVersion
+          #error = true unless pkg.save()
 
           create_new_concrete_package_version( pkgVersion, currentSys, stateAvailable )
         end
