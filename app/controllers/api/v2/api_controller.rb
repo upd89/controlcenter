@@ -75,7 +75,6 @@ module Api::V2
         return system_obj
     end
 
-
     def get_maybe_create_package(package)
         if Package.exists?( name: package['name'] )
           package_obj = Package.where( name: package['name'] )[0]
@@ -95,7 +94,6 @@ module Api::V2
         end
         return package_obj
     end
-
 
     def get_maybe_create_packageversion(pkgVersion, pkg)
         if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
@@ -120,6 +118,10 @@ module Api::V2
         return repo_obj
     end
 
+    def update_last_seen(system)
+      system.last_seen = DateTime.now
+      system.save()
+    end
 
     # v2/register
     def register
@@ -151,6 +153,7 @@ module Api::V2
       end
 
       currentSys = System.where(urn: params[:urn])[0]
+      update_last_seen( currentSys )
 
       unknownPackages = []
       knownPackages = []
@@ -192,6 +195,7 @@ module Api::V2
       unknownPackages = false
 
       currentSys = System.where(urn: params[:urn])[0]
+      update_last_seen( currentSys )
       apply_system_properties( currentSys, data )
       error = true unless currentSys.save()
 
@@ -257,6 +261,7 @@ module Api::V2
       stateInstalled = ConcretePackageState.last
 
       currentSys = System.where(urn: params[:urn])[0]
+      update_last_seen( currentSys )
 
       # for each hash, check if this corresponds to a known version
       data["packages"].each do |pkgHash|
@@ -293,6 +298,7 @@ module Api::V2
       error = false
       stateInstalled = ConcretePackageState.last
       currentSys = System.where(urn: params[:urn])[0]
+      update_last_seen( currentSys )
 
       if currentSys.os
           dist = get_maybe_create_distro(currentSys.os)
