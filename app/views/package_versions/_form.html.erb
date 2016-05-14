@@ -12,49 +12,49 @@
   <% end %>
 
   <ul class="properties col_6">
-      <li>
+    <li>
       <p>
-          <span class="property">sha256</span>
+        <span class="property">sha256</span>
         <span class="value"><%= f.text_field :sha256 %></span>
-            </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">version</span>
+        <span class="property">version</span>
         <span class="value"><%= f.text_field :version %></span>
-            </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">architecture</span>
+        <span class="property">architecture</span>
         <span class="value"><%= f.text_field :architecture %></span>
-            </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">package_id</span>
+        <span class="property">package_id</span>
         <span class="value"><%= f.collection_select :package_id, Package.all, :id, :name, prompt: true  %></span>
-        </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">distribution_id</span>
+        <span class="property">distribution_id</span>
         <span class="value"><%= f.collection_select :distribution_id, Distribution.all, :id, :name, prompt: true  %></span>
-        </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">repository_id</span>
+        <span class="property">repository_id</span>
         <span class="value"><%= f.collection_select :repository_id, Repository.all, :id, :name, prompt: true  %></span>
-        </p>
+      </p>
     </li>
-      <li>
+    <li>
       <p>
-          <span class="property">is_base_version</span>
-        <span class="value"><%= f.check_box :is_base_version %></span>
-            </p>
+        <span class="property">Base-Version</span>
+        <span class="value"><%= f.collection_select :base_version_id, PackageVersion.where(package: @package_version.package), :id, :version, prompt: true %></span>
+      </p>
     </li>
-    </ul>
+  </ul>
 
   <div class="actions">
     <%= f.button "Save", :class => "button" %>

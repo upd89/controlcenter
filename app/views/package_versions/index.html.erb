@@ -16,7 +16,7 @@
       <th>Package</th>
       <th>Distribution</th>
       <th>Repository</th>
-      <th>Is base version</th>
+      <th>Base version</th>
       <th></th>
     </tr>
   </thead>
@@ -30,7 +30,7 @@
         <td><%= package_version.package.name %></td>
         <td><%= package_version.distribution.name if package_version.distribution %></td>
         <td><%= package_version.repository.origin if package_version.repository %></td>
-        <td><%= package_version.is_base_version %></td>
+        <td><%= package_version.base_version ? package_version.base_version : "this" %></td>
         <td>
           <ul class="button-bar">
             <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_version %></li>

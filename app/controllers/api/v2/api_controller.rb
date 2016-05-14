@@ -388,9 +388,13 @@ module Api::V2
         error = true unless task.save()
       end
 
-      stateInstalled = ConcretePackageState.where(name: "Installed").first
+      if ( data["state"] == "Done" )
+        newState = ConcretePackageState.where(name: "Installed").first
+      else
+        newState = ConcretePackageState.where(name: "Failed").first
+      end
       task.concrete_package_versions.each do |cpv|
-        cpv.concrete_package_state = stateInstalled
+        cpv.concrete_package_state = newState
         error = true unless cpv.save()
       end
 
