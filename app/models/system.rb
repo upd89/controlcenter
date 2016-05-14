@@ -9,10 +9,11 @@ class System < ActiveRecord::Base
   validates_presence_of :urn
 
   filterrific(
-    default_filter_params: { sorted_by: 'created_at_desc' },
+    default_filter_params: { sorted_by: 'registered_at_desc' },
     available_filters: [
       :sorted_by,
-      :search_query
+      :search_query,
+      :with_system_group_id
     ]
   )
 
@@ -48,8 +49,6 @@ class System < ActiveRecord::Base
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     case sort_option.to_s
-    when /^created_at_/
-      order("systems.created_at #{ direction }")
       when /^registered_at_/
         order("systems.created_at #{ direction }")
       when /^name_/
@@ -58,13 +57,20 @@ class System < ActiveRecord::Base
         order("LOWER(systems.urn) #{ direction }")
       when /^os_/
         order("LOWER(systems.os) #{ direction }")
+      when /^reboot_required_/
+        order("systems.reboot_required #{ direction }")
       when /^address_/
         order("LOWER(systems.address) #{ direction }")
+      when /^last_seen_/
+        order("systems.last_seen #{ direction }")
       when /^system_group_/ #TODO: doesn't work yet!
-        order("LOWER(system_groups.name) #{ direction }").includes(:system_group)
+        order("system_groups.name #{ direction }").includes(:system_group)
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
+  }
+  scope :with_system_group_id, lambda { |system_group_ids|
+    where(:system_group_id => [*system_group_ids])
   }
 
   # This method provides select options for the `sorted_by` filter select input.
@@ -78,6 +84,7 @@ class System < ActiveRecord::Base
   end
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
+
 
   def decorated_created_at
       created_at.to_formatted_s(:short)

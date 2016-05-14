@@ -17,13 +17,7 @@
   }]
 } %>
 
-<ul class="properties col_6">
-  <li>
-    <p>
-      <span class="property">Log</span>
-      <span class="value"><%= @task_execution.log %></span>
-    </p>
-  </li>
-</ul>
+<p>Log</p>
+<textarea class="col_12" readonly><%= @task_execution.log %></textarea>
 
 <div class="floatFix"></div>

@@ -1,53 +1,47 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>(<%= Rails.env %>) upd89 Control Center</title>
-  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
-  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>(<%= Rails.env %>) upd89 Control Center</title>
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
 
-<ul class="menu">
-  <% if current_user %>
-    <li><%= link_to 'Systems', systems_path %></li>
-    <li><%= link_to 'Packages', packages_path %></li>
-    <li><a href=""><span class="icon" data-icon="R"></span>Configure</a>
-      <ul>
-        <li><%= link_to 'Roles', roles_path %></li>
-        <li><%= link_to 'Users', users_path %></li>
-        <li><%= link_to 'System Groups', system_groups_path %></li>
-        <li><%= link_to 'Package Groups', package_groups_path %></li>
-        <li><%= link_to 'Concrete Package States', concrete_package_states_path %></li>
-        <li><%= link_to 'Task States', task_states_path %></li>
-      </ul>
-    </li>
-    <li><a href=""><span class="icon" data-icon="R"></span>Collected (Others)</a>
-      <ul>
-        <li><%= link_to 'Package Versions', package_versions_path %></li>
-        <li><%= link_to 'Concrete Package Versions', concrete_package_versions_path %></li>
-        <li><%= link_to 'Repositories', repositories_path %></li>
-        <li><%= link_to 'Distributions', distributions_path %></li>
-      </ul>
-    </li>
-    <li><a href=""><span class="icon" data-icon="R"></span>Jobs/Tasks</a>
-      <ul>
-        <li><%= link_to 'Jobs', jobs_path %></li>
-        <li><%= link_to 'Tasks', tasks_path %></li>
-        <li><%= link_to 'Task Executions', task_executions_path %></li>
-      </ul>
-    </li>
-    <li><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
-    <li><%= link_to "Logout", :logout %></li>
-  <% else %>
-    <li><%= link_to "Register", new_user_path %></li>
-    <li><%= link_to "Login", :login %></li>
-  <% end %>
-</ul>
+    <ul class="menu">
+      <% if current_user %>
+        <li><%= link_to 'Systems', systems_path %></li>
+        <li><%= link_to 'Packages', packages_path %></li>
+        <li><a href=""><i class="fa fa-object-group"></i><span class="icon" data-icon="R"></span>Groups</a>
+          <ul>
+            <li><%= link_to 'System Groups', system_groups_path %></li>
+            <li><%= link_to 'Package Groups', package_groups_path %></li>
+          </ul>
+        </li>
+        <li><a href=""><i class="fa fa-users"></i>User/Roles</a>
+          <ul>
+            <li><%= link_to 'Roles', roles_path %></li>
+            <li><%= link_to 'Users', users_path %></li>
+          </ul>
+        </li>
+        <li><a href=""><i class="fa fa-check-square-o"></i></span>Jobs/Tasks</a>
+          <ul>
+            <li><%= link_to 'Jobs', jobs_path %></li>
+            <li><%= link_to 'Tasks', tasks_path %></li>
+            <li><%= link_to 'Task Executions', task_executions_path %></li>
+          </ul>
+        </li>
+        <li><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
+        <li><%= link_to "Logout", :logout %></li>
+      <% else %>
+        <li><%= link_to "Register", new_user_path %></li>
+        <li><%= link_to "Login", :login %></li>
+      <% end %>
+    </ul>
 
-<div class="grid" id="main">
-  <%= yield %>
-</div>
+    <div class="grid" id="main">
+      <%= yield %>
+    </div>
 
-</body>
+  </body>
 </html>

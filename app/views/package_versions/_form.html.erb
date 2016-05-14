@@ -20,32 +20,32 @@
     </li>
     <li>
       <p>
-        <span class="property">version</span>
+        <span class="property">Version</span>
         <span class="value"><%= f.text_field :version %></span>
       </p>
     </li>
     <li>
       <p>
-        <span class="property">architecture</span>
+        <span class="property">Architecture</span>
         <span class="value"><%= f.text_field :architecture %></span>
       </p>
     </li>
     <li>
       <p>
-        <span class="property">package_id</span>
+        <span class="property">Package</span>
         <span class="value"><%= f.collection_select :package_id, Package.all, :id, :name, prompt: true  %></span>
       </p>
     </li>
     <li>
       <p>
-        <span class="property">distribution_id</span>
+        <span class="property">Distribution</span>
         <span class="value"><%= f.collection_select :distribution_id, Distribution.all, :id, :name, prompt: true  %></span>
       </p>
     </li>
     <li>
       <p>
-        <span class="property">repository_id</span>
-        <span class="value"><%= f.collection_select :repository_id, Repository.all, :id, :name, prompt: true  %></span>
+        <span class="property">Repository</span>
+        <span class="value"><%= f.collection_select :repository_id, Repository.all, :id, :full_name, prompt: true  %></span>
       </p>
     </li>
     <li>

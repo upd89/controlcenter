@@ -1,0 +1,7 @@
+<% js = escape_javascript(
+  render(partial: 'systems/list_show', locals: { concrete_package_versions: @concrete_package_versions })
+) %>
+$("#filterrific_table").html("<%= js %>");
+
+// make sure rows are clickable!
+$(document).trigger("page:change")

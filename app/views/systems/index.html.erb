@@ -21,10 +21,16 @@
     <label for="sort_by">Sorted by</label>
     <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by], id: 'sort_by') %>
   </div>
+
+  <div class="col_3">
+    <label for="sys_group_select">System Group</label>
+    <%= f.select( :with_system_group_id, @filterrific.select_options[:with_system_group_id], { include_blank: '- Any -' }, id: 'sys_group_select') %>
+  </div>
+
   <div class="col_3 right">
     <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
   </div>
-  
+
   <%= render_filterrific_spinner %>
 <% end %>
 

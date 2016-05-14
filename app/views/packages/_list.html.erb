@@ -1,0 +1,40 @@
+<%# app/views/packages/_list.html.erb %>
+<div id="filterrific_results">
+
+  <table class="striped tight clickableRows">
+    <tr>
+      <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :homepage) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :summary) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :package_groups) %></th>
+      <th></th>
+    </tr>
+    <% packages.each do |package| %>
+      <tr>
+        <td><%= package.name %></td>
+        <td><%= package.section %></td>
+        <td><a href="<%= package.homepage %>"><%= package.nice_url %></a></td>
+        <td><%= package.summary %></td>
+        <td><%= package.get_group_names %></td>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package  %></li>
+            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_path(package) %></li>
+            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+
+  <div class="pagination col_12">
+    <div class="page_info col_6">
+      <%= page_entries_info @packages %>
+    </div>
+    <div class="col_6">
+      <%= will_paginate @packages, :container => false %>
+    </div>
+  </div>
+
+</div>
