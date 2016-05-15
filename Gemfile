@@ -76,3 +76,5 @@ gem 'faraday' #https helper
 gem 'sorcery' #simple password authentication
 
 gem 'filterrific' #filter, order, etc!
+
+gem 'cancancan', '~> 1.10' # permission/authorization

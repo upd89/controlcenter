@@ -1,6 +1,8 @@
 class SystemsController < ApplicationController
   before_action :set_system, only: [:show, :edit, :update, :destroy]
 
+  load_and_authorize_resource
+
   # GET /systems
   # GET /systems.json
   def index
@@ -13,13 +15,6 @@ class SystemsController < ApplicationController
       }
     ) or return
     @systems = @filterrific.find.page(params[:page])
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-    #@systems = System.all
-    #@paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/1
@@ -34,23 +29,11 @@ class SystemsController < ApplicationController
     ) or return
     @concrete_package_versions = @filterrific_show.find.page(params[:page])
     @installableCPVs = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-    #@concrete_package_versions = ConcretePackageVersion.where(system: @system )
-    #@concrete_package_versions = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
-    #@paginated_concrete_package_versions = @concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /systems/new
   def new
     @system = System.new
-  end
-
-  # GET /systems/1/edit
-  def edit
   end
 
   # POST /systems

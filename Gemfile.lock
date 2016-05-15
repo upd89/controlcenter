@@ -44,6 +44,7 @@ GEM
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
     byebug (8.2.2)
+    cancancan (1.14.0)
     capybara (2.7.0)
       addressable
       mime-types (>= 1.16)
@@ -261,6 +262,7 @@ PLATFORMS
 
 DEPENDENCIES
   byebug
+  cancancan (~> 1.10)
   capybara
   coffee-rails (~> 4.1.0)
   config
