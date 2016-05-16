@@ -3,8 +3,14 @@ html {
   background-color: rgba(242, 242, 242, 0.89);
 }
 
-.menu li a i.fa {
+.menu {
+  & > li {
+    border-right: 1px solid #cbcbcb;
+  }
+
+  li a i.fa {
     margin-right: 5px;
+  }
 }
 
 #main {
