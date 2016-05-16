@@ -1,6 +1,7 @@
 <%= render :partial => "header",
 :object => {
   "title" => "Job " + params[:id],
+  "entity" => @job,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -8,11 +9,13 @@
   }, {
     "icon" => "pencil",
     "text" => "",
-    "path" => edit_job_path(@job)
+    "path" => edit_job_path(@job),
+    "ctrlAction" => :edit
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @job,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this job?"
   }]
@@ -48,8 +51,8 @@
     <% @paginated_tasks.each do |task| %>
       <tr>
         <td><%= task.task_state.name if task.task_state %></td>
-	<td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
-        <td><%= task.concrete_package_versions.first.system.name if task.concrete_package_versions.length %></td>
+	      <td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
+        <td><%= task.concrete_package_versions.first.system.name if task.concrete_package_versions.length > 0 %></td>
         <td><%= task.concrete_package_versions.length %></td>
         <td><%= link_to task.id, task %></td>
       </tr>

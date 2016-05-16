@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
   "title" => "Package Groups",
+  "entity" => @package_groups.first,
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Package group",
-    "path" => new_package_group_path
+    "path" => new_package_group_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -23,9 +25,9 @@
         <td><%= package_group.permission_level %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_group %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_group_path(package_group) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package_group, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, package_group    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_group %></li><% end %>
+            <% if can? :update, package_group  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_group_path(package_group) %></li><% end %>
+            <% if can? :destroy, package_group %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package_group, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

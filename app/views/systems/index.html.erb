@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
+  "entity" => @systems.first,
   "title" => "Systems",
   "actions" =>[{
     "icon" => "plus",
     "text" => "New System",
-    "path" => new_system_path
+    "path" => new_system_path,
+    "ctrlAction" => :create
   }]
 } %>
 

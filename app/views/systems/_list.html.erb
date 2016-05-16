@@ -25,9 +25,9 @@
         <td class="mHide"><%= system.decorated_created_at %></td>
         <td class="mHide">
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, system    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li><% end %>
+            <% if can? :update, system  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li><% end %>
+            <% if can? :destroy, system %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

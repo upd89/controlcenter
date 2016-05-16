@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
+  "entity" => @users.first,
   "title" => "Users",
   "actions" =>[{
     "icon" => "plus",
     "text" => "New User",
-    "path" => new_user_path
+    "path" => new_user_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -25,9 +27,9 @@
         <td><%= user.role.name %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, user %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_user_path(user) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, user, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, user    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, user %></li><% end %>
+            <% if can? :update, user  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_user_path(user) %></li><% end %>
+            <% if can? :destroy, user %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, user, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

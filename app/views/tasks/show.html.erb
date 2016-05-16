@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Task",
+  "entity" => @task,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -7,11 +8,13 @@
   }, {
     "icon" => "pencil",
     "text" => "",
-    "path" => edit_task_path(@task)
+    "path" => edit_task_path(@task),
+    "ctrlAction" => :edit
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @task,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this task?"
   }]

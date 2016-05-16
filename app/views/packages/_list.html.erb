@@ -19,9 +19,9 @@
         <td><%= package.get_group_names %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package  %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_path(package) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, package    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package  %></li><% end %>
+            <% if can? :update, package  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_path(package) %></li><% end %>
+            <% if can? :destroy, package %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

@@ -1,4 +1,5 @@
 <%= render :partial => "header", :object => {
+  "entity" => @system_group,
   "title" => "System Group",
   "actions" =>[{
     "icon" => "arrow-left",
@@ -7,11 +8,13 @@
   }, {
     "icon" => "pencil",
     "text" => "",
-    "path" => edit_system_group_path(@system_group)
+    "path" => edit_system_group_path(@system_group),
+    "ctrlAction" => :edit
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @system_group,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this System Group?"
   }]

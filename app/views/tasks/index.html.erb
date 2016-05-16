@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
   "title" => "Tasks",
+  "entity" => @tasks.first,
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Task",
-    "path" => new_task_path
+    "path" => new_task_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -23,15 +25,15 @@
     <% @paginated_tasks.each do |task| %>
       <tr>
         <td><%= task.task_state.name if task.task_state %></td>
-	<td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
+        <td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
         <td><%= task.concrete_package_versions.first.system.name if task.concrete_package_versions.length > 0 %></td>
         <td><%= task.job.id if task.job %></td>
         <td><%= task.concrete_package_versions.length %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_task_path(task) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, task, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, task    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task %></li><% end %>
+            <% if can? :update, task  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_task_path(task) %></li><% end %>
+            <% if can? :destroy, task %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, task, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

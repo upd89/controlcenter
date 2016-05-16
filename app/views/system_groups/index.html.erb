@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
   "title" => "System Groups",
+  "entity" => @system_groups.first,
   "actions" =>[{
     "icon" => "plus",
     "text" => "New System group",
-    "path" => new_system_group_path
+    "path" => new_system_group_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -25,9 +27,9 @@
         <td><%= system_group.systems.count %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_group %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_group_path(system_group) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system_group, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, system_group    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_group %></li><% end %>
+            <% if can? :update, system_group  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_group_path(system_group) %></li><% end %>
+            <% if can? :destroy, system_group %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system_group, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>
