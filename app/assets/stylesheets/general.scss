@@ -6,6 +6,11 @@ html {
 .menu {
   & > li {
     border-right: 1px solid #cbcbcb;
+
+    &.right {
+      border-right: none;
+      border-left: 1px solid #cbcbcb;
+    }
   }
 
   li a i.fa {
