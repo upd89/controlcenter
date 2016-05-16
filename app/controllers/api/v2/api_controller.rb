@@ -154,6 +154,8 @@ module Api::V2
 
       currentSys = System.where(urn: params[:urn])[0]
       update_last_seen( currentSys )
+      apply_system_properties( currentSys, data )
+      currentSys.save()
 
       unknownPackages = []
       knownPackages = []
