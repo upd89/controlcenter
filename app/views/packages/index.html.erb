@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
+  "entity" => @packages.first,
   "title" => "Packages",
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Package",
-    "path" => new_package_path
+    "path" => new_package_path,
+    "ctrlAction" => :create
   }]
 } %>
 

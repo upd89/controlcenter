@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
   "title" => "Jobs",
+  "entity" => @jobs.first,
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Job",
-    "path" => new_job_path
+    "path" => new_job_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -25,9 +27,9 @@
         <td><%= job.tasks.length %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, job %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_job_path(job) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, job, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, job    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, job %></li><% end %>
+            <% if can? :update, job  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_job_path(job) %></li><% end %>
+            <% if can? :destroy, job %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, job, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

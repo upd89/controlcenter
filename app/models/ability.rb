@@ -39,7 +39,7 @@ class Ability
     # Everyone can read any user
     # Only user manager roles can edit, create or delete a user
     can :read, User
-    can [ :create, :update, :destroy ], User do
+    can [ :create, :update, :destroy ], User do |concerned_user|
       user.role.is_user_manager
     end
 
@@ -49,5 +49,18 @@ class Ability
     can [ :create, :update, :destroy ], Role do
       user.role.is_user_manager
     end
+
+    can :read, TaskState
+    cannot [:create, :update, :destroy], TaskState
+
+    can :read, ConcretePackageState
+    cannot [:create, :update, :destroy], ConcretePackageState
+
+    can :read, Job
+    can :read, Task
+    can :read, TaskExecution
+    cannot [:create, :update, :destroy], Job
+    cannot [:create, :update, :destroy], Task
+    cannot [:create, :update, :destroy], TaskExecution
   end
 end

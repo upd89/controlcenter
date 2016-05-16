@@ -1,9 +1,11 @@
 <%= render :partial => "header", :object => {
   "title" => "Roles",
+  "entity" => @roles.first,
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Role",
-    "path" => new_role_path
+    "path" => new_role_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -25,9 +27,9 @@
         <td><%= role.users.length %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, role %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_role_path(role) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, role, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, role    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, role %></li><% end %>
+            <% if can? :update, role  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_role_path(role) %></li><% end %>
+            <% if can? :destroy, role %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, role, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

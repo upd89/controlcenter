@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Edit System Group",
+  "entity" => @system_group,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -7,11 +8,13 @@
   }, {
     "icon" => "eye",
     "text" => "",
-    "path" => @system_group
+    "path" => @system_group,
+    "ctrlAction" => :show
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @system_group,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this System Group?"
   }]
@@ -20,4 +23,3 @@
 <%= render 'form' %>
 
 <div class="floatFix"></div>
-

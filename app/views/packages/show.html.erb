@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Package " + @package.name,
+  "entity" => @package,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -7,11 +8,13 @@
   }, {
     "icon" => "pencil",
     "text" => "",
-    "path" => edit_package_path(@package)
+    "path" => edit_package_path(@package),
+    "ctrlAction" => :edit
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @package,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this package?"
   }]

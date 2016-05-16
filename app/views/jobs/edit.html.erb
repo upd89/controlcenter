@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Edit Job",
+  "entity" => @job,
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -7,11 +8,13 @@
   }, {
     "icon" => "eye",
     "text" => "",
-    "path" => @job
+    "path" => @job,
+    "ctrlAction" => :edit
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @job,
+    "ctrlAction" => :destroy,
     "method" => :delete,
     "confirm" => "Are you sure you want to delete this job?"
   }]
