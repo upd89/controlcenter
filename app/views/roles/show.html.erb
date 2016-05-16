@@ -30,6 +30,12 @@
       <span class="value"><%= @role.permission_level %></span>
     </p>
   </li>
+  <li>
+    <p>
+      <span class="property">Can manage users</span>
+      <span class="value"><%= @role.is_user_manager ? "yes" : "no" %></span>
+    </p>
+  </li>
 </ul>
 
 <% if @users.length %>

@@ -35,5 +35,19 @@ class Ability
     can [ :update, :destroy ], PackageGroup do |pkg_grp|
       pkg_grp.permission_level <= user.role.permission_level
     end
+
+    # Everyone can read any user
+    # Only user manager roles can edit, create or delete a user
+    can :read, User
+    can [ :create, :update, :destroy ], User do
+      user.role.is_user_manager
+    end
+
+    # Everyone can read any role
+    # Only user manager roles can edit, create or delete a role
+    can :read, Role
+    can [ :create, :update, :destroy ], Role do
+      user.role.is_user_manager
+    end
   end
 end

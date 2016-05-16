@@ -47,7 +47,7 @@ namespace :db do
     task_failed        = TaskState.create( { :name => "Failed" } )
     task_done          = TaskState.create( { :name => "Done" } )
 
-    admin              = Role.create( { :name => "Admin", :permission_level => 9 } )
+    admin              = Role.create( { :name => "Admin", :permission_level => 9, :is_user_manager => true } )
     readonly           = Role.create( { :name => "Readonly", :permission_level => 0 } )
 
     adminUser          = User.create( { :name => "admin", :email => "admin", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
