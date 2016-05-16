@@ -9,6 +9,10 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActiveRecord::RecordNotFound, with: :go_to_index
 
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to({action: "index"}, warning: exception.message)
+  end
+
   def go_to_index
     redirect_to({action: "index"}, warning: 'Entry with the ID ' + params[:id] + ' not found')
   end
