@@ -12,7 +12,7 @@ class System < ActiveRecord::Base
     default_filter_params: { sorted_by: 'registered_at_desc' },
     available_filters: [
       :sorted_by,
-      :search_query,
+      :sys_search_query,
       :with_system_group_id
     ]
   )
@@ -20,7 +20,7 @@ class System < ActiveRecord::Base
   # Scope definitions. We implement all Filterrific filters through ActiveRecord
   # scopes. In this example we omit the implementation of the scopes for brevity.
   # Please see 'Scope patterns' for scope implementation details.
-  scope :search_query, lambda { |query|
+  scope :sys_search_query, lambda { |query|
     return nil  if query.blank?
     # condition query, parse into individual keywords
     terms = query.downcase.split(/\s+/)

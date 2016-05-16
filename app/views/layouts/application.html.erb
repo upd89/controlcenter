@@ -10,7 +10,7 @@
 
     <ul class="menu">
       <% if current_user %>
-        <li><%= link_to "Hello, " + current_user.name + "!", current_user %></li>
+        <li><%= link_to "Hello, " + current_user.name + "!", combinations_path %></li>
         <li><%= link_to 'Systems', systems_path %></li>
         <li><%= link_to 'Packages', packages_path %></li>
         <li><a href=""><i class="fa fa-object-group"></i><span class="icon" data-icon="R"></span>Groups</a>

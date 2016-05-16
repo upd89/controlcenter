@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   root 'systems#index'
   resources :tasks
+  resources :combinations
   resources :jobs
   resources :task_executions
   resources :users
