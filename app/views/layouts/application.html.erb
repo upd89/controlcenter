@@ -37,7 +37,6 @@
         <% end %>
         <li><%= link_to ('<i class="fa fa-sign-out"></i> Logout').html_safe, :logout %></li>
       <% else %>
-        <li><%= link_to "Register", new_user_path %></li>
         <li><%= link_to ('<i class="fa fa-sign-in"></i> Login').html_safe, :login %></li>
       <% end %>
     </ul>
