@@ -4,7 +4,6 @@ class SystemsController < ApplicationController
   load_and_authorize_resource
 
   # GET /systems
-  # GET /systems.json
   def index
     @filterrific = initialize_filterrific(
       System,
@@ -18,7 +17,6 @@ class SystemsController < ApplicationController
   end
 
   # GET /systems/1
-  # GET /systems/1.json
   def show
     @filterrific_show = initialize_filterrific(
       ConcretePackageVersion.where(system: @system ),
@@ -31,49 +29,30 @@ class SystemsController < ApplicationController
     @installableCPVs = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
   end
 
-  # GET /systems/new
-  def new
-    @system = System.new
-  end
-
   # POST /systems
-  # POST /systems.json
   def create
     @system = System.new(system_params)
 
-    respond_to do |format|
-      if @system.save
-        format.html { redirect_to @system, success: 'System was successfully created.' }
-        format.json { render :show, status: :created, location: @system }
-      else
-        format.html { render :new }
-        format.json { render json: @system.errors, status: :unprocessable_entity }
-      end
+    if @system.save
+      redirect_to @system, success: 'System was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /systems/1
-  # PATCH/PUT /systems/1.json
   def update
-    respond_to do |format|
-      if @system.update(system_params)
-        format.html { redirect_to @system, success: 'System was successfully updated.' }
-        format.json { render :show, status: :ok, location: @system }
-      else
-        format.html { render :edit }
-        format.json { render json: @system.errors, status: :unprocessable_entity }
-      end
+    if @system.update(system_params)
+      redirect_to @system, success: 'System was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /systems/1
-  # DELETE /systems/1.json
   def destroy
     @system.destroy
-    respond_to do |format|
-      format.html { redirect_to systems_url, success: 'System was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to systems_url, success: 'System was successfully destroyed.'
   end
 
   private

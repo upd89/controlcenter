@@ -5,7 +5,7 @@ class Package < ActiveRecord::Base
   has_many :concrete_package_versions, -> { distinct }, through: :package_versions
 
   has_many :group_assignments
-  has_many :package_groups, through: :group_assignments
+  has_many :package_groups, -> { distinct }, through: :group_assignments
 
   validates_presence_of :name
 
@@ -81,6 +81,17 @@ class Package < ActiveRecord::Base
     package_groups.all.map{ |p| p.name }.join(', ')
   end
 
+  # permission level of a package is the lowest permission level of all of its package groups
+  # if package isn't in any package groups, return 0
+  def get_permission_level
+    if ( package_groups.length > 0)
+      package_groups.order("permission_level asc").first.permission_level
+    else
+      0
+    end
+  end
+
+  # if a parsable URI exists, take the host, otherwise the first couple of chars
   def nice_url
     if homepage
       if Addressable::URI.parse(homepage)
