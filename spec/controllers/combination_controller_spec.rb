@@ -1,5 +1,5 @@
-require 'rails_helper'
+require 'spec_helper'
 
-RSpec.describe CombinationController, type: :controller do
+RSpec.describe CombinationsController, type: :controller do
 
 end
