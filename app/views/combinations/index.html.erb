@@ -1,0 +1,72 @@
+<%= render :partial => "header", :object => {
+  "title" => "Systems / Packages",
+  "actions" =>[]
+} %>
+
+  <div class="col_6">
+    <div class="col_12">System Filters</div>
+    <%= form_for_filterrific @filterrific_systems, html: { class:"col_12" } do |f| %>
+
+      <div class="col_3">
+        <label for="sys_search_query">Search</label>
+        <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
+        <%= f.text_field(
+          :sys_search_query,
+          class: 'filterrific-periodically-observed',
+          id: 'sys_search_query'
+        ) %>
+      </div>
+
+      <div class="col_3">
+        <label for="sys_group_select">System Group</label>
+        <%= f.select( :with_system_group_id, @filterrific_systems.select_options[:with_system_group_id], { include_blank: '- Any -' }, id: 'sys_group_select') %>
+      </div>
+
+      <div class="col_3 right">
+        <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+      </div>
+
+      <%= render_filterrific_spinner %>
+    <% end %>
+  </div>
+
+  <div class="col_6">
+    <div class="col_12">Package Filters</div>
+    <%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
+
+      <div class="col_3">
+        <label for="search_query">Search</label>
+        <%= f.text_field(
+          :search_query,
+          class: 'filterrific-periodically-observed',
+          id: 'search_query'
+        ) %>
+      </div>
+
+      <div class="col_3">
+        <label for="sys_group_select">Package Group</label>
+        <%= f.select( :with_package_group_id, @filterrific.select_options[:with_package_group_id], { include_blank: '- Any -' }, id: 'sys_group_select') %>
+      </div>
+
+      <div class="col_3 right">
+        <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+      </div>
+
+      <%= render_filterrific_spinner %>
+
+    <% end %>
+  </div>
+
+
+
+<div id="filterrific_table" class="col_12">
+  <%= render(
+    partial: 'combinations/list',
+    locals: {
+      packages: @packages,
+      systems: @systems
+    }
+  ) %>
+</div>
+
+<div class="floatFix"></div>

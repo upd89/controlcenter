@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509082652) do
+ActiveRecord::Schema.define(version: 20160517185615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -105,8 +105,9 @@ ActiveRecord::Schema.define(version: 20160509082652) do
   create_table "roles", force: :cascade do |t|
     t.string   "name"
     t.integer  "permission_level"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "is_user_manager",  default: false
   end
 
   create_table "system_groups", force: :cascade do |t|

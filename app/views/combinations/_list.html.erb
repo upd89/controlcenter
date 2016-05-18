@@ -1,0 +1,32 @@
+<%# app/views/packages/_list.html.erb %>
+<div id="filterrific_results">
+
+  <p>Number of Systems : <%= systems.count %></p>
+
+  <table class="striped tight">
+    <tr>
+      <th>Selected</th>
+      <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+      <th>Systems</th>
+    </tr>
+    <% packages.each do |package| %>
+      <tr>
+        <td>
+          <%= check_box_tag "updates[]", package.id, false, class: 'checkboxInstallUpdate' %>
+        </td>
+        <td><%= package.name %></td>
+        <td><%= package.get_available_cpvs.count %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <div class="pagination col_12">
+    <div class="page_info col_6">
+      <%= page_entries_info @packages %>
+    </div>
+    <div class="col_6">
+      <%= will_paginate @packages, :container => false %>
+    </div>
+  </div>
+
+</div>

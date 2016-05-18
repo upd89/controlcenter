@@ -11,12 +11,12 @@
 
 <%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
   <div class="col_3">
-    <label for="search_query">Search</label>
+    <label for="sys_search_query">Search</label>
     <%# give the search field the 'filterrific-periodically-observed' class for live updates %>
     <%= f.text_field(
-      :search_query,
+      :sys_search_query,
       class: 'filterrific-periodically-observed',
-      id: 'search_query'
+      id: 'sys_search_query'
     ) %>
   </div>
   <div class="col_3">

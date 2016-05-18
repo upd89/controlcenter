@@ -1,0 +1,19 @@
+<%= render :partial => "header", :object => {
+  "title" => "UPD89",
+  "actions" =>[]
+} %>
+
+<h3>Systems</h3>
+<p><%= @systems.count %> Systems present</p>
+<p><%= get_not_recently_seen_systems.count %> Systems not seen in past 4 hours</p>
+<p><%= get_systems_without_group.count %> Systems not in a group</p>
+
+<h3>Packages</h3>
+<p><%= @packages.count %> known Packages</p>
+<p><%= get_packages_without_group.count %> Packages not in a group</p>
+
+<h3>Tasks</h3>
+<p><%= get_running_tasks.count %> pending Tasks</p>
+<p><%= get_failed_tasks.count %> failed Tasks</p>
+
+<div class="floatFix"></div>

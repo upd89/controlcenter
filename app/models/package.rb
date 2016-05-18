@@ -46,6 +46,8 @@ class Package < ActiveRecord::Base
     case sort_option.to_s
       when /^created_at_/
         order("packages.created_at #{ direction }")
+      when /^registered_at_/
+        order("packages.created_at #{ direction }")
       when /^name_/
         order("LOWER(packages.name) #{ direction }")
       when /^section_/
@@ -89,6 +91,11 @@ class Package < ActiveRecord::Base
     else
       0
     end
+  end
+
+  def get_available_cpvs
+    stateAvail = ConcretePackageState.where(name: "Available").first
+    concrete_package_versions.where(concrete_package_state: stateAvail)
   end
 
   # if a parsable URI exists, take the host, otherwise the first couple of chars
