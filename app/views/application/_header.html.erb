@@ -1,5 +1,6 @@
 <header>
-  <h1 class="col_9"><%= header["title"]  %></h1>
+  <img class="col_1" src="<%= image_url('logo.png') %>">
+  <h1 class="col_8"><%= header["title"]  %></h1>
   <ul class="button-bar col_3">
     <% header["actions"].each do |action| %>
       <% if (!action["ctrlAction"]) || (can? action["ctrlAction"], header["entity"]) %>

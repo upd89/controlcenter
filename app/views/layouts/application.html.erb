@@ -10,9 +10,11 @@
 
     <ul class="menu">
       <% if current_user %>
-        <li><%= link_to "Hello, " + current_user.name + "!", combinations_path %></li>
-        <li><%= link_to 'Systems', systems_path %></li>
-        <li><%= link_to 'Packages', packages_path %></li>
+        <li><%= link_to ('<i class="fa fa-home"></i> Hello, ' + current_user.name + '!').html_safe, root_path %></li>
+        <li><%= link_to ('<i class="fa fa-tachometer"></i> Dashboard').html_safe, root_path %></li>
+        <li><%= link_to ('<i class="fa fa-globe"></i> System+Packages').html_safe, system_package_relations_path %></li>
+        <li><%= link_to ('<i class="fa fa-server"></i> Systems').html_safe, systems_path %></li>
+        <li><%= link_to ('<i class="fa fa-archive"></i> Packages').html_safe, packages_path %></li>
         <li><a href=""><i class="fa fa-object-group"></i><span class="icon" data-icon="R"></span>Groups</a>
           <ul>
             <li><%= link_to 'System Groups', system_groups_path %></li>
@@ -34,7 +36,7 @@
         </li>
         <li class="right"><%= link_to ('<i class="fa fa-sign-out"></i> Logout').html_safe, :logout %></li>
         <% if can? :edit, current_user %>
-        <li class="right"><%= link_to "Edit Profile", edit_user_path(current_user.id) %></li>
+        <li class="right"><%= link_to ('<i class="fa fa-pencil"></i> Edit Profile').html_safe, edit_user_path(current_user.id) %></li>
         <% end %>
       <% else %>
         <li><%= link_to ('<i class="fa fa-sign-in"></i> Login').html_safe, :login %></li>
