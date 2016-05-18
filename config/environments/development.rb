@@ -42,4 +42,8 @@ Rails.application.configure do
   config.filtered_sidebar_resources = [:group_assignments]
   config.super_debugger = 3
 
+  # Better Errors:
+  config.consider_all_requests_local = true
+  BetterErrors::Middleware.allow_ip! "152.96.193.206"
+
 end
