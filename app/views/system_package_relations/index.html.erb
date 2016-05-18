@@ -1,14 +1,16 @@
   <table>
     <tr>
+      <th>Package ID</th>
       <th>Package Name</th>
-      <th>Package Version</th>
-      <th>System</th>
+      <th>Package Section</th>
+      <th>Count</th>
     </tr>
-    <% @system_package_relations.each do |spr| %>
-	      <tr>
+    <% @system_package_relations.each do |i, spr| %>
+      <tr>
+        <td><%= spr.pkg_id %></td>
         <td><%= spr.pkg_name %></td>
-        <td><%= spr.version %></td>
-        <td><%= spr.sys_name %></td>
+        <td><%= spr.pkg_section %></td>
+        <td><%= spr.count %></td>
       </tr>
     <% end %>
   </table>
