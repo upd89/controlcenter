@@ -1,0 +1,28 @@
+<div id="filterrific_results">
+
+  <table class="striped tight clickableRows">
+    <tr>
+      <th>Selected</th>
+      <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :nr_of_systems) %></th>
+      <th></th>
+    </tr>
+    <% system_package_relations.each do |spr| %>
+      <tr>
+        <th></th>
+        <td><%= spr.pkg_name %></td>
+        <td><%= spr.nr_of_systems %></td>
+      </tr>
+    <% end %>
+  </table>
+
+  <div class="pagination col_12">
+    <div class="page_info col_6">
+      <%= page_entries_info @system_package_relations %>
+    </div>
+    <div class="col_6">
+      <%= will_paginate @system_package_relations, :container => false %>
+    </div>
+  </div>
+
+</div>

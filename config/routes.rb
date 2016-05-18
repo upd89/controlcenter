@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   root 'dashboard#index'
   resources :tasks
-  resources :combinations
   resources :jobs
   resources :task_executions
   resources :users
