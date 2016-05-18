@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :package_versions
   resources :distributions
   resources :repositories
+  resources :system_package_relations
 
   post '/jobs/test' => 'jobs#test'
 
