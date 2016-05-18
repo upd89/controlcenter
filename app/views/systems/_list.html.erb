@@ -10,7 +10,6 @@
       <th><%= filterrific_sorting_link(@filterrific, :address) %></th>
       <th><%= filterrific_sorting_link(@filterrific, :last_seen) %></th>
       <th class="mHide"><%= filterrific_sorting_link(@filterrific, :system_group) %></th>
-      <th class="mHide"><%= filterrific_sorting_link(@filterrific, :registered_at) %></th>
       <th class="mHide"></th>
     </tr>
     <% systems.each do |system| %>
@@ -22,7 +21,6 @@
         <td><%= system.address %></td>
         <td><%= system.decorated_last_seen %></td>
         <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
-        <td class="mHide"><%= system.decorated_created_at %></td>
         <td class="mHide">
           <ul class="button-bar">
             <% if can? :read, system    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li><% end %>

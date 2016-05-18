@@ -27,6 +27,15 @@ class SystemsController < ApplicationController
     ) or return
     @concrete_package_versions = @filterrific_show.find.page(params[:page])
     @installableCPVs = ConcretePackageVersion.where(system: @system, concrete_package_state: ConcretePackageState.where(name: "Available")[0] )
+
+    @filterrific_show_tasks = initialize_filterrific(
+      Task,
+      params[:filterrific_task],
+      :select_options => {
+        with_task_state_id: TaskState.options_for_select
+      }
+    ) or return
+    @tasks = @filterrific_show_tasks.find.page(params[:page])
   end
 
   # POST /systems

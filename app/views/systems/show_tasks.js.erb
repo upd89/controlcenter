@@ -1,0 +1,11 @@
+<% js = escape_javascript(
+  render(
+    partial: 'systems/list_show_tasks',
+    locals: { tasks: @tasks }
+  )
+) %>
+$("#filterrific_table_tasks").html("<%= js %>");
+console.log(2, "<%= js %>");
+
+// make sure rows are clickable!
+$(document).trigger("page:change")
