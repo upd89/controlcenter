@@ -94,11 +94,35 @@
 <% end %>
 
 
-  <div id="filterrific_table" class="col_12">
+  <div id="filterrific_table" class="col_6">
     <%= render(
       partial: 'systems/list_show',
       locals: { concrete_package_versions: @concrete_package_versions }
     ) %>
+  </div>
+
+  <div class="col_6">
+    <table>
+      <thead>
+        <tr>
+          <th>Task ID</th>
+          <th>State</th>
+          <th>Owner</th>
+          <th># of Updates</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @system.tasks.each do |task| %>
+          <tr>
+            <td><%= link_to task.id, task %></td>
+            <td><%= task.task_state.name if task.task_state %></td>
+    	      <td><%= task.job.user.name %></td>
+            <td><%= task.concrete_package_versions.length %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
 
 <div class="floatFix"></div>
