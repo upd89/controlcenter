@@ -1,0 +1,14 @@
+  <table>
+    <tr>
+      <th>Package ID</th>
+      <th>Package Name</th>
+      <th>Package Section</th>
+    </tr>
+    <% @system_package_relations.each do |spr| %>
+      <tr>
+        <td><%= spr.pkg_id %></td>
+        <td><%= spr.pkg_name %></td>
+        <td><%= spr.pkg_section %></td>
+      </tr>
+    <% end %>
+  </table>
