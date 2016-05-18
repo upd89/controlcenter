@@ -3,6 +3,12 @@ require 'addressable/uri'
 class Package < ActiveRecord::Base
   has_many :package_versions
   has_many :concrete_package_versions, -> { distinct }, through: :package_versions
+  has_many :systems, -> { distinct }, through: :concrete_package_versions
+
+  stateAvail = ConcretePackageState.where(name: "Available").first
+  has_many :available_systems, -> { where(concrete_package_versions: { concrete_package_state: stateAvail }) }, through: :concrete_package_versions, source: :system
+
+  has_many :tasks, -> { distinct }, through: :concrete_package_versions
 
   has_many :group_assignments
   has_many :package_groups, -> { distinct }, through: :group_assignments

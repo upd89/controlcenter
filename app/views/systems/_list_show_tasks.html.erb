@@ -1,0 +1,35 @@
+<div id="filterrific_results">
+  <table>
+    <thead>
+      <tr>
+        <th>Task ID</th>
+        <th>State</th>
+        <th>Owner</th>
+        <th># of Updates</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tasks.each do |task| %>
+        <tr>
+          <td><%= link_to task.id, task %></td>
+          <td><%= task.task_state.name if task.task_state %></td>
+  	      <td><%= task.job.user.name if task.job && task.job.user %></td>
+          <td><%= task.concrete_package_versions.length %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="pagination col_12">
+    <div class="page_info col_6">
+      <%= page_entries_info @tasks %>
+    </div>
+    <div class="col_6">
+      <%= will_paginate @tasks, :container => false %>
+    </div>
+  </div>
+</div>
+
+<%= params["filterrific"] %>
+<%= params["filterrific_task"] %>
