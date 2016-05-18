@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new', :as => :login
   get 'logout' => 'user_sessions#destroy', :as => :logout
 
-  root 'systems#index'
+  root 'dashboard#index'
   resources :tasks
   resources :combinations
   resources :jobs
