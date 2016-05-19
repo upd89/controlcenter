@@ -16,6 +16,9 @@
         <td><%= spr[1].pkg_name %></td>
         <td><%= spr[1].pkg_section %></td>
         <td><%= spr[1].count %></td>
+	<td><ul class="button-bar">
+           <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, controller: "/system_package_relations", action: "show", id: spr[1].pkg_id %></li>
+        </ul>
       </tr>
     <% end %>
   </table>
