@@ -3,26 +3,37 @@
   <table class="striped tight clickableRows">
     <tr>
       <th>Selected</th>
+      <th><%= filterrific_sorting_link(@filterrific, :id) %></th>
       <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+      <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
       <th><%= filterrific_sorting_link(@filterrific, :nr_of_systems) %></th>
       <th></th>
     </tr>
     <% system_package_relations.each do |spr| %>
       <tr>
         <th></th>
-        <td><%= spr.pkg_name %></td>
-        <td><%= spr.nr_of_systems %></td>
+        <th><%= spr[1].pkg_id %></th>
+        <td><%= spr[1].pkg_name %></td>
+        <td><%= spr[1].pkg_section %></td>
+        <td><%= spr[1].count %></td>
       </tr>
     <% end %>
   </table>
 
   <div class="pagination col_12">
     <div class="page_info col_6">
-      <%= page_entries_info @system_package_relations %>
+      <%= page_entries_info @allSystemPackageRelations %>
     </div>
     <div class="col_6">
-      <%= will_paginate @system_package_relations, :container => false %>
+      <%= will_paginate @allSystemPackageRelations, :container => false %>
     </div>
   </div>
 
 </div>
+
+
+<p style="font-weight: bold">Debug</p>
+<p>Filterrific</p>
+<%= @filterrific %>
+<p>Params</p>
+<%= params["filterrific"] %>
