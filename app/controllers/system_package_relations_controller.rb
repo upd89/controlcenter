@@ -57,7 +57,7 @@ class SystemPackageRelationsController < ApplicationController
 
   # GET /system_package_relations/id
   def show
-    @system_package_relations = SystemPackageRelation.where(:pkg_id => @system_package_relation)
+    @system_package_relations = SystemPackageRelation.where(:pkg_id => params['id'])
   end
 
 end
