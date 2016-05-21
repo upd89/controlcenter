@@ -3,18 +3,17 @@ class SystemPackageRelationsController < ApplicationController
   # GET /system_package_relations
   def index
     @filterrific = initialize_filterrific(
-      SystemPackageRelation,
+      SystemPackageRelationGrouped,
       params[:filterrific],
       :select_options => {
-        sorted_by: SystemPackageRelation.options_for_sorted_by
+        sorted_by: SystemPackageRelationGrouped.options_for_sorted_by
       }
     ) or return
     @allSystemPackageRelations = @filterrific.find.page(params[:page])
 
-    @system_package_relations = SystemPackageRelationGrouped.all
+    @system_package_relations = @allSystemPackageRelations
 
-    @allSystemPackageRelations.select(:pkg_name).distinct
-
+    #@allSystemPackageRelations.select(:pkg_name).distinct
 
     # @filterrific = initialize_filterrific(
     #   Package,
