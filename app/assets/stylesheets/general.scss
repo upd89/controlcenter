@@ -27,17 +27,23 @@ html {
 }
 
 .actions {
- clear: both;
+  clear: both;
+
+  button, input[type="submit"] {
+   margin-bottom: 5px;
+  }
 }
 
-table.clickableRows {
-  tbody tr {
-    cursor: pointer;
-    cursor: hand;
+table {
+  &.clickableRows {
+    tbody tr {
+      cursor: pointer;
+      cursor: hand;
 
-    &:hover {
-      background: RGBA(170, 170, 170, 0.7);
     }
+  }
+  &.striped tbody tr:hover {
+    background: RGBA(170, 170, 170, 0.7);
   }
 }
 
@@ -80,10 +86,6 @@ table {
   tr td.hiddenFirstCol {
     width: 0px;
     padding: 0px;
-  }
-
-  ul.button-bar {
-    min-width: 105px;
   }
 }
 

@@ -18,5 +18,9 @@ class Task < ActiveRecord::Base
     where(:task_state_id => [*task_state_ids])
   }
 
+  def decorated_created_at
+      created_at.to_formatted_s(:short)
+  end
+
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
 end

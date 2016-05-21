@@ -79,43 +79,53 @@
   </li>
 </ul>
 
-<%= form_for_filterrific @filterrific_show_tasks, html: { class:"col_6" } do |f| %>
+<div class="col_6">
+  <%= form_for_filterrific @filterrific_show, html: { class:"col_12" } do |f| %>
 
-  <div class="">
-    <label for="state_task_select">State</label>
-    <%= f.select(
-      :with_task_state_id,
-      @filterrific_show_tasks.select_options[:with_task_state_id],
-      { include_blank: '- Any -' },
-      id: 'state_task_select'
+    <div class="">
+      <label for="state_select">State</label>
+      <%= f.select( :with_state_id, @filterrific_show.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_select') %>
+    </div>
+
+    <%= render_filterrific_spinner %>
+  <% end %>
+
+  <div id="filterrific_table" class="col_12">
+    <%= render(
+      partial: 'systems/list_show',
+      locals: { concrete_package_versions: @concrete_package_versions }
     ) %>
   </div>
-
-  <%= render_filterrific_spinner %>
-<% end %>
-
-<%= form_for_filterrific @filterrific_show, html: { class:"col_6" } do |f| %>
-
-  <div class="">
-    <label for="state_select">State</label>
-    <%= f.select( :with_state_id, @filterrific_show.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_select') %>
-  </div>
-
-  <%= render_filterrific_spinner %>
-<% end %>
-
-<div id="filterrific_table" class="col_6">
-  <%= render(
-    partial: 'systems/list_show',
-    locals: { concrete_package_versions: @concrete_package_versions }
-  ) %>
 </div>
 
-<div id="filterrific_table_tasks" class="col_6">
-  <%= render(
-    partial: 'systems/list_show_tasks',
-    locals: { tasks: @tasks }
-  ) %>
+<div class="col_6">
+  <h5>Last <%= @recent_tasks.count %> Tasks </h5>
+  <table class="col_12 striped tight clickableRows">
+    <thead>
+      <tr>
+        <th>Created at</th>
+        <th>State</th>
+        <th>Owner</th>
+        <th># of Updates</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @recent_tasks.each do |task| %>
+        <tr>
+          <td><%= task.decorated_created_at %></td>
+          <td><%= task.task_state.name if task.task_state %></td>
+          <td><%= task.job.user.name if task.job && task.job.user %></td>
+          <td><%= task.concrete_package_versions.length %></td>
+          <td>
+            <ul class="button-bar">
+              <% if can? :read, task    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task  %></li><% end %>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <div class="floatFix"></div>

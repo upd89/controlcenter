@@ -1,6 +1,6 @@
 <div id="filterrific_results">
   <%= form_tag({controller: "jobs", action: "create"}) do %>
-    <table class="availableUpdates">
+    <table class="striped tight availableUpdates">
       <thead>
         <tr>
           <th>Package</th>
@@ -45,6 +45,3 @@
 
   <% end %>
 </div>
-
-<%= params["filterrific"] %>
-<%= params["filterrific_task"] %>

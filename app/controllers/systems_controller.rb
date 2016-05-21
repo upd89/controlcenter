@@ -18,15 +18,8 @@ class SystemsController < ApplicationController
 
   # GET /systems/1
   def show
-    @filterrific_show_tasks = initialize_filterrific(
-      Task,
-      params[:filterrific],
-      :select_options => {
-        with_task_state_id: TaskState.options_for_select
-      }
-    ) or return
-    @tasks = @filterrific_show_tasks.find.page(params[:page])
-    
+    @recent_tasks = @system.tasks.order(:created_at ).reverse_order.limit(10)
+
     @filterrific_show = initialize_filterrific(
       ConcretePackageVersion.where(system: @system ),
       params[:filterrific],
