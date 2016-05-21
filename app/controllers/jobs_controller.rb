@@ -1,15 +1,13 @@
 class JobsController < ApplicationController
-  before_action :set_job, only: [:show, :edit, :update, :destroy]
+  before_action :set_job, only: [:show, :edit, :update, :destroy, :execute]
 
   # GET /jobs
-  # GET /jobs.json
   def index
     @jobs = Job.all
     @paginated_jobs = @jobs.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /jobs/1
-  # GET /jobs/1.json
   def show
     @tasks = Task.where(:job => @job)
     @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
@@ -25,9 +23,10 @@ class JobsController < ApplicationController
   end
 
   # POST /jobs
-  # POST /jobs.json
   def create
-    @task = Task.new(task_state: TaskState.where(name: "Pending")[0] )
+    @task = Task.new(
+      task_state: TaskState.where(name: "Pending")[0],
+      tries: 0 )
 
     if params[:all]
       # get task IDs from system, map to strings
@@ -49,16 +48,14 @@ class JobsController < ApplicationController
       end
     end
 
-    @task.tries = 0
     @task.save
 
     if current_user
       @job = Job.new(user: current_user,
-                     started_at: Time.new)
+                     started_at: Time.new,
+                     is_in_preview: true)
       @job.tasks << @task
       @job.save
-
-      BackgroundSender.perform_async( @task )
 
       redirect_to @job
     else
@@ -88,6 +85,29 @@ class JobsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to jobs_url, success: 'Job was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def execute
+    if params[:execute]
+      @job.is_in_preview = false
+      @job.save()
+      @job.tasks.each do |t|
+        BackgroundSender.perform_async( t )
+      end
+      redirect_to @job
+    elsif params[:cancel]
+      stateAvail = ConcretePackageState.where(name: "Available")[0]
+      @job.tasks.each do |t|
+        t.concrete_package_versions.each do |cpv|
+          cpv.concrete_package_state = stateAvail
+          cpv.task = nil
+          cpv.save()
+        end
+        t.destroy
+      end
+      @job.destroy
+      redirect_to systems_path
     end
   end
 

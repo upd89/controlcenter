@@ -15,6 +15,7 @@
       <th>Started at</th>
       <th>User</th>
       <th>Tasks</th>
+      <th>Note</th>
       <th></th>
     </tr>
   </thead>
@@ -22,9 +23,10 @@
   <tbody>
     <% @paginated_jobs.each do |job| %>
       <tr>
-        <td><%= job.started_at %></td>
+        <td><%= job.decorated_started_at %></td>
         <td><%= job.user.name if job.user %></td>
         <td><%= job.tasks.length %></td>
+        <td><%= job.is_in_preview ? ('<span class="success">Ready to be sent!</span>' ).html_safe : "" %></td>
         <td>
           <ul class="button-bar">
             <% if can? :read, job    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, job %></li><% end %>

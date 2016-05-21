@@ -21,6 +21,10 @@
   }]
 } %>
 
+<% if @job.is_in_preview %>
+  <h5>Please review the job</h5>
+<% end %>
+
 <ul class="properties col_6">
   <li>
     <p>
@@ -59,6 +63,15 @@
     <% end %>
   </tbody>
 </table>
+
+<% if @job.is_in_preview %>
+  <div class="actions">
+    <%= form_for @job, :url => { :action => "execute" }, :html => { :method => :put } do |f| %>
+      <%= submit_tag "Execute Job", :name => 'execute', :id=>"executeJobBtn" %>
+      <%= submit_tag "Cancel Job", :name => 'cancel', :id=>"cancelJobBtn" %>
+    <% end %>
+  </div>
+<% end %>
 
 <div class="digg_pagination">
   <div class="page_info">
