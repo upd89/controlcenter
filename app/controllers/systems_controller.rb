@@ -18,7 +18,7 @@ class SystemsController < ApplicationController
 
   # GET /systems/1
   def show
-    @recent_tasks = @system.tasks.order(:created_at ).reverse_order.limit(10)
+    @recent_tasks = @system.tasks.order(:created_at ).reverse_order.limit(Settings.Systems.NoOfShownRecentTasks)
 
     @filterrific_show = initialize_filterrific(
       ConcretePackageVersion.where(system: @system ),

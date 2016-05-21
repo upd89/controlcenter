@@ -3,3 +3,5 @@ Pagination:
 BackgroundTask:
   SecondsBetweenTries: 20
   MaximumAmountOfTries: 3
+Systems:
+  NoOfShownRecentTasks: 10
