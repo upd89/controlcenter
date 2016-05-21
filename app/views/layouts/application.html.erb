@@ -10,7 +10,6 @@
 
     <ul class="menu">
       <% if current_user %>
-        <li><%= link_to ('<i class="fa fa-home"></i> Hello, ' + current_user.name + '!').html_safe, root_path %></li>
         <li><%= link_to ('<i class="fa fa-tachometer"></i> Dashboard').html_safe, root_path %></li>
         <li><%= link_to ('<i class="fa fa-globe"></i> System+Packages').html_safe, system_package_relations_path %></li>
         <li><%= link_to ('<i class="fa fa-server"></i> Systems').html_safe, systems_path %></li>
@@ -25,6 +24,9 @@
           <ul>
             <li><%= link_to 'Users', users_path %></li>
             <li><%= link_to 'Roles', roles_path %></li>
+            <% if can? :edit, current_user %>
+            <li class="right"><%= link_to ('<i class="fa fa-pencil"></i> Edit Profile').html_safe, edit_user_path(current_user.id) %></li>
+            <% end %>
           </ul>
         </li>
         <li><a href=""><i class="fa fa-check-square-o"></i></span>Jobs/Tasks</a>
@@ -35,9 +37,6 @@
           </ul>
         </li>
         <li class="right"><%= link_to ('<i class="fa fa-sign-out"></i> Logout').html_safe, :logout %></li>
-        <% if can? :edit, current_user %>
-        <li class="right"><%= link_to ('<i class="fa fa-pencil"></i> Edit Profile').html_safe, edit_user_path(current_user.id) %></li>
-        <% end %>
       <% else %>
         <li><%= link_to ('<i class="fa fa-sign-in"></i> Login').html_safe, :login %></li>
       <% end %>

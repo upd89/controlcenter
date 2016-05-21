@@ -4,6 +4,7 @@
 } %>
 
 <div class="col_12">
+  <p>Hello, <%= link_to current_user.name, edit_user_path(current_user.id) %>!</p>
   <h4>Systems:</h4>
   <ul>
     <li><%= @systems.count %> Systems present</li>
