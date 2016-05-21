@@ -29,7 +29,8 @@ class DashboardController < ApplicationController
   end
 
   def get_systems_without_group
-    @systems.where( system_group: nil )
+    unassigned = SystemGroup.where(name: "Unassigned-System")[0]
+    @systems.where( system_group: [ nil, unassigned ] )
   end
 
   def get_packages_without_group

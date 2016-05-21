@@ -23,8 +23,9 @@ Rails.application.routes.draw do
   resources :system_package_relations
 
   post '/jobs/test' => 'jobs#test'
-  
+
   put '/jobs/:id/execute' => 'jobs#execute'
+  get '/assign' => 'assignment#index', :as => :assign
 
   scope '/api' do
     scope module: 'api' do

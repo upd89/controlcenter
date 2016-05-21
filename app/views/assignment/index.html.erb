@@ -1,0 +1,65 @@
+<%= render :partial => "header", :object => {
+  "title" => "Assign ungrouped entities",
+  "actions" =>[{
+    "icon" => "arrow-left",
+    "text" => "",
+    "path" => root_path
+  }]
+} %>
+
+<% if @systems.count > 0 %>
+  <h4>Systems</h4>
+  <table class="striped tight">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Registered at</th>
+        <th>URN</th>
+        <th>System Group</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @systems.each do |system| %>
+        <tr>
+          <td><%= system.name %></td>
+          <td><%= system.decorated_created_at %></td>
+          <td><%= system.urn %></td>
+          <td>
+            <%= form_for(system, remote: true) do |f| %>
+              <%= f.collection_select(:system_group_id, SystemGroup.all, :id, :name, {}, onchange: "$(this).parent('form').submit();") %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if @packages.count > 0 %>
+  <h4>Packages</h4>
+  <table class="striped tight">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Section</th>
+        <th>Homepage</th>
+        <th>Package Groups</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @packages.each do |package| %>
+        <tr>
+          <td><%= package.name %></td>
+          <td><%= package.section %></td>
+          <td><a href="<%= package.homepage %>"><%= package.nice_url %></a></td>
+          <td>
+            <td>
+              <%= form_for(package, remote: true) do |f| %>
+              <% end %>
+            </td>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
