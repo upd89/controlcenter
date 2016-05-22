@@ -5,6 +5,12 @@ class UsersController < ApplicationController
 
   load_and_authorize_resource
 
+  def show
+    @system_groups = SystemGroup.where("permission_level <= ?", @user.role.permission_level )
+
+    @package_groups = PackageGroup.where("permission_level <= ?", @user.role.permission_level )
+  end
+
   # POST /users
   def create
     @user = User.new(user_params)

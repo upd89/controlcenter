@@ -41,4 +41,17 @@
   </li>
 </ul>
 
+<div class="col_6">
+  <h4>Permissions</h4>
+  <p>Can edit or create tasks for <%= pluralize(@system_groups.count, "System Group") %></p>
+  <% @system_groups.each do |grp| %>
+    <div><%= link_to(grp.name, grp) %> (<%= pluralize(grp.systems.count, 'System') %>)</div>
+  <% end %>
+
+  <p>Can edit or create tasks for <%= pluralize(@package_groups.count, "Package Group") %></p>
+  <% @package_groups.each do |grp| %>
+    <div><%= link_to(grp.name, grp) %> (<%= pluralize(grp.packages.count, 'System') %>)</div>
+  <% end %>
+</div>
+
 <div class="floatFix"></div>
