@@ -3,7 +3,8 @@ class DashboardController < ApplicationController
                 :get_failed_tasks,
                 :get_not_recently_seen_systems,
                 :get_systems_without_group,
-                :get_packages_without_group
+                :get_packages_without_group,
+                :get_tasks_for_recent_activities
 
   #load_and_authorize_resource
 
@@ -35,5 +36,9 @@ class DashboardController < ApplicationController
 
   def get_packages_without_group
     @packages.reject{|pkg| !pkg.group_assignments.empty?}
+  end
+
+  def get_tasks_for_recent_activities
+    @tasks.order(:created_at ).reverse_order.limit(Settings.Systems.NoOfShownRecentTasks)
   end
 end

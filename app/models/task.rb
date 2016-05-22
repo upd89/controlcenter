@@ -19,7 +19,28 @@ class Task < ActiveRecord::Base
   }
 
   def decorated_created_at
-      created_at.to_formatted_s(:short)
+    created_at.to_formatted_s(:short)
+  end
+
+  def to_full_sentence
+    decorated_created_at + ": " + job.user.name + " created Task " + id.to_s + " with " + concrete_package_versions.length.to_s + " Updates" + (concrete_package_versions.count > 0 ? " for " + concrete_package_versions.first.system.name : "")
+  end
+
+  def state_description
+    case task_state
+      when TaskState.where(name: "Pending")[0]
+        ", is still going on."
+      when TaskState.where(name: "Not Delivered")[0]
+        ", which wasn't delivered."
+      when TaskState.where(name: "Queued")[0]
+        ", which is queued."
+      when TaskState.where(name: "Failed")[0]
+        ", which failed."
+      when TaskState.where(name: "Done")[0]
+        ", which succeeded!"
+      else
+        "."
+      end
   end
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage

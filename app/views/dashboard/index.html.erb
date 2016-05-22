@@ -5,35 +5,53 @@
 
 <div class="col_12">
   <p>Hello, <%= link_to current_user.name, edit_user_path(current_user.id) %>!</p>
-  <h4>Systems:</h4>
-  <ul>
-    <li><%= @systems.count %> Systems present</li>
-    <% if get_not_recently_seen_systems.count > 0 %>
-    <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
-    <% end %>
+
+  <div class="col_6">
+    <h4>Systems:</h4>
+    <ul>
+      <li><%= @systems.count %> Systems present</li>
+      <% if get_not_recently_seen_systems.count > 0 %>
+      <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+      <% end %>
+      <% if get_systems_without_group.count > 0 %>
+      <li><%= get_systems_without_group.count %> Systems not in a group</li>
+      <% end %>
+    </ul>
+
     <% if get_systems_without_group.count > 0 %>
-    <li><%= get_systems_without_group.count %> Systems not in a group</li>
+      <%= link_to("Assign to groups", :assign) %>
     <% end %>
-  </ul>
+  </div>
 
-  <h4>Packages:</h4>
-  <ul>
-    <li><%= @packages.count %> known Packages</li>
+  <div class="col_6">
+    <h4>Packages:</h4>
+    <ul>
+      <li><%= @packages.count %> known Packages</li>
+      <% if get_packages_without_group.count > 0 %>
+      <li><%= get_packages_without_group.count %> Packages not in a group</li>
+      <% end %>
+    </ul>
+
     <% if get_packages_without_group.count > 0 %>
-    <li><%= get_packages_without_group.count %> Packages not in a group</li>
+      <%= link_to("Assign to groups", :assign) %>
     <% end %>
-  </ul>
+  </div>
 
-  <h4>Tasks:</h4>
-  <ul>
-    <li><%= get_running_tasks.count %> pending Tasks</li>
-    <li><%= get_failed_tasks.count %> failed Tasks</li>
-  </ul>
+  <div class="col_6">
+    <h4>Tasks:</h4>
 
-  <% if get_systems_without_group.count > 0 || get_packages_without_group.count > 0 %>
-    <%= link_to("Assign to groups", :assign) %>
-  <% end %>
+    <ul>
+      <li><%= get_running_tasks.count %> pending Tasks</li>
+      <li><%= get_failed_tasks.count %> failed Tasks</li>
+    </ul>
+  </div>
 
+  <div class="col_6">
+    <h4>Recent Activity:</h4>
+    <% get_tasks_for_recent_activities.each do |t| %>
+      <div><%= link_to( t.to_full_sentence + t.state_description, t) %></div>
+    <% end %>
+  </div>
 </div>
 
 <div class="floatFix"></div>
