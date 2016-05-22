@@ -8,14 +8,20 @@
   <h4>Systems:</h4>
   <ul>
     <li><%= @systems.count %> Systems present</li>
-    <li><%= get_not_recently_seen_systems.count %> Systems not seen in past 4 hours</li>
+    <% if get_not_recently_seen_systems.count > 0 %>
+    <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+    <% end %>
+    <% if get_systems_without_group.count > 0 %>
     <li><%= get_systems_without_group.count %> Systems not in a group</li>
+    <% end %>
   </ul>
 
   <h4>Packages:</h4>
   <ul>
     <li><%= @packages.count %> known Packages</li>
+    <% if get_packages_without_group.count > 0 %>
     <li><%= get_packages_without_group.count %> Packages not in a group</li>
+    <% end %>
   </ul>
 
   <h4>Tasks:</h4>

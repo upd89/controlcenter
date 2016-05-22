@@ -25,7 +25,7 @@ class DashboardController < ApplicationController
   end
 
   def get_not_recently_seen_systems
-    @systems.where("last_seen > ?", (Time.now - 4.hours ) )
+    @systems.where("last_seen > ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) )
   end
 
   def get_systems_without_group

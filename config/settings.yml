@@ -5,3 +5,4 @@ BackgroundTask:
   MaximumAmountOfTries: 3
 Systems:
   NoOfShownRecentTasks: 10
+  NotSeenWarningThresholdMinutes: 240
