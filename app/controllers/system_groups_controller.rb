@@ -5,8 +5,15 @@ class SystemGroupsController < ApplicationController
 
   # GET /system_groups/1
   def show
-    @systems = System.where(:system_group => @system_group)
-    @paginated_systems = @systems.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @filterrific = initialize_filterrific(
+      System.where(:system_group => @system_group),
+      params[:filterrific],
+      :select_options => {
+        sorted_by: System.options_for_sorted_by,
+        with_system_group_id: SystemGroup.options_for_select
+      }
+    ) or return
+    @systems = @filterrific.find.page(params[:page])
   end
 
   # POST /system_groups

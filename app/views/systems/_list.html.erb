@@ -1,44 +1,55 @@
 <%# app/views/systems/_list.html.erb %>
 <div id="filterrific_results">
-
-  <table class="striped tight clickableRows">
-    <tr>
-      <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
-      <th class="mHide"><%= filterrific_sorting_link(@filterrific, :urn) %></th>
-      <th class="mHide"><%= filterrific_sorting_link(@filterrific, :os) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :reboot_required) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :address) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :last_seen) %></th>
-      <th class="mHide"><%= filterrific_sorting_link(@filterrific, :system_group) %></th>
-      <th class="mHide"></th>
-    </tr>
-    <% systems.each do |system| %>
+  <%= form_tag({controller: "jobs", action: "create"}) do %>
+    <table class="striped tight clickableRows availableUpdates">
       <tr>
-        <td><%= system.name %></td>
-        <td class="mHide"><%= system.urn %></td>
-        <td class="mHide"><%= system.os %></td>
-        <td><%= system.reboot_required ? "yes" : "no" %></td>
-        <td><%= system.address %></td>
-        <td><%= system.decorated_last_seen %></td>
-        <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
-        <td class="mHide">
-          <ul class="button-bar">
-            <% if can? :read, system    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li><% end %>
-            <% if can? :update, system  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li><% end %>
-            <% if can? :destroy, system %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
-          </ul>
-        </td>
+        <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+        <th class="mHide"><%= filterrific_sorting_link(@filterrific, :urn) %></th>
+        <th class="mHide"><%= filterrific_sorting_link(@filterrific, :os) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :reboot_required) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :address) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :last_seen) %></th>
+        <th class="mHide"><%= filterrific_sorting_link(@filterrific, :system_group) %></th>
+        <th class="mHide"></th>
+        <th>Install?</th>
       </tr>
-    <% end %>
-  </table>
+      <% systems.each do |system| %>
+        <tr>
+          <td><%= system.name %></td>
+          <td class="mHide"><%= system.urn %></td>
+          <td class="mHide"><%= system.os %></td>
+          <td><%= system.reboot_required ? "yes" : "no" %></td>
+          <td><%= system.address %></td>
+          <td><%= system.decorated_last_seen %></td>
+          <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
+          <td class="mHide">
+            <ul class="button-bar">
+              <% if can? :read, system    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li><% end %>
+              <% if can? :update, system  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_system_path(system) %></li><% end %>
+              <% if can? :destroy, system %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, system, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
+            </ul>
+          </td>
+          <td>
+            <% if system.get_installable_CPVs.count > 0 %>
+              <%= check_box_tag "updates[]", system.id, false, class: 'checkboxInstallUpdate' %>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </table>
 
-  <div class="pagination col_12">
-    <div class="page_info col_6">
-      <%= page_entries_info @systems %>
+    <div class="actions">
+      <%= submit_tag "Update Selected", :name => 'specific', :id=>"createJobBtn" %>
+      <%= submit_tag "Update All", :name => 'all', :id=>"createJobBtnForAll" %>
     </div>
-    <div class="col_6">
-      <%= will_paginate @systems, :container => false %>
-    </div>
-  </div>
 
+    <div class="pagination col_12">
+      <div class="page_info col_6">
+        <%= page_entries_info @systems %>
+      </div>
+      <div class="col_6">
+        <%= will_paginate @systems, :container => false %>
+      </div>
+    </div>
+  <% end %>
 </div>

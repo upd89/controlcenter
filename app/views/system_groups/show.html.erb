@@ -35,31 +35,16 @@
   </li>
 </ul>
 
-<% if @systems.length > 0 %>
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @paginated_systems.each do |system| %>
-      <tr>
-        <td><%= system.name %></td>
-        <td><%= link_to system.id, system %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
 
-<div class="digg_pagination">
-  <div class="page_info">
-    <%= page_entries_info @paginated_systems %>
-  </div>
-  <%= will_paginate @paginated_systems, :container => false %>
-</div>
-
+  <%= render_filterrific_spinner %>
 <% end %>
+
+<div id="filterrific_table" class="col_12">
+  <%= render(
+    partial: 'systems/list',
+    locals: { systems: @systems }
+  ) %>
+</div>
 
 <div class="floatFix"></div>
