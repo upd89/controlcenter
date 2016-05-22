@@ -4,50 +4,61 @@
 } %>
 
 <div class="col_12">
-  <p>Hello, <%= link_to current_user.name, edit_user_path(current_user.id) %>!</p>
+  <p>Hello, <%= link_to current_user.name, user_path(current_user.id) %>!</p>
 
-  <div class="col_6">
-    <h4>Systems:</h4>
-    <ul>
-      <li><%= @systems.count %> Systems present</li>
-      <% if get_not_recently_seen_systems.count > 0 %>
-      <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
-      <% end %>
+  <div class="col_12">
+    <div class="col_6 dashboard_box">
+      <h4>Systems</h4>
+      <ul>
+        <li><%= @systems.count %> Systems present</li>
+        <% if get_not_recently_seen_systems.count > 0 %>
+        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+        <% end %>
+        <% if get_systems_without_group.count > 0 %>
+        <li><%= get_systems_without_group.count %> Systems not in a group</li>
+        <% end %>
+      </ul>
+
       <% if get_systems_without_group.count > 0 %>
-      <li><%= get_systems_without_group.count %> Systems not in a group</li>
+        <%= link_to("Assign to a group", :assign, class: "button") %>
       <% end %>
-    </ul>
+    </div>
 
-    <% if get_systems_without_group.count > 0 %>
-      <%= link_to("Assign to groups", :assign) %>
-    <% end %>
-  </div>
+    <div class="col_6 dashboard_box">
+      <h4>Packages</h4>
+      <ul>
+        <li><%= @packages.count %> known Packages</li>
+        <% if get_packages_without_group.count > 0 %>
+        <li><%= get_packages_without_group.count %> Packages not in a group</li>
+        <% end %>
+      </ul>
 
-  <div class="col_6">
-    <h4>Packages:</h4>
-    <ul>
-      <li><%= @packages.count %> known Packages</li>
       <% if get_packages_without_group.count > 0 %>
-      <li><%= get_packages_without_group.count %> Packages not in a group</li>
+        <%= link_to("Assign to groups", :assign, class: "button") %>
       <% end %>
-    </ul>
-
-    <% if get_packages_without_group.count > 0 %>
-      <%= link_to("Assign to groups", :assign) %>
-    <% end %>
+    </div>
   </div>
 
-  <div class="col_6">
-    <h4>Tasks:</h4>
+  <div class="col_12">
+    <div class="col_6 dashboard_box">
+      <h4>Tasks</h4>
 
-    <ul>
-      <li><%= get_running_tasks.count %> pending Tasks</li>
-      <li><%= get_failed_tasks.count %> failed Tasks</li>
-    </ul>
+      <ul>
+        <li><%= get_running_tasks.count %> pending Tasks</li>
+        <li><%= get_failed_tasks.count %> failed Tasks</li>
+      </ul>
+    </div>
+
+    <div class="col_6 dashboard_box">
+      <h4>Available Updates</h4>
+      <% @updatable_systems.each do |sys| %>
+        <div><%= link_to(sys.name, sys) + ": " + sys.get_installable_CPVs.count.to_s %></div>
+      <% end %>
+    </div>
   </div>
 
-  <div class="col_6">
-    <h4>Recent Activity:</h4>
+  <div class="col_12 dashboard_box">
+    <h4>Recent Activity</h4>
     <% get_tasks_for_recent_activities.each do |t| %>
       <div><%= link_to( t.to_full_sentence + t.state_description, t) %></div>
     <% end %>

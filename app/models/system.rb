@@ -87,6 +87,10 @@ class System < ActiveRecord::Base
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
 
+  def get_installable_CPVs
+    cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+    ConcretePackageVersion.where(system: self, concrete_package_state: cpv_state_avail )
+  end
 
   def decorated_created_at
       created_at.to_formatted_s(:short)

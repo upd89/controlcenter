@@ -10,18 +10,23 @@ class DashboardController < ApplicationController
 
   # GET /dashboard
   def index
+    cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+
     @systems = System.all
     @packages = Package.all
     @tasks = Task.all
+    @updates = ConcretePackageVersion.where(concrete_package_state: cpv_state_avail)
+
+    @updatable_systems = @systems.reject{ |s| s.get_installable_CPVs.count < 1 }
   end
 
   def get_running_tasks
-    statePending = TaskState.where(name: "Pending")
+    statePending = TaskState.where(name: "Pending")[0]
     @tasks.where(task_state: statePending)
   end
 
   def get_failed_tasks
-    stateFailed = TaskState.where(name: "Failed")
+    stateFailed = TaskState.where(name: "Failed")[0]
     @tasks.where(task_state: stateFailed)
   end
 

@@ -153,3 +153,16 @@ table {
     display: none;
   }
 }
+
+
+/* Dashboard */
+div.dashboard_box {
+    background-color: #E6E6E6;
+    padding: 0px 10px 10px 10px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+
+    .button {
+      float: right;
+    }
+}

@@ -1,12 +1,12 @@
 <%= render :partial => "header", :object => {
-  "title" => "Assign ungrouped entities",
+  "title" => "Assign to Groups",
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
     "path" => root_path
   }]
 } %>
-
+<div class="col_12">
 <% if @systems.count > 0 %>
   <h4>Systems</h4>
   <table class="striped tight">
@@ -63,3 +63,6 @@
     </tbody>
   </table>
 <% end %>
+</div>
+
+<div class="floatFix"></div>
