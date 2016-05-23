@@ -17,30 +17,6 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     ]
   )
 
-  scope :sys_search_query, lambda { |query|
-    return nil  if query.blank?
-    # condition query, parse into individual keywords
-    terms = query.downcase.split(/\s+/)
-    # replace "*" with "%" for wildcard searches,
-    # append '%', remove duplicate '%'s
-    terms = terms.map { |e|
-      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
-    }
-    # configure number of OR conditions for provision
-    # of interpolation arguments. Adjust this if you
-    # change the number of OR conditions.
-    num_or_conditions = 2
-    where(
-      terms.map {
-        or_clauses = [
-          "LOWER(pkg_name) LIKE ?",
-          "LOWER(pkg_section) LIKE ?"
-        ].join(' OR ')
-        "(#{ or_clauses })"
-      }.join(' AND '),
-      *terms.map { |e| [e] * num_or_conditions }.flatten
-    )
-  }
   scope :pkg_search_query, lambda { |query|
     return nil  if query.blank?
     # condition query, parse into individual keywords
@@ -64,6 +40,40 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
       }.join(' AND '),
       *terms.map { |e| [e] * num_or_conditions }.flatten
     )
+  }
+
+  scope :sys_search_query, lambda { |query|
+    return nil  if query.blank?
+    # condition query, parse into individual keywords
+    terms = query.downcase.split(/\s+/)
+    # replace "*" with "%" for wildcard searches,
+    # append '%', remove duplicate '%'s
+    terms = terms.map { |e|
+      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
+    }
+    # configure number of OR conditions for provision
+    # of interpolation arguments. Adjust this if you
+    # change the number of OR conditions.
+
+
+    num_or_conditions = 2
+    sys_pkg_rel = SystemPackageRelation.where(
+        terms.map {
+            or_clauses = [
+                "LOWER(sys_name) LIKE ?",
+                "LOWER(sys_urn) LIKE ?"
+            ].join(' OR ')
+            "(#{ or_clauses })"
+        }.join(' AND '),
+        *terms.map { |e| [e] * num_or_conditions }.flatten
+    )
+
+    pkg_ids = []
+    sys_pkg_rel.each do | pkg |
+      pkg_ids.append(pkg.pkg_id)
+    end
+    where(:pkg_id => pkg_ids)
+
   }
   scope :sorted_by, lambda { |sort_option|
     # extract the sort direction from the param value.
