@@ -14,6 +14,7 @@
     <tr>
       <th>Name</th>
       <th>Permission level</th>
+      <th>Packages</th>
       <th></th>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
       <tr>
         <td><%= package_group.name %></td>
         <td><%= package_group.permission_level %></td>
+        <td><%= package_group.group_assignments.count %></td>
         <td>
           <ul class="button-bar">
             <% if can? :read, package_group    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_group %></li><% end %>
