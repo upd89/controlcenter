@@ -18,9 +18,7 @@
 
     <div class="col_3">
       <label for="combo_group_select_sys">System Group</label>
-      <% if false %>
       <%= f.select( :with_system_group_id, @filterrific.select_options[:with_system_group_id], { include_blank: '- Any -' }, id: 'combo_group_select_sys') %>
-      <% end %>
     </div>
   </div>
 
@@ -30,20 +28,16 @@
     <div class="col_3">
       <label for="pkg_search_query">Search</label>
 
-      <% if false %>
       <%= f.text_field(
         :pkg_search_query,
         class: 'filterrific-periodically-observed',
         id: 'pkg_search_query'
       ) %>
-      <% end %>
     </div>
 
     <div class="col_3">
       <label for="combo_group_select_pkg">Package Group</label>
-      <% if false %>
       <%= f.select( :with_package_group_id, @filterrific.select_options[:with_package_group_id], { include_blank: '- Any -' }, id: 'combo_group_select_pkg') %>
-      <% end %>
     </div>
   </div>
 

@@ -11,11 +11,37 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     available_filters: [
       :sorted_by,
       :sys_search_query,
-      :with_system_group_id
+      :pkg_search_query,
+      :with_system_group_id,
+      :with_package_group_id
     ]
   )
 
   scope :sys_search_query, lambda { |query|
+    return nil  if query.blank?
+    # condition query, parse into individual keywords
+    terms = query.downcase.split(/\s+/)
+    # replace "*" with "%" for wildcard searches,
+    # append '%', remove duplicate '%'s
+    terms = terms.map { |e|
+      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
+    }
+    # configure number of OR conditions for provision
+    # of interpolation arguments. Adjust this if you
+    # change the number of OR conditions.
+    num_or_conditions = 2
+    where(
+      terms.map {
+        or_clauses = [
+          "LOWER(pkg_name) LIKE ?",
+          "LOWER(pkg_section) LIKE ?"
+        ].join(' OR ')
+        "(#{ or_clauses })"
+      }.join(' AND '),
+      *terms.map { |e| [e] * num_or_conditions }.flatten
+    )
+  }
+  scope :pkg_search_query, lambda { |query|
     return nil  if query.blank?
     # condition query, parse into individual keywords
     terms = query.downcase.split(/\s+/)
@@ -57,6 +83,9 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
   }
   scope :with_system_group_id, lambda { |system_group_ids|
     where(:system_group_id => [*system_group_ids])
+  }
+  scope :with_package_group_id, lambda { |package_group_ids|
+    where(:package_group_id => [*package_group_ids])
   }
 
   def self.options_for_sorted_by
