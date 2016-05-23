@@ -1,7 +1,8 @@
 <% js = escape_javascript(
-render(
-  partial: 'system_package_relations/list',
-  locals: { system_package_relations: @system_package_relations }
+  render(
+    partial: 'system_package_relations/list',
+    locals: { system_package_relations: @system_package_relations }
+  )
 ) %>
 $("#filterrific_table").html("<%= js %>");
 

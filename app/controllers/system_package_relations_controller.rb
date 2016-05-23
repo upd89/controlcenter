@@ -5,8 +5,9 @@ class SystemPackageRelationsController < ApplicationController
     @filterrific = initialize_filterrific(
       SystemPackageRelationGrouped,
       params[:filterrific],
-      :select_options => {
-        sorted_by: SystemPackageRelationGrouped.options_for_sorted_by
+      select_options: {
+        sorted_by: SystemPackageRelationGrouped.options_for_sorted_by,
+        with_system_group_id: SystemGroup.options_for_select
       }
     ) or return
 
