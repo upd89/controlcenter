@@ -40,7 +40,7 @@ class Task < ActiveRecord::Base
         ", which succeeded!"
       else
         "."
-      end
+    end
   end
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
