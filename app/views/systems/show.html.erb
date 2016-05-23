@@ -119,14 +119,14 @@
           <td><%= task.concrete_package_versions.length %></td>
           <td>
             <ul class="button-bar">
-              <% if can? :read, task    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task  %></li><% end %>
+              <% if can? :read, task %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task  %></li><% end %>
             </ul>
           </td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <%= link_to( "See all Tasks for this System", tasks_path() ) %>
+  <%= link_to( "See all Tasks for this System", tasks_path( filterrific: { with_system_id: @system.id } ) ) %>
 </div>
 
 <div class="floatFix"></div>
