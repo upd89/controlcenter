@@ -1,5 +1,4 @@
-<div id="packageID" style="visibility: hidden; display: none;"><%= @system_package_relations.first.pkg_id %></div>
-<h5>Applicable Systems for <%= @system_package_relations.first.pkg_name %></h5>
+<h5 id="packageID" data-pkg-id="<%= @system_package_relations.first.pkg_id %>">Applicable Systems for <%= @system_package_relations.first.pkg_name %></h5>
 <table class="striped tight comboUpdates col_6">
   <tr>
     <th>Package Version</th>
