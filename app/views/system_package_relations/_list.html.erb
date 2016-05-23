@@ -1,6 +1,6 @@
 <div id="filterrific_results">
 
-  <table class="striped tight clickableRows">
+  <table class="striped tight col_6">
     <tr>
       <th>Selected</th>
       <th><%= filterrific_sorting_link(@filterrific, :id) %></th>
@@ -16,12 +16,17 @@
         <td><%= spr.pkg_name %></td>
         <td><%= spr.pkg_section %></td>
         <td><%= spr.sys_count %></td>
-	<td><ul class="button-bar">
-           <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, controller: "/system_package_relations", action: "show", id: spr.pkg_id %></li>
-        </ul>
+        <td>
+          <ul class="button-bar">
+            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, action: "show", remote: true, id: spr.pkg_id %></li>
+          </ul>
+        </td>
       </tr>
     <% end %>
   </table>
+
+  <div id="details" class="col_6">
+  </div>
 
   <div class="pagination col_12">
     <div class="page_info col_6">
@@ -34,9 +39,10 @@
 
 </div>
 
-
-<p style="font-weight: bold">Debug</p>
-<p>Filterrific</p>
-<%= @filterrific %>
-<p>Params</p>
-<%= params["filterrific"] %>
+<div class="col_12">
+  <p style="font-weight: bold">Debug</p>
+  <p>Filterrific</p>
+  <%= @filterrific %>
+  <p>Params</p>
+  <%= params["filterrific"] %>
+</div>
