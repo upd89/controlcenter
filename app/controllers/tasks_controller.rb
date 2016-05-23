@@ -4,9 +4,6 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    #@tasks = Task.all
-    #@paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
-
     @filterrific = initialize_filterrific(
       Task,
       params[:filterrific],

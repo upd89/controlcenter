@@ -53,4 +53,6 @@ class GroupAssignment < ActiveRecord::Base
     end
     where(:package_id => pkg_ids)
   }
+
+  self.per_page = Settings.Pagination.NoOfEntriesPerPage
 end
