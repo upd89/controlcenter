@@ -4,7 +4,8 @@ class DashboardController < ApplicationController
                 :get_not_recently_seen_systems,
                 :get_systems_without_group,
                 :get_packages_without_group,
-                :get_tasks_for_recent_activities
+                :get_tasks_for_recent_activities,
+                :get_overdue_tasks
 
   #load_and_authorize_resource
 
@@ -45,5 +46,12 @@ class DashboardController < ApplicationController
 
   def get_tasks_for_recent_activities
     @tasks.order(:created_at ).reverse_order.limit(Settings.Systems.NoOfShownRecentTasks)
+  end
+
+  def get_overdue_tasks
+    pending = TaskState.where(name: "Pending")[0]
+    queued = TaskState.where(name: "Queued")[0]
+
+    @tasks.where( "created_at < ?", (Time.now - (Settings.Tasks.OverdueWarningThresholdMinutes).minutes ) ).where( task_state: [queued, pending ] )
   end
 end

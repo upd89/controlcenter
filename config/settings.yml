@@ -6,5 +6,7 @@ BackgroundTask:
 Systems:
   NoOfShownRecentTasks: 10
   NotSeenWarningThresholdMinutes: 240
+Tasks:
+  OverdueWarningThresholdMinutes: 10
 General:
   Timezone: "Bern" #use rake time:zones:all to see all available settings

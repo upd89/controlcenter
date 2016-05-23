@@ -46,7 +46,14 @@
       <ul>
         <li><%= get_running_tasks.count %> pending Tasks</li>
         <li><%= get_failed_tasks.count %> failed Tasks</li>
+        <li><%= get_overdue_tasks.count %> Tasks overdue!
+            <% get_overdue_tasks.take(5).each do |task| %>
+            <div><%= link_to(task.id, task) + ": " + task.decorated_created_at + ", " + task.task_state.name %></div>
+            <% end %>
+            <% if get_overdue_tasks.count > 5 %>...<% end %>
+        </li>
       </ul>
+
     </div>
 
     <div class="col_6 dashboard_box">
