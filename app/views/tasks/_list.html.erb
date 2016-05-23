@@ -1,0 +1,31 @@
+<table class="striped tight clickableRows">
+  <thead>
+    <tr>
+      <th>Task state</th>
+      <th>Task execution</th>
+      <th>System</th>
+      <th>Job</th>
+      <th>Updates</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @tasks.each do |task| %>
+      <tr>
+        <td><%= task.task_state.name if task.task_state %></td>
+        <td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
+        <td><%= task.system_name %></td>
+        <td><%= task.job.id if task.job %></td>
+        <td><%= task.updates %></td>
+        <td>
+          <ul class="button-bar">
+            <% if can? :read, task    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, task %></li><% end %>
+            <% if can? :update, task  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_task_path(task) %></li><% end %>
+            <% if can? :destroy, task %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, task, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
+          </ul>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

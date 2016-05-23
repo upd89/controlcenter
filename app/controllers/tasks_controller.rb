@@ -4,8 +4,18 @@ class TasksController < ApplicationController
   # GET /tasks
   # GET /tasks.json
   def index
-    @tasks = Task.all
-    @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    #@tasks = Task.all
+    #@paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+
+    @filterrific = initialize_filterrific(
+      Task,
+      params[:filterrific],
+      :select_options => {
+        sorted_by: Task.options_for_sorted_by,
+        with_state_id: TaskState.options_for_select
+      }
+    ) or return
+    @tasks = @filterrific.find.page(params[:page])
   end
 
   # GET /tasks/1
