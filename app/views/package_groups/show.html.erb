@@ -35,4 +35,8 @@
   </li>
 </ul>
 
+<% @group_assignments.each do |assignment| %>
+        <%= assignment.package.name %>
+<% end %>
+
 <div class="floatFix"></div>

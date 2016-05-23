@@ -3,6 +3,10 @@ class PackageGroupsController < ApplicationController
 
   load_and_authorize_resource
 
+  def show
+      @group_assignments = GroupAssignment.where( :package_group_id => @package_group )
+  end
+
   # POST /package_groups
   def create
     @package_group = PackageGroup.new(package_group_params)
