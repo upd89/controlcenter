@@ -95,7 +95,7 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     sys_pkg_rel = SystemPackageRelation.where( :sys_grp_id => [*system_group_ids] )
     pkg_ids = []
     sys_pkg_rel.each do | pkg |
-        pkg_ids = pkg.pkg_id
+        pkg_ids.append(pkg.pkg_id)
     end
     where(:pkg_id => pkg_ids)
   }
