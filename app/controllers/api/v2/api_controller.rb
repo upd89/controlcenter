@@ -220,8 +220,8 @@ module Api::V2
             unknownPackages = true
           end
 
-          if update['repository']
-            pkgVersion.repository = get_maybe_create_repo(update['repository'])
+          if newVersion['repository']
+            pkgVersion.repository = get_maybe_create_repo(newVersion['repository'])
           end
 
           if currentSys.os
@@ -308,7 +308,8 @@ module Api::V2
 
       data["packages"].each do |package|
         currentPkg = get_maybe_create_package(package)
-        pkgVersion = get_maybe_create_packageversion(package['installedVersion'], currentPkg)
+        installedVersion = package['installedVersion']
+        pkgVersion = get_maybe_create_packageversion(installedVersion, currentPkg)
 
         # set or update distro
         if dist
@@ -318,8 +319,8 @@ module Api::V2
 
         # set or update repository
         # TODO: fix -> repo is stored in package['installedVersion']['repository']
-        if package['repository']
-          pkgVersion.repository = get_maybe_create_repo(package['repository'])
+        if installedVersion['repository']
+          pkgVersion.repository = get_maybe_create_repo(installedVersion['repository'])
           error = true unless pkgVersion.save()
         end
 
