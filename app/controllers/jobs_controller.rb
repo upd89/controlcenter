@@ -23,6 +23,10 @@ class JobsController < ApplicationController
   end
 
   def create_multiple
+    
+  end
+
+  def create_multiple
     systems = []
     taskState_pending = TaskState.where(name: "Pending")[0]
     cpv_state_avail = ConcretePackageState.where(name: "Available")[0]

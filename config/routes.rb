@@ -24,6 +24,7 @@ Rails.application.routes.draw do
 
   post '/jobs/test' => 'jobs#test'
   post '/jobs/create_multiple' => 'jobs#create_multiple'
+  post '/jobs/create_combo' => 'jobs#create_combo'
 
   put '/jobs/:id/execute' => 'jobs#execute'
   get '/assign' => 'assignment#index', :as => :assign

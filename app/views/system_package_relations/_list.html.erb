@@ -1,32 +1,38 @@
 <div id="filterrific_results">
 
-  <table class="striped tight col_6">
-    <tr>
-      <th>Selected</th>
-      <th><%= filterrific_sorting_link(@filterrific, :id) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
-      <th><%= filterrific_sorting_link(@filterrific, :nr_of_systems) %></th>
-      <th></th>
-    </tr>
-    <% system_package_relations.each do |spr| %>
+  <%= form_tag({controller: "jobs", action: "create_combo"}) do %>
+    <table class="striped tight comboUpdates col_6">
       <tr>
+        <th>Selected</th>
+        <th><%= filterrific_sorting_link(@filterrific, :id) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
+        <th><%= filterrific_sorting_link(@filterrific, :nr_of_systems) %></th>
         <th></th>
-        <th><%= spr.pkg_id %></th>
-        <td><%= spr.pkg_name %></td>
-        <td><%= spr.pkg_section %></td>
-        <td><%= spr.sys_count %></td>
-        <td>
-          <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, action: "show", remote: true, id: spr.pkg_id %></li>
-          </ul>
-        </td>
       </tr>
-    <% end %>
-  </table>
+      <% system_package_relations.each do |spr| %>
+        <tr>
+          <td>
+            <%= check_box_tag "packages[]", spr.pkg_id, false, class: 'checkboxInstallUpdate package' %>
+          </td>
+          <td><%= spr.pkg_id %></td>
+          <td><%= spr.pkg_name %></td>
+          <td><%= spr.pkg_section %></td>
+          <td><%= spr.sys_count %></td>
+          <td>
+            <ul class="button-bar">
+              <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, action: "show", remote: true, id: spr.pkg_id %></li>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+    </table>
 
-  <div id="details" class="col_6">
-  </div>
+    <div id="details" class="col_6">
+    </div>
+
+  <% end %>
+  <button id="clearList">Clear selection</button>
 
   <div class="pagination col_12">
     <div class="page_info col_6">
