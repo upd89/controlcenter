@@ -12,7 +12,8 @@ class TasksController < ApplicationController
       params[:filterrific],
       :select_options => {
         sorted_by: Task.options_for_sorted_by,
-        with_state_id: TaskState.options_for_select
+        with_state_id: TaskState.options_for_select,
+        with_system_id: System.options_for_select
       }
     ) or return
     @tasks = @filterrific.find.page(params[:page])

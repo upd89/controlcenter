@@ -16,8 +16,13 @@
     <%= f.select( :with_state_id, @filterrific.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_id_select') %>
   </div>
 
+  <div class="col_3">
+    <label for="system_id_select">System</label>
+    <%= f.select( :with_system_id, @filterrific.select_options[:with_system_id], { include_blank: '- Any -' }, id: 'system_id_select') %>
+  </div>
+
   <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
-  
+
   <%= render_filterrific_spinner %>
 <% end %>
 

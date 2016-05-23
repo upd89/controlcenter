@@ -96,6 +96,10 @@ class System < ActiveRecord::Base
       created_at.to_formatted_s(:short)
   end
 
+  def self.options_for_select
+    order('LOWER(name)').map { |e| [e.name, e.id] }
+  end
+
   def decorated_last_seen
     if ( last_seen )
       last_seen.to_formatted_s(:short)

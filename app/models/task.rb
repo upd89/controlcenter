@@ -5,13 +5,14 @@ class Task < ActiveRecord::Base
   belongs_to :job
 
   has_many :concrete_package_versions
-  has_one :system, -> { distinct }, through: :concrete_package_versions
+  #has_one :system, -> { distinct }, through: :concrete_package_versions
 
   filterrific(
     default_filter_params: { sorted_by: 'id_desc' },
     available_filters: [
       :sorted_by,
-      :with_state_id
+      :with_state_id,
+      :with_system_id
     ]
   )
 
@@ -28,9 +29,25 @@ class Task < ActiveRecord::Base
   scope :with_state_id, lambda { |task_state_ids|
     where(:task_state_id => [*task_state_ids])
   }
+  scope :with_system_id, lambda { |system_ids|
+    tasks = Task.all.reject{ |t| !t.get_system || t.get_system.id != system_ids}
+    task_ids = []
+    tasks.each do | sys |
+        task_ids.append(sys.id)
+    end
+    where( id: task_ids )
+  }
 
   def updates
     concrete_package_versions.count
+  end
+
+  def get_system
+    if concrete_package_versions.length > 0
+      concrete_package_versions.first.system
+    else
+      nil
+    end
   end
 
   def system_name
