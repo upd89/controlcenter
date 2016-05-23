@@ -1,6 +1,6 @@
 <%# app/views/systems/_list.html.erb %>
 <div id="filterrific_results">
-  <%= form_tag({controller: "jobs", action: "create"}) do %>
+  <%= form_tag({controller: "jobs", action: "create_multiple"}) do %>
     <table class="striped tight clickableRows availableUpdates">
       <tr>
         <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
@@ -10,6 +10,7 @@
         <th><%= filterrific_sorting_link(@filterrific, :address) %></th>
         <th><%= filterrific_sorting_link(@filterrific, :last_seen) %></th>
         <th class="mHide"><%= filterrific_sorting_link(@filterrific, :system_group) %></th>
+        <th>Updates</th>
         <th class="mHide"></th>
         <th>Install?</th>
       </tr>
@@ -22,6 +23,7 @@
           <td><%= system.address %></td>
           <td><%= system.decorated_last_seen %></td>
           <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
+          <td><%= system.get_installable_CPVs.count %></td>
           <td class="mHide">
             <ul class="button-bar">
               <% if can? :read, system    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system  %></li><% end %>
@@ -31,7 +33,7 @@
           </td>
           <td>
             <% if system.get_installable_CPVs.count > 0 %>
-              <%= check_box_tag "updates[]", system.id, false, class: 'checkboxInstallUpdate' %>
+              <%= check_box_tag "systems[]", system.id, false, class: 'checkboxInstallUpdate' %>
             <% end %>
           </td>
         </tr>

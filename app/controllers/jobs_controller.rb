@@ -22,6 +22,53 @@ class JobsController < ApplicationController
   def edit
   end
 
+  def create_multiple
+    systems = []
+    taskState_pending = TaskState.where(name: "Pending")[0]
+    cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+    cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
+
+    if params[:all]
+      # get all systems with available updates
+      System.all.reject{ |s| s.get_installable_CPVs.count < 1 }.each do |sys|
+        systems << sys
+      end
+    else
+      # get system IDs from submitted array
+      if params[:systems]
+        params[:systems].each do |sysID|
+          systems << System.find( sysID )
+        end
+      end
+    end
+
+    if current_user
+      @job = Job.new(user: current_user,
+                     started_at: Time.new,
+                     is_in_preview: true)
+    end
+
+    # create a task for each system:
+    systems.each do |sys|
+      @task = Task.new(
+        task_state: taskState_pending,
+        tries: 0 )
+      @task.concrete_package_versions << sys.get_installable_CPVs
+
+      @task.concrete_package_versions.each do |update|
+        update.concrete_package_state = cpv_state_queued
+        update.save()
+      end
+
+      @task.save
+      @job.tasks << @task
+    end
+
+    @job.save
+
+    redirect_to @job
+  end
+
   # POST /jobs
   def create
     @task = Task.new(
@@ -41,9 +88,9 @@ class JobsController < ApplicationController
     end
 
     if ( ConcretePackageState.exists?(name: "Queued for Installation") )
-      stateQueued = ConcretePackageState.where(name: "Queued for Installation")[0]
+      cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
       @task.concrete_package_versions.each do |update|
-        update.concrete_package_state = stateQueued
+        update.concrete_package_state = cpv_state_queued
         update.save()
       end
     end

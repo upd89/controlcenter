@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :system_package_relations
 
   post '/jobs/test' => 'jobs#test'
+  post '/jobs/create_multiple' => 'jobs#create_multiple'
 
   put '/jobs/:id/execute' => 'jobs#execute'
   get '/assign' => 'assignment#index', :as => :assign

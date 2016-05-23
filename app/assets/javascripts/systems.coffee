@@ -12,7 +12,7 @@ $(document).on "page:change", ->
 
 # make the whole row clickable. trigger location change by getting the link from the details-button
 clickOnWholeRow = (e) ->
-  if $(e.target).parents("ul.button-bar").length > 0
+  if $(e.target).parents("ul.button-bar").length > 0 || $(e.target).is("input")
     return;
   e.preventDefault()
   trgt = $(e.target).parents("tr").find("ul.button-bar li.first a").attr("href")
