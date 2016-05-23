@@ -6,3 +6,5 @@ BackgroundTask:
 Systems:
   NoOfShownRecentTasks: 10
   NotSeenWarningThresholdMinutes: 240
+General:
+  Timezone: "Bern"
