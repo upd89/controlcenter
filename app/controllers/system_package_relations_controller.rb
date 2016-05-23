@@ -9,11 +9,8 @@ class SystemPackageRelationsController < ApplicationController
         sorted_by: SystemPackageRelationGrouped.options_for_sorted_by
       }
     ) or return
-    @allSystemPackageRelations = @filterrific.find.page(params[:page])
 
-    @system_package_relations = @allSystemPackageRelations
-
-    #@allSystemPackageRelations.select(:pkg_name).distinct
+    @system_package_relations = @filterrific.find.page(params[:page])
 
     # @filterrific = initialize_filterrific(
     #   Package,
