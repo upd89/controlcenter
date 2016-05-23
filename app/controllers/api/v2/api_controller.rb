@@ -49,7 +49,6 @@ module Api::V2
         #sys.save()
       end
 
-      # TODO: assoc needed? maybe just error
       return assoc
     end
 
@@ -318,7 +317,6 @@ module Api::V2
         end
 
         # set or update repository
-        # TODO: fix -> repo is stored in package['installedVersion']['repository']
         if installedVersion['repository']
           pkgVersion.repository = get_maybe_create_repo(installedVersion['repository'])
           error = true unless pkgVersion.save()
@@ -368,8 +366,6 @@ module Api::V2
     def updateTask
       data = JSON.parse request.body.read
       error = false
-
-      #TODO: check if task was already set to done or failed!
 
       if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(params[:id])
         render json: { status: "ERROR" }
