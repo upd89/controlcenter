@@ -35,21 +35,29 @@
   </li>
 </ul>
 
-<table class="striped tight clickableRows">
-  <tr>
-    <th>Name</th>
-    <th>Section</th>
-    <th>Homepage</th>
-    <th>Summary</th>
-  </tr>
-  <% @group_assignments.each do |assignment| %>
-    <tr>
-      <td><%= assignment.package.name %></td>
-      <td><%= assignment.package.section %></td>
-      <td><a href="<%= assignment.package.homepage %>"><%= assignment.package.nice_url %></a></td>
-      <td><%= assignment.package.summary %></td>
-    </tr>
-  <% end %>
-</table>
+
+<%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
+
+  <div class="col_3">
+    <label for="pkg_search_query">Search</label>
+
+    <%= f.text_field(
+    :pkg_search_query,
+    class: 'filterrific-periodically-observed',
+      id: 'pkg_search_query'
+      ) %>
+  </div>
+
+  <%= render_filterrific_spinner %>
+
+  <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+<% end %>
+
+<div id="filterrific_table" class="col_12">
+  <%= render(
+    partial: 'package_groups/list',
+    locals: { group_assignments: @group_assignments }
+  ) %>
+</div>
 
 <div class="floatFix"></div>

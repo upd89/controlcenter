@@ -4,7 +4,12 @@ class PackageGroupsController < ApplicationController
   load_and_authorize_resource
 
   def show
-      @group_assignments = GroupAssignment.where( :package_group_id => @package_group )
+      @filterrific = initialize_filterrific(
+        GroupAssignment.where( :package_group_id => @package_group ),
+        params[:filterrific],
+        :select_options => {}
+      ) or return
+      @group_assignments = @filterrific.find.page(params[:page])
   end
 
   # POST /package_groups
