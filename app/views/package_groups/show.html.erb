@@ -35,8 +35,21 @@
   </li>
 </ul>
 
-<% @group_assignments.each do |assignment| %>
-        <%= assignment.package.name %>
-<% end %>
+<table class="striped tight clickableRows">
+  <tr>
+    <th>Name</th>
+    <th>Section</th>
+    <th>Homepage</th>
+    <th>Summary</th>
+  </tr>
+  <% @group_assignments.each do |assignment| %>
+    <tr>
+      <td><%= assignment.package.name %></td>
+      <td><%= assignment.package.section %></td>
+      <td><a href="<%= assignment.package.homepage %>"><%= assignment.package.nice_url %></a></td>
+      <td><%= assignment.package.summary %></td>
+    </tr>
+  <% end %>
+</table>
 
 <div class="floatFix"></div>
