@@ -29,12 +29,20 @@
   </li>
   <li>
     <p>
-      <span class="property">Section</span>
-      <span class="value"><%= @package.section %></span>
+      <span class="property">Groups</span>
+      <% @package.package_groups.each do |grp| %>
+        <span class="value"><%= grp.name %></span>
+      <% end %>
     </p>
   </li>
 </ul>
 <ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property">Section</span>
+      <span class="value"><%= @package.section %></span>
+    </p>
+  </li>
   <li>
     <p>
       <span class="property">Homepage</span>
@@ -50,7 +58,7 @@
 </ul>
 
 <% if @package_versions.length %>
-  <table class="package_versions">
+  <table class="package_versions col_12">
     <thead>
       <tr>
         <th>SHA256</th>
@@ -71,13 +79,14 @@
     </tbody>
   </table>
 
-  <div class="digg_pagination">
+  <div class="digg_pagination col_12">
     <div class="page_info">
       <%= page_entries_info @paginated_package_versions %>
     </div>
     <%= will_paginate @paginated_package_versions, :container => false %>
   </div>
+<% end %>
 
-  <% end %>
+
 
 <div class="floatFix"></div>

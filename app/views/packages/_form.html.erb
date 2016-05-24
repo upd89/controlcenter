@@ -20,12 +20,25 @@
   </li>
   <li>
     <p>
-      <span class="property"><%= f.label :section %></span>
-      <span class="value"><%= f.text_field :section %></span>
+      <span class="property">Groups</span>
+      <span class="value">
+        <% @package.package_groups.each do |grp| %>
+            <%= grp.name %>
+            <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {controller: "group_assignments", action: "destroy", remote: true} %>
+            <br>
+        <% end %>
+        <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {controller: "group_assignments", action: "create", remote: true}, class: "button" %>
+      </span>
     </p>
   </li>
 </ul>
 <ul class="properties col_6">
+  <li>
+    <p>
+      <span class="property"><%= f.label :section %></span>
+      <span class="value"><%= f.text_field :section %></span>
+    </p>
+  </li>
   <li>
     <p>
       <span class="property"><%= f.label :homepage %></span>
