@@ -11,7 +11,7 @@
       <td><%= spr.version %></td>
       <td><%= spr.sys_name %></td>
       <td><%= spr.sys_os %></td>
-      <td><%= check_box_tag "systems[]", spr.sys_id, false, class: 'checkboxInstallUpdate system' %></td>
+      <td><%= check_box_tag "systems[]", spr.cpv_id, false, class: 'checkboxInstallUpdate cpv' %></td>
     </tr>
   <% end %>
 </table>

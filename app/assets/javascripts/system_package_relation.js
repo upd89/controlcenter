@@ -1,36 +1,36 @@
-function System( sID ) {
+function CPV( sID ) {
   this.id = parseInt( sID );
 }
 function Package( pID ) {
   this.id = parseInt( pID );
-  this.systems = [];
+  this.cpvs = [];
   this.pristine = true;
-  this.addSystem = function( sys ) {
+  this.addCPV = function( sys ) {
     this.pristine = false;
     for ( var i = 0; i < this.size(); i++ ) {
-      if ( this.systems[i].id === sys.id ) {
+      if ( this.cpvs[i].id === sys.id ) {
         return;
       }
     }
-    this.systems.push(sys);
+    this.cpvs.push(sys);
   };
-  this.removeSystemByID = function( id ) {
+  this.removeCPVByID = function( id ) {
     this.pristine = false;
     for ( var i = 0; i < this.size(); i++ ) {
-      if ( this.systems[i].id === id ) {
-        this.systems.splice( i, 1 );
+      if ( this.cpvs[i].id === id ) {
+        this.cpvs.splice( i, 1 );
         return;
       }
     }
   };
-  this.removeSystem = function( sys ) {
-    this.removeSystemByID( sys.id );
+  this.removeCPV = function( sys ) {
+    this.removeCPVByID( sys.id );
   };
   this.reset = function() {
-    this.systems = [];
+    this.cpvs = [];
   };
   this.size = function() {
-    return this.systems.length;
+    return this.cpvs.length;
   };
 }
 function List() {
@@ -69,12 +69,12 @@ function List() {
   this.size = function() {
     return this.packages.length;
   };
-  this.systemCount = function() {
+  this.cpvCount = function() {
     var tempList = [];
     for ( var i = 0; i < this.size(); i++ ) {
       for ( var j = 0; j < this.packages[i].size(); j++ ) {
-        if( tempList.indexOf( this.packages[i].systems[j].id ) === -1 ) {
-          tempList.push ( this.packages[i].systems[j].id );
+        if( tempList.indexOf( this.packages[i].cpvs[j].id ) === -1 ) {
+          tempList.push ( this.packages[i].cpvs[j].id );
         }
       }
     }
@@ -93,14 +93,14 @@ function List() {
       for ( var j = 0; j < this.packages[i].size(); j++ ) {
         var sysEntry = false;
         for(var k = 0; j < turnedList.length; k++ ) {
-          if ( turnedList[k].id === this.packages[i].systems[j].id ) {
+          if ( turnedList[k].id === this.packages[i].cpvs[j].id ) {
             sysEntry = turnedList[k];
             break;
           }
         }
         if ( !sysEntry ) {
           turnedList.push ( {
-            id: this.packages[i].systems[j].id,
+            id: this.packages[i].cpvs[j].id,
             packages: []
           } );
           sysEntry = turnedList[ turnedList.length - 1 ];
@@ -115,8 +115,8 @@ function List() {
 
 var list = new List(),
     updateSummary = function() {
-      // TODO: pristine packages don't have their correct systems yet...
-      $("#updateSummary").html( "This will install " + list.size() + " Updates on " + list.systemCount() + " Systems" );
+      // TODO: pristine packages don't have their correct cpvs yet...
+      $("#updateSummary").html( "This will install " + list.size() + " Updates on " + list.cpvCount() + " CPVs" );
     },
     toggleUpdateButton = function() {
       if ( list.size() === 0 ) {
@@ -126,7 +126,7 @@ var list = new List(),
       }
     },
     showCurrentList = function(){
-      $("#notices").html( JSON.stringify(list) );
+      //$("#notices").html( JSON.stringify(list) );
       //updateSummary();
       toggleUpdateButton();
     },
@@ -139,25 +139,25 @@ var list = new List(),
         markPackage( list.packages[i], true );
       }
     },
-    markSystems = function() {
+    markCPVs = function() {
       var pkg = list.getPackage( getPkgId() );
 
       if ( pkg.pristine && pkg.size() === 0 ) {
         // untouched, add all
-        $("table.comboUpdates .checkboxInstallUpdate.system").each( function(e){
-          pkg.addSystem( new System( $(this).val() ) );
+        $("table.comboUpdates .checkboxInstallUpdate.cpv").each( function(e){
+          pkg.addCPV( new CPV( $(this).val() ) );
           $(this).prop("checked",true);
         } );
       } else {
         // not empty
-        $("table.comboUpdates .checkboxInstallUpdate.system").prop("checked",false);
+        $("table.comboUpdates .checkboxInstallUpdate.cpv").prop("checked",false);
         for( var i = 0; i < pkg.size(); i++ ) {
-          $("table.comboUpdates .checkboxInstallUpdate.system[value="+ pkg.systems[i].id +"]").prop("checked",true);
+          $("table.comboUpdates .checkboxInstallUpdate.cpv[value="+ pkg.cpvs[i].id +"]").prop("checked",true);
         }
       }
     },
-    unmarkSystems = function() {
-      $("table.comboUpdates .checkboxInstallUpdate.system").prop("checked",false);
+    unmarkCPVs = function() {
+      $("table.comboUpdates .checkboxInstallUpdate.cpv").prop("checked",false);
     },
     unmarkPackages = function() {
       $("table.comboUpdates .checkboxInstallUpdate.package").prop("checked",false);
@@ -178,12 +178,12 @@ var list = new List(),
         if ( checked ) {
           list.addPackage( new Package( id ) );
           if ( getPkgId() === id ) { // currently open
-            markSystems();
+            markCPVs();
           }
         } else {
           list.removePackageByID( id );
           if ( getPkgId() === id ) { // currently open
-            unmarkSystems();
+            unmarkCPVs();
           }
         }
       } else {
@@ -194,11 +194,11 @@ var list = new List(),
           markPackage( pkg, true );
         }
 
-        if ( checked ) { //add system to package
-          pkg.addSystem( new System( id ) );
+        if ( checked ) { //add cpv to package
+          pkg.addCPV( new CPV( id ) );
         } else {
-          pkg.removeSystemByID( id );
-          if ( pkg.size() === 0 ) { // removed the last system from this package
+          pkg.removeCPVByID( id );
+          if ( pkg.size() === 0 ) { // removed the last cpv from this package
             markPackage( pkg, false );
             list.removePackage( pkg );
           }
@@ -211,9 +211,9 @@ var list = new List(),
 $(document).on("page:change", function(){
   $("table.comboUpdates .checkboxInstallUpdate").on("click", clickHandler);
 });
-$(document).on("comboview:showSystems", function(){
+$(document).on("comboview:showCPVs", function(){
   highlightChosenPackage();
-  markSystems();
+  markCPVs();
 });
 $(document).on("comboview:showPackages", function(){
   markPackages();
@@ -228,7 +228,7 @@ $(function() {
     list.reset();
     showCurrentList();
     unmarkPackages();
-    unmarkSystems();
+    unmarkCPVs();
     e.preventDefault();
     return false;
   });
@@ -244,13 +244,17 @@ $(function() {
       data: {
         'utf8': $("#comboViewForm input[name='utf8']").val(),
         'authenticity_token': $("#comboViewForm input[name='authenticity_token']").val(),
-        'list': JSON.stringify( list.getFinalList() )
+        'list': JSON.stringify( list )
       },
       success: function(data) {
-        console.log( "success", data );
+        if (data.responseText.indexOf("/") === 0) {
+          window.location = data.responseText;
+        }
       },
       error: function(data) {
-        console.log( "error", data );
+        if (data.responseText.indexOf("/") === 0) {
+          window.location = data.responseText;
+        }
       }
     });
   });

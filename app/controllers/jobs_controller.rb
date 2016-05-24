@@ -23,8 +23,8 @@ class JobsController < ApplicationController
   end
 
   def create_combo
-    systems = JSON.parse params[:list]
-    logger.debug( systems )
+    list = JSON.parse params[:list]
+    packages = list["packages"]
     task_state_pending = TaskState.where(name: "Pending")[0]
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
 
@@ -35,30 +35,46 @@ class JobsController < ApplicationController
                      is_in_preview: true)
     end
 
-    # for each system (if exists and updates were submitted), create a task and find & add the fitting updates
-    systems.each do |sys|
-      if sys["packages"].size > 0 && System.find( sys["id"] )
-        @task = Task.new(
-          task_state: task_state_pending,
-          tries: 0 )
+    systems = []
+    cpvs = []
 
-        knownSys = System.find( sys["id"] )
-        sys["packages"].each do |pkg|
-          knownPkg = Package.find( pkg )
-
-          if knownPkg && knownSys
-            @task.concrete_package_versions << knownPkg.get_update_from_system( knownSys )
+    packages.each do |pkg|
+      if pkg["pristine"] == true
+        if Package.find( pkg["id"] )
+          Package.find( pkg["id"] ).get_available_cpvs.each do |cpv|
+            cpvs << cpv
           end
         end
-
-        @task.concrete_package_versions.each do |update|
-          update.concrete_package_state = cpv_state_queued
-          update.save()
+      else
+        pkg["cpvs"].each do |cpv|
+          if ConcretePackageVersion.find( cpv["id"] )
+            cpvs << ConcretePackageVersion.find( cpv["id"] )
+          end
         end
-
-        @task.save
-        @job.tasks << @task
       end
+
+      cpvs.each do |cpv|
+        systems << cpv.system
+      end
+    end
+
+    systems = systems.uniq
+
+    systems.each do |sys|
+      @task = Task.new(
+        task_state: task_state_pending,
+        tries: 0 )
+
+      cpvs.each do |cpv|
+        if cpv.system == sys
+          @task.concrete_package_versions << cpv
+          cpv.concrete_package_state = cpv_state_queued
+          cpv.save()
+        end
+      end
+
+      @task.save
+      @job.tasks << @task
     end
 
     @job.save
