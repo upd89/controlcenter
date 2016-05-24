@@ -125,11 +125,6 @@ var list = new List(),
         $("#applyUpdates").removeAttr('disabled').removeClass("disabled");
       }
     },
-    showCurrentList = function(){
-      //$("#notices").html( JSON.stringify(list) );
-      //updateSummary();
-      toggleUpdateButton();
-    },
     markPackage = function( pkg, checked ){
       $("table.comboUpdates .checkboxInstallUpdate.package[value="+ pkg.id +"]").prop("checked", checked);
     },
@@ -205,7 +200,7 @@ var list = new List(),
         }
       }
 
-      showCurrentList();
+      toggleUpdateButton();
     };
 
 $(document).on("page:change", function(){
@@ -222,11 +217,20 @@ $(document).on("comboview:showPackages", function(){
 
 $(function() {
   list.reset();
-  showCurrentList();
+  toggleUpdateButton();
+
+  $("#selectAll").on("click", function(e) {
+    $("table.comboUpdates .checkboxInstallUpdate.package").prop("checked",true);
+
+    $("table.comboUpdates .checkboxInstallUpdate.package").each(function(){
+      list.addPackage( new Package( $(this).val() ) );
+    });
+    toggleUpdateButton();
+  });
 
   $("#clearList").on("click", function(e) {
     list.reset();
-    showCurrentList();
+    toggleUpdateButton();
     unmarkPackages();
     unmarkCPVs();
     e.preventDefault();
