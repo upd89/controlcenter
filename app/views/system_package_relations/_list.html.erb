@@ -1,6 +1,6 @@
 <div id="filterrific_results">
 
-  <%= form_tag({controller: "jobs", action: "create_combo"}) do %>
+  <%= form_tag({controller: "jobs", action: "create_combo"}, id: "comboViewForm") do %>
     <table class="striped tight comboUpdates col_6">
       <tr>
         <th>Selected</th>
@@ -21,7 +21,14 @@
           <td><%= spr.sys_count %></td>
           <td>
             <ul class="button-bar">
-              <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, action: "show", remote: true, id: spr.pkg_id %></li>
+              <% query = {}  %>
+              <% if ( params["filterrific"] && params["filterrific"]["sys_search_query"] && params["filterrific"]["sys_search_query"] != "" ) %>
+              <%   query[:text] = params["filterrific"]["sys_search_query"] %>
+              <% end %>
+              <% if ( params["filterrific"] && params["filterrific"]["with_system_group_id"] && params["filterrific"]["with_system_group_id"] != "" ) %>
+              <%   query[:group] = params["filterrific"]["with_system_group_id"] %>
+              <% end %>
+              <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_package_relation_path( id: spr.pkg_id, query: query ), remote: true %></li>
             </ul>
           </td>
         </tr>
@@ -32,7 +39,11 @@
     </div>
 
   <% end %>
-  <button id="clearList">Clear selection</button>
+  <div class="col_12">
+    <button id="clearList">Clear selection</button>
+    <%= submit_tag "Update Selected", name: 'specific', id: "applyUpdates" %>
+    <p id="updateSummary"></p>
+  </div>
 
   <div class="pagination col_12">
     <div class="page_info col_6">

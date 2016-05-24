@@ -22,14 +22,53 @@ class JobsController < ApplicationController
   def edit
   end
 
-  def create_multiple
-    
+  def create_combo
+    systems = JSON.parse params[:list]
+    logger.debug( systems )
+    task_state_pending = TaskState.where(name: "Pending")[0]
+    cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
+
+    #TODO: extract code, see create and create_multiple!
+    if current_user
+      @job = Job.new(user: current_user,
+                     started_at: Time.new,
+                     is_in_preview: true)
+    end
+
+    # for each system (if exists and updates were submitted), create a task and find & add the fitting updates
+    systems.each do |sys|
+      if sys["packages"].size > 0 && System.find( sys["id"] )
+        @task = Task.new(
+          task_state: task_state_pending,
+          tries: 0 )
+
+        knownSys = System.find( sys["id"] )
+        sys["packages"].each do |pkg|
+          knownPkg = Package.find( pkg )
+
+          if knownPkg && knownSys
+            @task.concrete_package_versions << knownPkg.get_update_from_system( knownSys )
+          end
+        end
+
+        @task.concrete_package_versions.each do |update|
+          update.concrete_package_state = cpv_state_queued
+          update.save()
+        end
+
+        @task.save
+        @job.tasks << @task
+      end
+    end
+
+    @job.save
+
+    render text: job_path( @job )
   end
 
   def create_multiple
     systems = []
-    taskState_pending = TaskState.where(name: "Pending")[0]
-    cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+    task_state_pending = TaskState.where(name: "Pending")[0]
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
 
     if params[:all]
@@ -55,7 +94,7 @@ class JobsController < ApplicationController
     # create a task for each system:
     systems.each do |sys|
       @task = Task.new(
-        task_state: taskState_pending,
+        task_state: task_state_pending,
         tries: 0 )
       @task.concrete_package_versions << sys.get_installable_CPVs
 

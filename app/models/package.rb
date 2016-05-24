@@ -104,6 +104,11 @@ class Package < ActiveRecord::Base
     concrete_package_versions.where(concrete_package_state: stateAvail)
   end
 
+  def get_update_from_system(sys)
+    stateAvail = ConcretePackageState.where(name: "Available").first
+    concrete_package_versions.where( concrete_package_state: stateAvail ).where( system: sys )
+  end
+
   # if a parsable URI exists, take the host, otherwise the first couple of chars
   def nice_url
     if homepage

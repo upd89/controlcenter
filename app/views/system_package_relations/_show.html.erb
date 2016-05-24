@@ -7,7 +7,7 @@
     <th>Include?</th>
   </tr>
   <% @system_package_relations.each do |spr| %>
-    <tr>
+    <tr data-cpv-id="<%= spr.cpv_id %>">
       <td><%= spr.version %></td>
       <td><%= spr.sys_name %></td>
       <td><%= spr.sys_os %></td>
