@@ -50,10 +50,12 @@ namespace :db do
     admin              = Role.create( { :name => "Admin", :permission_level => 9, :is_user_manager => true } )
     readonly           = Role.create( { :name => "Readonly", :permission_level => 0 } )
 
-    adminUser          = User.create( { :name => "admin", :email => "admin", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
-    pchriste           = User.create( { :name => "pchriste", :email => "some@address", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
-    ubosshar           = User.create( { :name => "ubosshar", :email => "other@address",:role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
+    adminUser          = User.create( { :name => "admin", :email => "admin", :role => admin, :password => "RF9w", :password_confirmation => "RF9w" } )
+    pchriste           = User.create( { :name => "pchriste", :email => "pchriste@upd89.org", :role => admin, :password => "nW3j", :password_confirmation => "nW3j" } )
+    ubosshar           = User.create( { :name => "ubosshar", :email => "ubosshar@upd89.org",:role => admin, :password => "3v5Z", :password_confirmation => "3v5Z" } )
+    sasie              = User.create( { :name => "ubosshar", :email => "sasie@upd89.org",:role => admin, :password => "i6Lp", :password_confirmation => "i6Lp" } )
+    roland             = User.create( { :name => "ubosshar", :email => "roland@upd89.org",:role => admin, :password => "h3M1", :password_confirmation => "h3M1" } )
 
-    puts "==  Data: generating sample data (done) ".ljust(79, "=") + "\n\n"
+    puts "==  Data: generating base data (done) ".ljust(79, "=") + "\n\n"
   end
 end

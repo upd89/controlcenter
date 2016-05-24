@@ -3,10 +3,10 @@
 #
 
 namespace :db do
-  desc "Generate base data"
+  desc "Generate package group data"
   task :add_groups => :environment do
 
-    puts "==  Data: generating base data ".ljust(79, "=")
+    puts "==  Data: generating package group data ".ljust(79, "=")
 
     GroupAssignment.destroy_all
 
@@ -42,6 +42,6 @@ namespace :db do
     # adminUser          = User.create( { :name => "admin", :email => "admin", :role => admin, :password => "testtesttest", :password_confirmation => "testtesttest" } )
 
 
-    puts "==  Data: generating sample data (done) ".ljust(79, "=") + "\n\n"
+    puts "==  Data: generating package group data (done) ".ljust(79, "=") + "\n\n"
   end
 end
