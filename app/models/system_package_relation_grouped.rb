@@ -30,7 +30,7 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
     num_or_conditions = 2
-    where(
+    SystemPackageRelation.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").where(
       terms.map {
         or_clauses = [
           "LOWER(pkg_name) LIKE ?",
@@ -39,7 +39,7 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
         "(#{ or_clauses })"
       }.join(' AND '),
       *terms.map { |e| [e] * num_or_conditions }.flatten
-    )
+    ).group("pkg_id, pkg_name, pkg_section")
   }
 
   scope :sys_search_query, lambda { |query|
@@ -54,10 +54,8 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
-
-
     num_or_conditions = 2
-    sys_pkg_rel = SystemPackageRelation.where(
+    SystemPackageRelation.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").where(
         terms.map {
             or_clauses = [
                 "LOWER(sys_name) LIKE ?",
@@ -66,15 +64,10 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
             "(#{ or_clauses })"
         }.join(' AND '),
         *terms.map { |e| [e] * num_or_conditions }.flatten
-    )
-
-    pkg_ids = []
-    sys_pkg_rel.each do | pkg |
-      pkg_ids.append(pkg.pkg_id)
-    end
-    where(:pkg_id => pkg_ids)
+    ).group("pkg_id, pkg_name, pkg_section")
 
   }
+
   scope :sorted_by, lambda { |sort_option|
     # extract the sort direction from the param value.
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
@@ -91,6 +84,7 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
     end
   }
+
   scope :with_system_group_id, lambda { |system_group_ids|
     SystemPackageRelation.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").where( :sys_grp_id => [*system_group_ids] ).group("pkg_id, pkg_name, pkg_section")
   }
@@ -101,7 +95,7 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     assignments.each do | pkg |
         pkg_ids.append(pkg.id)
     end
-    where(:pkg_id => pkg_ids)
+    SystemPackageRelation.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").where(:pkg_id => pkg_ids).group("pkg_id, pkg_name, pkg_section")
   }
 
   def self.options_for_sorted_by

@@ -3,16 +3,22 @@ class SystemPackageRelationsController < ApplicationController
   # GET /system_package_relations
   def index
     @filterrific = initialize_filterrific(
-      SystemPackageRelationGrouped,
+      SystemPackageRelation,
       params[:filterrific],
       select_options: {
-        sorted_by: SystemPackageRelationGrouped.options_for_sorted_by,
+        sorted_by: SystemPackageRelation.options_for_sorted_by,
         with_system_group_id: SystemGroup.options_for_select,
         with_package_group_id: PackageGroup.options_for_select
       }
     ) or return
 
-    @system_package_relations = @filterrific.find.page(params[:page])
+    cp = params[:page]
+    tmplist1 = @filterrific.find
+    tmplist2 = tmplist1.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").group("pkg_id, pkg_name, pkg_section")
+    #tot = SystemPackageRelationGrouped.count
+    tot = tmplist2.length
+    tmplist3 = tmplist2.paginate(page: cp, total_entries: tot)
+    @system_package_relations = tmplist3
   end
 
 
