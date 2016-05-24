@@ -15,10 +15,8 @@ class SystemPackageRelationsController < ApplicationController
     cp = params[:page]
     tmplist1 = @filterrific.find
     tmplist2 = tmplist1.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").group("pkg_id, pkg_name, pkg_section")
-    #tot = SystemPackageRelationGrouped.count
     tot = tmplist2.length
-    tmplist3 = tmplist2.paginate(page: cp, total_entries: tot)
-    @system_package_relations = tmplist3
+    @system_package_relations = tmplist2.paginate(page: cp, total_entries: tot)
   end
 
 
