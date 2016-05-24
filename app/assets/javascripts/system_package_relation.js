@@ -129,6 +129,9 @@ $(document).on("page:change", function(){
 $(document).on("comboview:showSystems", function(){
     markSystems();
 });
+$(document).on("comboview:showPackages", function(){
+    markPackages();
+});
 
 
 $(function() {
