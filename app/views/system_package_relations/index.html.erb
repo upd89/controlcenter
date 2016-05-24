@@ -7,7 +7,7 @@
   <div class="col_6">
     <div class="col_12">Package Filters</div>
 
-    <div class="col_3">
+    <div class="col_6">
       <label for="pkg_search_query">Search</label>
 
       <%= f.text_field(
@@ -17,7 +17,7 @@
       ) %>
     </div>
 
-    <div class="col_3">
+    <div class="col_6">
       <label for="combo_group_select_pkg">Package Group</label>
       <%= f.select( :with_package_group_id, @filterrific.select_options[:with_package_group_id], { include_blank: '- Any -' }, id: 'combo_group_select_pkg') %>
     </div>
@@ -26,7 +26,7 @@
   <div class="col_6">
     <div class="col_12">System Filters</div>
 
-    <div class="col_3">
+    <div class="col_6">
       <label for="sys_search_query">Search</label>
       <%= f.text_field(
         :sys_search_query,
@@ -35,7 +35,7 @@
       ) %>
     </div>
 
-    <div class="col_3">
+    <div class="col_6">
       <label for="combo_group_select_sys">System Group</label>
       <%= f.select( :with_system_group_id, @filterrific.select_options[:with_system_group_id], { include_blank: '- Any -' }, id: 'combo_group_select_sys') %>
     </div>
@@ -46,7 +46,7 @@
   <%= render_filterrific_spinner %>
 <% end %>
 
-<div id="filterrific_table" class="col_12">
+<div id="filterrific_table">
   <%= render(
     partial: 'system_package_relations/list',
     locals: { system_package_relations: @system_package_relations }
