@@ -22,12 +22,12 @@ Rails.application.routes.draw do
   resources :repositories
   resources :system_package_relations
 
-  post '/jobs/test' => 'jobs#test'
   post '/jobs/create_multiple' => 'jobs#create_multiple'
   post '/jobs/create_combo' => 'jobs#create_combo'
 
   put '/jobs/:id/execute' => 'jobs#execute'
-  get '/assign' => 'assignment#index', :as => :assign
+  get '/assign-systems'  => 'system_assignment#index',  :as => :assign_systems
+  get '/assign-packages' => 'package_assignment#index', :as => :assign_packages
 
   scope '/api' do
     scope module: 'api' do

@@ -19,8 +19,9 @@
     </ul>
 
     <% if get_systems_without_group.count > 0 %>
-      <%= link_to("Assign to a group", :assign, class: "button") %>
+      <%= link_to("Assign to a group", :assign_systems, class: "button") %>
     <% end %>
+    <div class="floatFix"></div>
   </div>
 
   <div class="col_6 dashboard_box">
@@ -33,9 +34,12 @@
     </ul>
 
     <% if get_packages_without_group.count > 0 %>
-      <%= link_to("Assign to groups", :assign, class: "button") %>
+      <%= link_to("Assign to groups", :assign_packages, class: "button") %>
     <% end %>
+    <div class="floatFix"></div>
   </div>
+
+  <div class="floatFix"></div>
 
   <div class="col_6 dashboard_box">
     <h4>Tasks</h4>
@@ -51,6 +55,7 @@
       </li>
     </ul>
 
+    <div class="floatFix"></div>
   </div>
 
   <div class="col_6 dashboard_box">
@@ -58,6 +63,7 @@
     <% @updatable_systems.each do |sys| %>
       <div><%= link_to(sys.name, sys) + ": " + sys.get_installable_CPVs.count.to_s %></div>
     <% end %>
+    <div class="floatFix"></div>
   </div>
 
   <div class="col_12 dashboard_box">
@@ -65,6 +71,7 @@
     <% get_tasks_for_recent_activities.each do |t| %>
       <div><%= link_to( t.to_full_sentence + t.state_description, t) %></div>
     <% end %>
+    <div class="floatFix"></div>
   </div>
 </div>
 
