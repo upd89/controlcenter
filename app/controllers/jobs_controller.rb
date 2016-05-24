@@ -10,7 +10,6 @@ class JobsController < ApplicationController
   # GET /jobs/1
   def show
     @tasks = Task.where(:job => @job)
-    @paginated_tasks = @tasks.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # GET /jobs/new

@@ -22,7 +22,7 @@
 } %>
 
 <% if @job.is_in_preview %>
-  <h5>Please review the job</h5>
+  <h5 class="col_12">Please review the job</h5>
 <% end %>
 
 <ul class="properties col_6">
@@ -40,45 +40,29 @@
   </li>
 </ul>
 
-<% if @paginated_tasks.length %>
-<table>
-  <thead>
-    <tr>
-      <th>State</th>
-      <th>Execution</th>
-      <th>System</th>
-      <th># of Updates</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @paginated_tasks.each do |task| %>
-      <tr>
-        <td><%= task.task_state.name if task.task_state %></td>
-	      <td><%= link_to task.task_execution.log[0..26], task.task_execution if task.task_execution %></td>
-        <td><%= task.concrete_package_versions.first.system.name if task.concrete_package_versions.length > 0 %></td>
-        <td><%= task.concrete_package_versions.length %></td>
-        <td><%= link_to task.id, task %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% if @tasks.length %>
+  <% @tasks.each do |task| %>
+    <div class="col_12">
+      <p><%= pluralize(task.concrete_package_versions.length, "Update") %> on System <%= link_to task.system_name, task.get_system %> (<%= task.task_state.name if task.task_state %>) <%= link_to "Details", task %><%= task.task_execution ? (" | ").html_safe + link_to( "Log", task.task_execution ) : "" %></p>
+
+      <ul>
+        <% task.concrete_package_versions.each do |cpv| %>
+          <li>
+            Package: <%= cpv.package_version.package.name %>, Candidate Version: <%= cpv.package_version.version %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>
 
 <% if @job.is_in_preview %>
-  <div class="actions">
+  <div class="actions col_12">
     <%= form_for @job, :url => { :action => "execute" }, :html => { :method => :put } do |f| %>
       <%= submit_tag "Execute Job", :name => 'execute', :id=>"executeJobBtn" %>
       <%= submit_tag "Cancel Job", :name => 'cancel', :id=>"cancelJobBtn" %>
     <% end %>
   </div>
-<% end %>
-
-<div class="digg_pagination">
-  <div class="page_info">
-    <%= page_entries_info @paginated_tasks %>
-  </div>
-  <%= will_paginate @paginated_tasks, :container => false %>
-</div>
 <% end %>
 
 <div class="floatFix"></div>
