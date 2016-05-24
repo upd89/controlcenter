@@ -92,13 +92,9 @@ class SystemPackageRelationGrouped < ActiveRecord::Base
     end
   }
   scope :with_system_group_id, lambda { |system_group_ids|
-    sys_pkg_rel = SystemPackageRelation.where( :sys_grp_id => [*system_group_ids] )
-    pkg_ids = []
-    sys_pkg_rel.each do | pkg |
-        pkg_ids.append(pkg.pkg_id)
-    end
-    where(:pkg_id => pkg_ids)
+    SystemPackageRelation.select("pkg_id, pkg_name, pkg_section, COUNT(*) as sys_count").where( :sys_grp_id => [*system_group_ids] ).group("pkg_id, pkg_name, pkg_section")
   }
+
   scope :with_package_group_id, lambda { |package_group_ids|
     assignments = GroupAssignment.where( :package_group_id => [*package_group_ids] ) 
     pkg_ids = []
