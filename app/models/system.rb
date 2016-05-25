@@ -19,6 +19,7 @@ class System < ActiveRecord::Base
     ]
   )
 
+    # used in api
     def self.get_maybe_create(system)
         if exists?(:urn => system["urn"])
             system_obj = where(urn: system["urn"])[0]
