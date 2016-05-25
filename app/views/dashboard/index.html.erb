@@ -44,15 +44,15 @@
   <div class="col_6 dashboard_box">
     <h4>Tasks</h4>
 
-    <ul>
+    <ul class="noDots">
     <% if get_running_tasks.count > 0 %>
       <li><%= get_running_tasks.count %> pending Tasks</li>
     <% end %>
     <% if get_failed_tasks.count > 0 %>
-      <li><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks</li>
+      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks</li>
     <% end %>
     <% if get_overdue_tasks.count > 0 %>
-      <li><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
+      <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
           <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
           <div><%= link_to(task.id, task) + ": " + task.decorated_created_at + ", " + task.task_state.name %></div>
           <% end %>

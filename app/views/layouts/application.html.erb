@@ -11,13 +11,13 @@
     <ul class="menu">
       <% if current_user %>
         <li><%= link_to ('<i class="fa fa-tachometer"></i> Dashboard').html_safe, root_path %></li>
-        <li><%= link_to ('<i class="fa fa-server"></i> Systems').html_safe, systems_path %></li>
+        <li class="sysBG"><%= link_to ('<i class="fa fa-server"></i> Systems').html_safe, systems_path %></li>
         <li><%= link_to ('<i class="fa fa-globe"></i> System+Packages').html_safe, system_package_relations_path %></li>
-        <li><%= link_to ('<i class="fa fa-archive"></i> Packages').html_safe, packages_path %></li>
+        <li class="pkgBG"><%= link_to ('<i class="fa fa-archive"></i> Packages').html_safe, packages_path %></li>
         <li><a href=""><i class="fa fa-object-group"></i><span class="icon" data-icon="R"></span>Groups</a>
           <ul>
-            <li><%= link_to 'System Groups', system_groups_path %></li>
-            <li><%= link_to 'Package Groups', package_groups_path %></li>
+            <li class="sysBG"><%= link_to 'System Groups', system_groups_path %></li>
+            <li class="pkgBG"><%= link_to 'Package Groups', package_groups_path %></li>
           </ul>
         </li>
         <li><a href=""><i class="fa fa-users"></i>Users/Roles</a>

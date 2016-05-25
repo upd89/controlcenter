@@ -111,10 +111,6 @@ table {
   }
 }
 
-.success {
-  color: green;
-}
-
 .floatFix {
   clear: both;
 }
@@ -180,4 +176,10 @@ table.comboUpdates tbody tr.active {
 #paramPlaceholder_group {
   display: none;
   visibility: hidden;
+}
+
+
+ul.noDots {
+  list-style-type: none;
+  margin-left: 0px;
 }
