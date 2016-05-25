@@ -20,29 +20,6 @@ module Api::V2
       return error
     end
 
-    def create_new_concrete_package_version( pkgVersion, sys, state )
-      # TODO: service to get package states...
-      state = ConcretePackageState.first unless defined? state
-
-      if ConcretePackageVersion.exists?( package_version: pkgVersion, system: sys )
-        assoc = ConcretePackageVersion.where( package_version: pkgVersion, system: sys )[0]
-        assoc.concrete_package_state = state
-        assoc.save()
-      else
-        assoc = ConcretePackageVersion.new
-        assoc.system = sys
-        assoc.package_version = pkgVersion
-        assoc.concrete_package_state = state
-        assoc.save()
-
-        # should alredy be set by setting system in assoc
-        #sys.concrete_package_versions << assoc
-        #sys.save()
-      end
-
-      return assoc
-    end
-
     # v2/register
     def register
       data = JSON.parse request.body.read
@@ -81,10 +58,8 @@ module Api::V2
       data["packageUpdates"].each do |updHash|
         if PackageVersion.exists?( sha256: updHash )
           knownPackages.push( updHash )
-
           pkgVersion = PackageVersion.where( sha256: updHash )[0]
-
-          create_new_concrete_package_version( pkgVersion, currentSys, stateAvailable )
+          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateAvailable)
         else
           unknownPackages.push( updHash )
         end
@@ -150,7 +125,7 @@ module Api::V2
           #pkg.package_versions << pkgVersion
           #error = true unless pkg.save()
 
-          create_new_concrete_package_version( pkgVersion, currentSys, stateAvailable )
+          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateAvailable)
         end
       end
 
@@ -186,7 +161,7 @@ module Api::V2
       data["packages"].each do |pkgHash|
         if PackageVersion.exists?( sha256: pkgHash )
           pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
-          create_new_concrete_package_version( pkgVersion, currentSys, stateInstalled )
+          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateInstalled)
 
           knownPackages.push( pkgHash )
         else
@@ -240,7 +215,7 @@ module Api::V2
           error = true unless pkgVersion.save()
         end
 
-        create_new_concrete_package_version( pkgVersion, currentSys, stateInstalled )
+        ConcretePackageVersion.create_new(pkgVersion, currentSys, stateInstalled)
 
         if !package['isBaseVersion']
           baseVersionJSON = package['baseVersion']
@@ -262,7 +237,7 @@ module Api::V2
               error = true unless baseVersion.save()
           end
 
-          create_new_concrete_package_version( baseVersion, currentSys, stateInstalled )
+          ConcretePackageVersion.create_new(baseVersion, currentSys, stateInstalled)
 
           pkgVersion.base_version = baseVersion
           error = true unless pkgVersion.save()
