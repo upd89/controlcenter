@@ -52,26 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def get_maybe_create_package(package)
-        if Package.exists?( name: package['name'] )
-          package_obj = Package.where( name: package['name'] )[0]
-          # update package information if specified
-          package_obj.section  = package['section']  if package['section']
-          package_obj.homepage = package['homepage'] if package['homepage']
-          package_obj.summary  = package['summary']  if package['summary']
-          package_obj.save()
-        else
-          # creating package
-          package_obj = Package.create( {
-                 :name         =>  package['name'],
-                 :section      =>  package['section'],
-                 :homepage     =>  package['homepage'],
-                 :summary      =>  package['summary']
-          } )
-        end
-        return package_obj
-    end
-
     def get_maybe_create_packageversion(pkgVersion, pkg)
         if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
             pkgVersion_obj = PackageVersion.where( sha256: pkgVersion['sha256'] )[0]
@@ -284,7 +264,7 @@ module Api::V2
       end
 
       data["packages"].each do |package|
-        currentPkg = get_maybe_create_package(package)
+        currentPkg = Package.get_maybe_create(package)
         installedVersion = package['installedVersion']
         pkgVersion = get_maybe_create_packageversion(installedVersion, currentPkg)
 
