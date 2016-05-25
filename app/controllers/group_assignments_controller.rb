@@ -21,6 +21,12 @@ class GroupAssignmentsController < ApplicationController
   def edit
   end
 
+  def create_remote
+    @group_assignment = GroupAssignment.new(group_assignment_params)
+    @group_assignment.save
+    redirect_to edit_package_path( @group_assignment.package )
+  end
+
   # POST /group_assignments
   # POST /group_assignments.json
   def create

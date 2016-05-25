@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   put '/jobs/:id/execute' => 'jobs#execute'
   get '/assign-systems'  => 'system_assignment#index',  :as => :assign_systems
   get '/assign-packages' => 'package_assignment#index', :as => :assign_packages
+  post '/group_assignments/create_remote' => 'group_assignments#create_remote'
 
   scope '/api' do
     scope module: 'api' do
