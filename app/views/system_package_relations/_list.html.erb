@@ -1,39 +1,39 @@
 <div id="filterrific_results">
 
   <%= form_tag({controller: "jobs", action: "create_combo"}, id: "comboViewForm") do %>
-    <table class="striped tight comboUpdates col_6">
-      <tr>
-        <th>Selected</th>
-        <th><%= filterrific_sorting_link(@filterrific, :id) %></th>
-        <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
-        <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
-        <th><%= filterrific_sorting_link(@filterrific, :nr_of_systems) %></th>
-        <th></th>
-      </tr>
-      <% system_package_relations.each do |spr| %>
+    <div class="col_6">
+      <table class="striped tight comboUpdates">
         <tr>
-          <td>
-            <%= check_box_tag "packages[]", spr.pkg_id, false, class: 'checkboxInstallUpdate package' %>
-          </td>
-          <td><%= spr.pkg_id %></td>
-          <td><%= spr.pkg_name %></td>
-          <td><%= spr.pkg_section %></td>
-          <td><%= spr.sys_count %></td>
-          <td>
-            <ul class="button-bar">
-              <% query = {}  %>
-              <% if ( params["filterrific"] && params["filterrific"]["sys_search_query"] && params["filterrific"]["sys_search_query"] != "" ) %>
-              <%   query[:text] = params["filterrific"]["sys_search_query"] %>
-              <% end %>
-              <% if ( params["filterrific"] && params["filterrific"]["with_system_group_id"] && params["filterrific"]["with_system_group_id"] != "" ) %>
-              <%   query[:group] = params["filterrific"]["with_system_group_id"] %>
-              <% end %>
-              <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_package_relation_path( id: spr.pkg_id, query: query ), remote: true %></li>
-            </ul>
-          </td>
+          <th>Selected</th>
+          <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
+          <th><%= filterrific_sorting_link(@filterrific, :section) %></th>
+          <th><%= filterrific_sorting_link(@filterrific, :systems) %></th>
+          <th></th>
         </tr>
-      <% end %>
-    </table>
+        <% system_package_relations.each do |spr| %>
+          <tr>
+            <td>
+              <%= check_box_tag "packages[]", spr.pkg_id, false, class: 'checkboxInstallUpdate package' %>
+            </td>
+            <td><%= spr.pkg_name %></td>
+            <td><%= spr.pkg_section %></td>
+            <td><%= spr.sys_count %></td>
+            <td>
+              <ul class="button-bar">
+                <% query = {}  %>
+                <% if ( params["filterrific"] && params["filterrific"]["sys_search_query"] && params["filterrific"]["sys_search_query"] != "" ) %>
+                <%   query[:text] = params["filterrific"]["sys_search_query"] %>
+                <% end %>
+                <% if ( params["filterrific"] && params["filterrific"]["with_system_group_id"] && params["filterrific"]["with_system_group_id"] != "" ) %>
+                <%   query[:group] = params["filterrific"]["with_system_group_id"] %>
+                <% end %>
+                <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_package_relation_path( id: spr.pkg_id, query: query ), remote: true %></li>
+              </ul>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+    </div>
 
     <div id="details" class="col_6">
     </div>
