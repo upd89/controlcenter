@@ -86,7 +86,10 @@ class Package < ActiveRecord::Base
   end
 
   def get_group_names
-    package_groups.all.map{ |p| p.name }.join(', ')
+    get_group_names_array.join(', ')
+  end
+  def get_group_names_array
+    package_groups.all.map{ |p| p.name }
   end
 
   # permission level of a package is the lowest permission level of all of its package groups

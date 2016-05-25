@@ -18,19 +18,6 @@
       <span class="value"><%= f.text_field :name %></span>
     </p>
   </li>
-  <li>
-    <p>
-      <span class="property">Groups</span>
-      <span class="value">
-        <% @package.package_groups.each do |grp| %>
-            <%= grp.name %>
-            <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {controller: "group_assignments", action: "destroy", remote: true} %>
-            <br>
-        <% end %>
-        <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {controller: "group_assignments", action: "create", remote: true}, class: "button" %>
-      </span>
-    </p>
-  </li>
 </ul>
 <ul class="properties col_6">
   <li>
@@ -55,4 +42,23 @@
   <div class="actions">
     <%= f.button "Save", :class => "button" %>
   </div>
+<% end %>
+
+<h5>Package Groups</h5>
+<% @package.package_groups.each do |grp| %>
+  <% grp_ass = GroupAssignment.where(package_group: grp, package: @package)[0] %>
+  <%= form_for(grp_ass, method: :delete, remote: true) do |f| %>
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+    <%= grp_ass.package_group.name %>
+    <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); $(this).parent().remove(); location.reload()" %>
+  <% end %>
+<% end %>
+
+<%= form_tag( { controller: "group_assignments", action: "create_remote", remote: true }, class: "addPackageGroupForm" ) do %>
+  <% pkg_grps = PackageGroup.where.not(name: @package.get_group_names_array ) %>
+  <% if pkg_grps.size > 0 %>
+    <%= select( "group_assignment", "package_group_id", pkg_grps.collect {|p| [ p.name, p.id ] } ) %>
+    <%= hidden_field_tag("group_assignment[package_id]", @package.id) %>
+    <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); return false;", id: "addPackageGroup" %>
+  <% end %>
 <% end %>
