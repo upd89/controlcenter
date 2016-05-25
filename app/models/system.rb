@@ -33,6 +33,11 @@ class System < ActiveRecord::Base
         return system_obj
     end
 
+    def update_last_seen()
+      last_seen = DateTime.now
+      save()
+    end
+
 
   # Scope definitions. We implement all Filterrific filters through ActiveRecord
   # scopes. In this example we omit the implementation of the scopes for brevity.

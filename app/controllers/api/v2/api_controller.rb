@@ -52,11 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def update_last_seen(system)
-      system.last_seen = DateTime.now
-      system.save()
-    end
-
     # v2/register
     def register
       data = JSON.parse request.body.read
@@ -87,7 +82,7 @@ module Api::V2
       end
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
       apply_system_properties( currentSys, data )
       currentSys.save()
 
@@ -131,7 +126,7 @@ module Api::V2
       unknownPackages = false
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
       apply_system_properties( currentSys, data )
       error = true unless currentSys.save()
 
@@ -197,7 +192,7 @@ module Api::V2
       stateInstalled = ConcretePackageState.last
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
 
       # for each hash, check if this corresponds to a known version
       data["packages"].each do |pkgHash|
@@ -234,7 +229,7 @@ module Api::V2
       error = false
       stateInstalled = ConcretePackageState.last
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
 
       if currentSys.os
           dist = Distribution.get_maybe_create(currentSys.os)
