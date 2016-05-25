@@ -52,19 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def get_maybe_create_system(system)
-        if System.exists?(:urn => system["urn"])
-            system_obj = System.where(urn: system["urn"])[0]
-        else
-            system_obj = System.new
-            apply_system_properties( system_obj, system )
-            system_obj.system_group = SystemGroup.first
-            system_obj.last_seen = DateTime.now
-            system_obj.save()
-        end
-        return system_obj
-    end
-
     def get_maybe_create_package(package)
         if Package.exists?( name: package['name'] )
           package_obj = Package.where( name: package['name'] )[0]
@@ -126,7 +113,7 @@ module Api::V2
         return
       end
 
-      system = get_maybe_create_system(data)
+      system = System.get_maybe_create(data)
       #system.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
 
       render json: { status: "OK" }
