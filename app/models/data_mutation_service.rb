@@ -93,4 +93,36 @@ class DataMutationService
       end
     end
 
+    def self.refreshInstalledHash(urn, data)
+      unknownPackages = []
+      knownPackages = []
+      error = false
+      stateInstalled = ConcretePackageState.last
+
+      currentSys = System.where(urn: urn)[0]
+      currentSys.update_last_seen()
+
+      # for each hash, check if this corresponds to a known version
+      data["packages"].each do |pkgHash|
+        if PackageVersion.exists?( sha256: pkgHash )
+          pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
+          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateInstalled)
+
+          knownPackages.push( pkgHash )
+        else
+          unknownPackages.push( pkgHash )
+        end
+      end
+
+      if error
+        return { status: "ERROR" }
+      elsif unknownPackages.length > 0
+        return { status: "infoIncomplete", knownPackages: knownPackages }
+      elsif currentSys.packages.count != data["pkgCount"]
+        return { status: "countMismatch", knownPackages: knownPackages  }
+      else
+        return { status: "OK", knownPackages: knownPackages  }
+      end
+    end
+
 end

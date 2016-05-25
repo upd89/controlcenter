@@ -66,42 +66,16 @@ module Api::V2
 
     # v2/system/:urn/refresh-installed-hash
     def refreshInstalledHash
+      urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => params["urn"])
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => urn)
         render json: { status: "ERROR" }
         return
       end
 
-      unknownPackages = []
-      knownPackages = []
-      error = false
-      stateInstalled = ConcretePackageState.last
+      render json: DataMutationService.refreshInstalledHash(urn, data)
 
-      currentSys = System.where(urn: params[:urn])[0]
-      currentSys.update_last_seen()
-
-      # for each hash, check if this corresponds to a known version
-      data["packages"].each do |pkgHash|
-        if PackageVersion.exists?( sha256: pkgHash )
-          pkgVersion = PackageVersion.where( sha256: pkgHash )[0]
-          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateInstalled)
-
-          knownPackages.push( pkgHash )
-        else
-          unknownPackages.push( pkgHash )
-        end
-      end
-
-      if error
-        render json: { status: "ERROR" }
-      elsif unknownPackages.length > 0
-        render json: { status: "infoIncomplete", knownPackages: knownPackages }
-      elsif currentSys.packages.count != data["pkgCount"]
-        render json: { status: "countMismatch", knownPackages: knownPackages  }
-      else
-        render json: { status: "OK", knownPackages: knownPackages  }
-      end
     end
 
     # v2/system/:urn/refresh-installed
