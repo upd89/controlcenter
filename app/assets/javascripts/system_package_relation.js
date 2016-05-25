@@ -202,7 +202,7 @@ var list = new List(),
 
       toggleUpdateButton();
     };
-var applyUpdatesClickHandler = function(e) {
+var applyUpdatesClickHandler = function( e ) {
   $.ajax({
     url: $("#comboViewForm")[0].action,
     headers: {
@@ -227,9 +227,31 @@ var applyUpdatesClickHandler = function(e) {
     }
   });
 };
+var clearListClickHandler = function( e ) {
+  list.reset();
+  toggleUpdateButton();
+  unmarkPackages();
+  unmarkCPVs();
+  e.preventDefault();
+  return false;
+};
+var selectAllClickHandler = function( e ) {
+  $("table.comboUpdates .checkboxInstallUpdate.package").prop("checked",true);
+
+  $("table.comboUpdates .checkboxInstallUpdate.package").each(function(){
+    list.addPackage( new Package( $(this).val() ) );
+  });
+  toggleUpdateButton();
+};
+var bindClickHandlers = function(){
+  $("#selectAll").on("click", selectAllClickHandler );
+  $("#clearList").on("click", clearListClickHandler );
+  $("#applyUpdates").on("click", applyUpdatesClickHandler );
+};
 
 $(document).on("page:change", function(){
   $("table.comboUpdates .checkboxInstallUpdate").on("click", clickHandler);
+  bindClickHandlers();
 });
 $(document).on("comboview:showCPVs", function(){
   highlightChosenPackage();
@@ -243,24 +265,5 @@ $(document).on("comboview:showPackages", function(){
 $(function() {
   list.reset();
   toggleUpdateButton();
-
-  $("#selectAll").on("click", function(e) {
-    $("table.comboUpdates .checkboxInstallUpdate.package").prop("checked",true);
-
-    $("table.comboUpdates .checkboxInstallUpdate.package").each(function(){
-      list.addPackage( new Package( $(this).val() ) );
-    });
-    toggleUpdateButton();
-  });
-
-  $("#clearList").on("click", function(e) {
-    list.reset();
-    toggleUpdateButton();
-    unmarkPackages();
-    unmarkCPVs();
-    e.preventDefault();
-    return false;
-  });
-
-  $("#applyUpdates").on("click", applyUpdatesClickHandler );
+  bindClickHandlers();
 });

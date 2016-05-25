@@ -212,7 +212,7 @@ class JobsController < ApplicationController
         t.destroy
       end
       @job.destroy
-      redirect_to systems_path
+      redirect_to root_path, success: 'Job was successfully cancelled.'
     end
   end
 

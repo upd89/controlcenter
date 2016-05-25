@@ -58,9 +58,9 @@
 
 <% if @job.is_in_preview %>
   <div class="actions col_12">
-    <%= form_for @job, :url => { :action => "execute" }, :html => { :method => :put } do |f| %>
-      <%= submit_tag "Execute Job", :name => 'execute', :id=>"executeJobBtn" %>
-      <%= submit_tag "Cancel Job", :name => 'cancel', :id=>"cancelJobBtn" %>
+    <%= form_for @job, url: { action: "execute" }, html: { method: :put } do |f| %>
+      <%= submit_tag "Execute Job", name: 'execute', id: "executeJobBtn" %>
+      <%= submit_tag "Cancel Job", name: 'cancel', id: "cancelJobBtn" %>
     <% end %>
   </div>
 <% end %>
