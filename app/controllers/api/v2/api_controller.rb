@@ -40,39 +40,15 @@ module Api::V2
     # v2/system/:urn/notify-hash
     def updateSystemHash
       data = JSON.parse request.body.read
+      urn = params[:urn]
 
       if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
         render json: { status: "ERROR" }
         return
       end
 
-      currentSys = System.where(urn: params[:urn])[0]
-      currentSys.update_last_seen()
-      currentSys.apply_properties(data)
-      currentSys.save()
+      render json: DataMutationService.updateSystemHash(urn, data)
 
-      unknownPackages = []
-      knownPackages = []
-      stateAvailable = ConcretePackageState.first
-
-      data["packageUpdates"].each do |updHash|
-        if PackageVersion.exists?( sha256: updHash )
-          knownPackages.push( updHash )
-          pkgVersion = PackageVersion.where( sha256: updHash )[0]
-          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateAvailable)
-        else
-          unknownPackages.push( updHash )
-        end
-      end
-      currentSys.save()
-
-      if unknownPackages.length > 0
-        render json: { status: "infoIncomplete", knownPackages: knownPackages }
-      elsif currentSys.concrete_package_versions.where(concrete_package_state: ConcretePackageState.where(name: "Available")[0]).count != data["updCount"]
-        render json: { status: "countMismatch", knownPackages: knownPackages }
-      else
-        render json: { status: "OK", knownPackages: knownPackages  }
-      end
     end
 
     # v2/system/:urn/notify
