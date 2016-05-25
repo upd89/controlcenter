@@ -78,7 +78,7 @@ class SystemPackageRelation < ActiveRecord::Base
         order("pkg_name #{ direction }")
       when /^section_/
         order("LOWER(pkg_section) #{ direction }")
-      when /^nr_of_systems_/
+      when /^systems_/
         order("sys_count #{ direction }")
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")

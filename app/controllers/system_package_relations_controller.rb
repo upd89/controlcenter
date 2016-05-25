@@ -25,7 +25,7 @@ class SystemPackageRelationsController < ApplicationController
     @system_package_relations = SystemPackageRelation.where( pkg_id: params['id'])
     if params['query']
         if params['query']['text']
-            @system_package_relations = @system_package_relations.where( "sys_name like ?", "#{params['query']['text'].to_s}%" )
+            @system_package_relations = @system_package_relations.where( "sys_name like :search OR sys_urn like :search", search: "#{params['query']['text'].to_s}%" )
         end
         if params['query']['group']
             @system_package_relations = @system_package_relations.where( sys_grp_id: params['query']['group'] )
