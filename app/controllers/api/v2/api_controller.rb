@@ -158,42 +158,13 @@ module Api::V2
     def updateTask
       taskid = params[:id]
       data = JSON.parse request.body.read
-      error = false
 
       if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(taskid)
         render json: { status: "ERROR" }
         return
       end
 
-      task = Task.find(taskid)
-      state = TaskState.where(:name => data["state"] ).first
-      if state
-        task.task_state = state
-        # TODO + log
-      end
-
-      if data["log"]
-        task.task_execution = TaskExecution.create(log: data["log"] )
-      end
-
-      if data["state"].downcase == "done"
-        pkg_state = ConcretePackageState.where(name: "Installed").first
-      else
-        pkg_state = ConcretePackageState.where(name: "Available").first
-      end
-
-      task.concrete_package_versions.each do |cpv|
-        cpv.concrete_package_state = pkg_state
-        error = true unless cpv.save()
-      end
-
-      error = true unless task.save()
-
-      if error
-        render json: { status: "ERROR" }
-      else
-        render json: { status: "OK"  }
-      end
+      render json: DataMutationService.updateTask(taskid, data)
 
     end
   end
