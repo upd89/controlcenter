@@ -36,4 +36,61 @@ class DataMutationService
       end
     end
 
+    def self.updateSystem(urn, data)
+      stateAvailable = ConcretePackageState.first
+      error = false
+      unknownPackages = false
+
+      currentSys = System.where(urn: urn)[0]
+      currentSys.update_last_seen()
+      currentSys.apply_properties(data)
+      error = true unless currentSys.save()
+
+      data["packageUpdates"].each do |update|
+        if !Package.exists?( name: update['name'] )
+          unknownPackages = true
+        else
+          pkg = Package.where( name: update['name'] )[0]
+          newVersion = update['candidateVersion']
+
+          pkgVersion = PackageVersion.get_maybe_create(newVersion, pkg)
+
+          if newVersion['sha256'] == update['baseVersionHash']
+            # this is a base_version already, don't do anything
+          elsif PackageVersion.exists?( sha256: update['baseVersionHash'] )
+            pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersionHash'] )[0]
+            error = true unless pkgVersion.save()
+          else
+            # send pkgUnknown because the base version of this package is unknown
+            unknownPackages = true
+          end
+
+          if newVersion['repository']
+            pkgVersion.repository = Repository.get_maybe_create(newVersion['repository'])
+          end
+
+          if currentSys.os
+            pkgVersion.distribution = Distribution.get_maybe_create(currentSys.os)
+          end
+          error = true unless pkgVersion.save()
+
+          # should alredy be set by creating the package version
+          #pkg.package_versions << pkgVersion
+          #error = true unless pkg.save()
+
+          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateAvailable)
+        end
+      end
+
+      if error
+        return { status: "ERROR" }
+      elsif unknownPackages
+        return { status: "pkgUnknown" }
+      elsif currentSys.concrete_package_versions.where(concrete_package_state: ConcretePackageState.where(name: "Available")[0]).count != data["updCount"]
+        return { status: "countMismatch" }
+      else
+        return { status: "OK" }
+      end
+    end
+
 end

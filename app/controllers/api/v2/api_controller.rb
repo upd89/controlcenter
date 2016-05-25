@@ -2,7 +2,6 @@ module Api::V2
   class ApiController < ApplicationController
     protect_from_forgery with: :null_session
     skip_before_action :require_login
-
     before_action :require_valid_json
 
     def require_valid_json
@@ -39,8 +38,8 @@ module Api::V2
 
     # v2/system/:urn/notify-hash
     def updateSystemHash
-      data = JSON.parse request.body.read
       urn = params[:urn]
+      data = JSON.parse request.body.read
 
       if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
         render json: { status: "ERROR" }
@@ -53,6 +52,7 @@ module Api::V2
 
     # v2/system/:urn/notify
     def updateSystem
+      urn = params[:urn]
       data = JSON.parse request.body.read
 
       if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
@@ -60,60 +60,8 @@ module Api::V2
         return
       end
 
-      stateAvailable = ConcretePackageState.first
-      error = false
-      unknownPackages = false
+      render json: DataMutationService.updateSystem(urn, data)
 
-      currentSys = System.where(urn: params[:urn])[0]
-      currentSys.update_last_seen()
-      currentSys.apply_properties(data)
-      error = true unless currentSys.save()
-
-      data["packageUpdates"].each do |update|
-        if !Package.exists?( name: update['name'] )
-          unknownPackages = true
-        else
-          pkg = Package.where( name: update['name'] )[0]
-          newVersion = update['candidateVersion']
-
-          pkgVersion = PackageVersion.get_maybe_create(newVersion, pkg)
-
-          if newVersion['sha256'] == update['baseVersionHash']
-            # this is a base_version already, don't do anything
-          elsif PackageVersion.exists?( sha256: update['baseVersionHash'] )
-            pkgVersion.base_version = PackageVersion.where( sha256: update['baseVersionHash'] )[0]
-            error = true unless pkgVersion.save()
-          else
-            # send pkgUnknown because the base version of this package is unknown
-            unknownPackages = true
-          end
-
-          if newVersion['repository']
-            pkgVersion.repository = Repository.get_maybe_create(newVersion['repository'])
-          end
-
-          if currentSys.os
-            pkgVersion.distribution = Distribution.get_maybe_create(currentSys.os)
-          end
-          error = true unless pkgVersion.save()
-
-          # should alredy be set by creating the package version
-          #pkg.package_versions << pkgVersion
-          #error = true unless pkg.save()
-
-          ConcretePackageVersion.create_new(pkgVersion, currentSys, stateAvailable)
-        end
-      end
-
-      if error
-        render json: { status: "ERROR" }
-      elsif unknownPackages
-        render json: { status: "pkgUnknown" }
-      elsif currentSys.concrete_package_versions.where(concrete_package_state: ConcretePackageState.where(name: "Available")[0]).count != data["updCount"]
-        render json: { status: "countMismatch" }
-      else
-        render json: { status: "OK" }
-      end
     end
 
     # v2/system/:urn/refresh-installed-hash
