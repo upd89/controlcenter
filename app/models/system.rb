@@ -19,6 +19,26 @@ class System < ActiveRecord::Base
     ]
   )
 
+    # used in api
+    def self.get_maybe_create(system)
+        if exists?(:urn => system["urn"])
+            system_obj = where(urn: system["urn"])[0]
+        else
+            system_obj = new
+            apply_system_properties( system_obj, system )
+            system_obj.system_group = SystemGroup.first
+            system_obj.last_seen = DateTime.now
+            system_obj.save()
+        end
+        return system_obj
+    end
+
+    def update_last_seen()
+      last_seen = DateTime.now
+      save()
+    end
+
+
   # Scope definitions. We implement all Filterrific filters through ActiveRecord
   # scopes. In this example we omit the implementation of the scopes for brevity.
   # Please see 'Scope patterns' for scope implementation details.

@@ -24,6 +24,28 @@ class Package < ActiveRecord::Base
     ]
   )
 
+    # used in api
+    def self.get_maybe_create(package)
+        if exists?( name: package['name'] )
+          package_obj = where( name: package['name'] )[0]
+          # update package information if specified
+          package_obj.section  = package['section']  if package['section']
+          package_obj.homepage = package['homepage'] if package['homepage']
+          package_obj.summary  = package['summary']  if package['summary']
+          package_obj.save()
+        else
+          # creating package
+          package_obj = create( {
+                 :name         =>  package['name'],
+                 :section      =>  package['section'],
+                 :homepage     =>  package['homepage'],
+                 :summary      =>  package['summary']
+          } )
+        end
+        return package_obj
+    end
+
+
   scope :search_query, lambda { |query|
     return nil  if query.blank?
     # condition query, parse into individual keywords

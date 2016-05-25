@@ -52,76 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def get_maybe_create_distro(distro)
-        if Distribution.exists?(name: distro)
-            distro_obj = Distribution.where(name: distro)[0]
-        else
-            distro_obj = Distribution.create(name: distro)
-        end
-        return distro_obj
-    end
-
-    def get_maybe_create_system(system)
-        if System.exists?(:urn => system["urn"])
-            system_obj = System.where(urn: system["urn"])[0]
-        else
-            system_obj = System.new
-            apply_system_properties( system_obj, system )
-            system_obj.system_group = SystemGroup.first
-            system_obj.last_seen = DateTime.now
-            system_obj.save()
-        end
-        return system_obj
-    end
-
-    def get_maybe_create_package(package)
-        if Package.exists?( name: package['name'] )
-          package_obj = Package.where( name: package['name'] )[0]
-          # update package information if specified
-          package_obj.section  = package['section']  if package['section']
-          package_obj.homepage = package['homepage'] if package['homepage']
-          package_obj.summary  = package['summary']  if package['summary']
-          package_obj.save()
-        else
-          # creating package
-          package_obj = Package.create( {
-                 :name         =>  package['name'],
-                 :section      =>  package['section'],
-                 :homepage     =>  package['homepage'],
-                 :summary      =>  package['summary']
-          } )
-        end
-        return package_obj
-    end
-
-    def get_maybe_create_packageversion(pkgVersion, pkg)
-        if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
-            pkgVersion_obj = PackageVersion.where( sha256: pkgVersion['sha256'] )[0]
-        else
-            pkgVersion_obj = PackageVersion.create( {
-              :sha256       => pkgVersion['sha256'],
-              :version      => pkgVersion['version'],
-              :architecture => pkgVersion['architecture'],
-              :package      => pkg
-            } )
-        end
-        return pkgVersion_obj
-    end
-
-    def get_maybe_create_repo(rep)
-        if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-            repo_obj = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-        else
-            repo_obj = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-        end
-        return repo_obj
-    end
-
-    def update_last_seen(system)
-      system.last_seen = DateTime.now
-      system.save()
-    end
-
     # v2/register
     def register
       data = JSON.parse request.body.read
@@ -135,7 +65,7 @@ module Api::V2
         return
       end
 
-      system = get_maybe_create_system(data)
+      system = System.get_maybe_create(data)
       #system.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
 
       render json: { status: "OK" }
@@ -152,7 +82,7 @@ module Api::V2
       end
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
       apply_system_properties( currentSys, data )
       currentSys.save()
 
@@ -196,7 +126,7 @@ module Api::V2
       unknownPackages = false
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
       apply_system_properties( currentSys, data )
       error = true unless currentSys.save()
 
@@ -207,7 +137,7 @@ module Api::V2
           pkg = Package.where( name: update['name'] )[0]
           newVersion = update['candidateVersion']
 
-          pkgVersion = get_maybe_create_packageversion(newVersion, pkg)
+          pkgVersion = PackageVersion.get_maybe_create(newVersion, pkg)
 
           if newVersion['sha256'] == update['baseVersionHash']
             # this is a base_version already, don't do anything
@@ -220,11 +150,11 @@ module Api::V2
           end
 
           if newVersion['repository']
-            pkgVersion.repository = get_maybe_create_repo(newVersion['repository'])
+            pkgVersion.repository = Repository.get_maybe_create(newVersion['repository'])
           end
 
           if currentSys.os
-            pkgVersion.distribution = get_maybe_create_distro(currentSys.os)
+            pkgVersion.distribution = Distribution.get_maybe_create(currentSys.os)
           end
           error = true unless pkgVersion.save()
 
@@ -262,7 +192,7 @@ module Api::V2
       stateInstalled = ConcretePackageState.last
 
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
 
       # for each hash, check if this corresponds to a known version
       data["packages"].each do |pkgHash|
@@ -299,16 +229,16 @@ module Api::V2
       error = false
       stateInstalled = ConcretePackageState.last
       currentSys = System.where(urn: params[:urn])[0]
-      update_last_seen( currentSys )
+      currentSys.update_last_seen()
 
       if currentSys.os
-          dist = get_maybe_create_distro(currentSys.os)
+          dist = Distribution.get_maybe_create(currentSys.os)
       end
 
       data["packages"].each do |package|
-        currentPkg = get_maybe_create_package(package)
+        currentPkg = Package.get_maybe_create(package)
         installedVersion = package['installedVersion']
-        pkgVersion = get_maybe_create_packageversion(installedVersion, currentPkg)
+        pkgVersion = PackageVersion.get_maybe_create(installedVersion, currentPkg)
 
         # set or update distro
         if dist
@@ -318,7 +248,7 @@ module Api::V2
 
         # set or update repository
         if installedVersion['repository']
-          pkgVersion.repository = get_maybe_create_repo(installedVersion['repository'])
+          pkgVersion.repository = Repository.get_maybe_create(installedVersion['repository'])
           error = true unless pkgVersion.save()
         end
 
@@ -327,7 +257,7 @@ module Api::V2
         if !package['isBaseVersion']
           baseVersionJSON = package['baseVersion']
 
-          baseVersion = get_maybe_create_packageversion(baseVersionJSON, currentPkg)
+          baseVersion = PackageVersion.get_maybe_create(baseVersionJSON, currentPkg)
 
           pkgVersion.base_version = baseVersion
           error = true unless pkgVersion.save()
@@ -340,7 +270,7 @@ module Api::V2
 
           # set or update repository
           if baseVersionJSON['repository']
-              baseVersion.repository = get_maybe_create_repo(baseVersionJSON['repository'])
+              baseVersion.repository = Repository.get_maybe_create(baseVersionJSON['repository'])
               error = true unless baseVersion.save()
           end
 
