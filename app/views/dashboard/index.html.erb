@@ -48,10 +48,10 @@
       <li><%= get_running_tasks.count %> pending Tasks</li>
       <li><%= get_failed_tasks.count %> failed Tasks</li>
       <li><%= get_overdue_tasks.count %> Tasks overdue!
-          <% get_overdue_tasks.take(5).each do |task| %>
+          <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
           <div><%= link_to(task.id, task) + ": " + task.decorated_created_at + ", " + task.task_state.name %></div>
           <% end %>
-          <% if get_overdue_tasks.count > 5 %>...<% end %>
+          <% if get_overdue_tasks.count > Settings.Dashboard.NrOfOverdueTasksShown %>...<% end %>
       </li>
     </ul>
 
@@ -60,9 +60,18 @@
 
   <div class="col_6 dashboard_box">
     <h4>Available Updates</h4>
-    <% @updatable_systems.each do |sys| %>
-      <div><%= link_to(sys.name, sys) + ": " + sys.get_installable_CPVs.count.to_s %></div>
-    <% end %>
+    <div class="col_6">
+      <% @updatable_systems.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys| %>
+        <div><%= link_to(sys.name, sys) + ": " + sys.get_installable_CPVs.count.to_s %></div>
+      <% end %>
+      <% if @updatable_systems.count > Settings.Dashboard.NrOfEntitiesWithUpdatesShown %>...<% end %>
+    </div>
+    <div class="col_6">
+      <% @updatable_system_groups.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys_grp| %>
+        <div><%= link_to(sys_grp.name, sys_grp) + ": " + sys_grp.get_nr_of_installable_CPVs.to_s %></div>
+      <% end %>
+      <% if @updatable_system_groups.count > Settings.Dashboard.NrOfEntitiesWithUpdatesShown %>...<% end %>
+    </div>
     <div class="floatFix"></div>
   </div>
 

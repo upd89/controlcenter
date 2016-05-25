@@ -10,3 +10,6 @@ Tasks:
   OverdueWarningThresholdMinutes: 10
 General:
   Timezone: "Bern" #use rake time:zones:all to see all available settings
+Dashboard:
+  NrOfOverdueTasksShown: 5
+  NrOfEntitiesWithUpdatesShown: 10
