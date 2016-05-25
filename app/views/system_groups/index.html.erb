@@ -15,6 +15,7 @@
       <th>Name</th>
       <th>Permission level</th>
       <th>Systems</th>
+      <th>Available Updates</th>
       <th></th>
     </tr>
   </thead>
@@ -25,6 +26,7 @@
         <td><%= system_group.name %></td>
         <td><%= system_group.permission_level %></td>
         <td><%= system_group.systems.count %></td>
+        <td><%= system_group.get_nr_of_installable_CPVs %></td>
         <td>
           <ul class="button-bar">
             <% if can? :read, system_group    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, system_group %></li><% end %>
