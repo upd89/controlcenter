@@ -66,15 +66,6 @@ module Api::V2
         return pkgVersion_obj
     end
 
-    def get_maybe_create_repo(rep)
-        if Repository.exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-            repo_obj = Repository.where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-        else
-            repo_obj = Repository.create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-        end
-        return repo_obj
-    end
-
     def update_last_seen(system)
       system.last_seen = DateTime.now
       system.save()
@@ -178,7 +169,7 @@ module Api::V2
           end
 
           if newVersion['repository']
-            pkgVersion.repository = get_maybe_create_repo(newVersion['repository'])
+            pkgVersion.repository = Repository.get_maybe_create(newVersion['repository'])
           end
 
           if currentSys.os
@@ -276,7 +267,7 @@ module Api::V2
 
         # set or update repository
         if installedVersion['repository']
-          pkgVersion.repository = get_maybe_create_repo(installedVersion['repository'])
+          pkgVersion.repository = Repository.get_maybe_create(installedVersion['repository'])
           error = true unless pkgVersion.save()
         end
 
@@ -298,7 +289,7 @@ module Api::V2
 
           # set or update repository
           if baseVersionJSON['repository']
-              baseVersion.repository = get_maybe_create_repo(baseVersionJSON['repository'])
+              baseVersion.repository = Repository.get_maybe_create(baseVersionJSON['repository'])
               error = true unless baseVersion.save()
           end
 
