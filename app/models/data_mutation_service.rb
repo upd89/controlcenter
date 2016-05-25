@@ -125,4 +125,10 @@ class DataMutationService
       end
     end
 
+    def self.refreshInstalled(urn, data)
+    end
+
+    def self.updateTask(taskid, data)
+    end
+
 end

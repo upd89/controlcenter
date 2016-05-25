@@ -41,7 +41,7 @@ module Api::V2
       urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
+      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: urn)
         render json: { status: "ERROR" }
         return
       end
@@ -156,15 +156,16 @@ module Api::V2
 
     # v2/task/:id/notify
     def updateTask
+      taskid = params[:id]
       data = JSON.parse request.body.read
       error = false
 
-      if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(params[:id])
+      if check_mandatory_json_params(data, ["state", "log"]) || !Task.exists?(taskid)
         render json: { status: "ERROR" }
         return
       end
 
-      task = Task.find(params[:id])
+      task = Task.find(taskid)
       state = TaskState.where(:name => data["state"] ).first
       if state
         task.task_state = state
