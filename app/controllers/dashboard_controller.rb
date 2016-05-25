@@ -19,6 +19,7 @@ class DashboardController < ApplicationController
     @updates = ConcretePackageVersion.where(concrete_package_state: cpv_state_avail)
 
     @updatable_systems = @systems.reject{ |s| s.get_installable_CPVs.count < 1 }
+    @updatable_system_groups = SystemGroup.all.reject{ |g| !g.has_installable_CPVs }
   end
 
   def get_running_tasks
