@@ -61,12 +61,12 @@ class JobsController < ApplicationController
         # only take system in consideration if it's passed the optional filter
         valid = true
 
-        if filter['text']
+        if filter['text'] && filter['text'] != ""
           valid = (cpv.system.name.start_with? filter['text']) ||
                   (cpv.system.urn.start_with? filter['text'])
         end
 
-        if filter['group'] && valid
+        if valid && filter['group'] && filter['group'] != ""
           valid = cpv.system.system_group ? (cpv.system.system_group.id == filter['group']) : false
         end
 

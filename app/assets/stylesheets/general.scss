@@ -175,3 +175,9 @@ input[type="checkbox"].checkboxInstallUpdate {
 table.comboUpdates tbody tr.active {
   background-color: #4D9BE1;
 }
+
+#paramPlaceholder_query,
+#paramPlaceholder_group {
+  display: none;
+  visibility: hidden;
+}
