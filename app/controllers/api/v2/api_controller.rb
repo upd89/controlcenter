@@ -88,70 +88,8 @@ module Api::V2
         return
       end
 
-      error = false
-      stateInstalled = ConcretePackageState.last
-      currentSys = System.where(urn: urn)[0]
-      currentSys.update_last_seen()
+      render json: DataMutationService.refreshInstalled(urn, data)
 
-      if currentSys.os
-          dist = Distribution.get_maybe_create(currentSys.os)
-      end
-
-      data["packages"].each do |package|
-        currentPkg = Package.get_maybe_create(package)
-        installedVersion = package['installedVersion']
-        pkgVersion = PackageVersion.get_maybe_create(installedVersion, currentPkg)
-
-        # set or update distro
-        if dist
-          pkgVersion.distribution = dist
-          error = true unless pkgVersion.save()
-        end
-
-        # set or update repository
-        if installedVersion['repository']
-          pkgVersion.repository = Repository.get_maybe_create(installedVersion['repository'])
-          error = true unless pkgVersion.save()
-        end
-
-        ConcretePackageVersion.create_new(pkgVersion, currentSys, stateInstalled)
-
-        if !package['isBaseVersion']
-          baseVersionJSON = package['baseVersion']
-
-          baseVersion = PackageVersion.get_maybe_create(baseVersionJSON, currentPkg)
-
-          pkgVersion.base_version = baseVersion
-          error = true unless pkgVersion.save()
-
-          # set or update distro
-          if dist
-              baseVersion.distribution = dist
-              error = true unless baseVersion.save()
-          end
-
-          # set or update repository
-          if baseVersionJSON['repository']
-              baseVersion.repository = Repository.get_maybe_create(baseVersionJSON['repository'])
-              error = true unless baseVersion.save()
-          end
-
-          ConcretePackageVersion.create_new(baseVersion, currentSys, stateInstalled)
-
-          pkgVersion.base_version = baseVersion
-          error = true unless pkgVersion.save()
-
-        end
-
-      end
-
-      if error
-        render json: { status: "ERROR" }
-      elsif currentSys.packages.count != data["pkgCount"]
-        render json: { status: "countMismatch" }
-      else
-        render json: { status: "OK" }
-      end
     end
 
     # v2/task/:id/notify
