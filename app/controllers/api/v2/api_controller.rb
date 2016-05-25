@@ -65,10 +65,7 @@ module Api::V2
         return
       end
 
-      system = System.get_maybe_create(data)
-      #system.certificate = request.headers['X-Api-Client-Cert'] #TODO: maybe save certi in the near future
-
-      render json: { status: "OK" }
+      render json: DataMutationService.register(data)
 
     end
 
