@@ -52,20 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def get_maybe_create_packageversion(pkgVersion, pkg)
-        if PackageVersion.exists?( sha256: pkgVersion['sha256'] )
-            pkgVersion_obj = PackageVersion.where( sha256: pkgVersion['sha256'] )[0]
-        else
-            pkgVersion_obj = PackageVersion.create( {
-              :sha256       => pkgVersion['sha256'],
-              :version      => pkgVersion['version'],
-              :architecture => pkgVersion['architecture'],
-              :package      => pkg
-            } )
-        end
-        return pkgVersion_obj
-    end
-
     def update_last_seen(system)
       system.last_seen = DateTime.now
       system.save()
@@ -156,7 +142,7 @@ module Api::V2
           pkg = Package.where( name: update['name'] )[0]
           newVersion = update['candidateVersion']
 
-          pkgVersion = get_maybe_create_packageversion(newVersion, pkg)
+          pkgVersion = PackageVersion.get_maybe_create(newVersion, pkg)
 
           if newVersion['sha256'] == update['baseVersionHash']
             # this is a base_version already, don't do anything
@@ -257,7 +243,7 @@ module Api::V2
       data["packages"].each do |package|
         currentPkg = Package.get_maybe_create(package)
         installedVersion = package['installedVersion']
-        pkgVersion = get_maybe_create_packageversion(installedVersion, currentPkg)
+        pkgVersion = PackageVersion.get_maybe_create(installedVersion, currentPkg)
 
         # set or update distro
         if dist
@@ -276,7 +262,7 @@ module Api::V2
         if !package['isBaseVersion']
           baseVersionJSON = package['baseVersion']
 
-          baseVersion = get_maybe_create_packageversion(baseVersionJSON, currentPkg)
+          baseVersion = PackageVersion.get_maybe_create(baseVersionJSON, currentPkg)
 
           pkgVersion.base_version = baseVersion
           error = true unless pkgVersion.save()
