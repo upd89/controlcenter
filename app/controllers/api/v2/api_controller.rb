@@ -55,7 +55,7 @@ module Api::V2
       urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: params[:urn])
+      if check_mandatory_json_params(data, ["updCount", "packageUpdates"]) || !System.exists?(urn: urn)
         render json: { status: "ERROR" }
         return
       end
@@ -80,16 +80,17 @@ module Api::V2
 
     # v2/system/:urn/refresh-installed
     def refreshInstalled
+      urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => params["urn"])
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => urn)
         render json: { status: "ERROR" }
         return
       end
 
       error = false
       stateInstalled = ConcretePackageState.last
-      currentSys = System.where(urn: params[:urn])[0]
+      currentSys = System.where(urn: urn)[0]
       currentSys.update_last_seen()
 
       if currentSys.os
