@@ -43,7 +43,8 @@
     <button id="clearList">Clear Selection</button>
     <button id="selectAll">Select All</button>
     <%= submit_tag "Update Selected", name: 'specific', id: "applyUpdates" %>
-    <p id="updateSummary"></p>
+    <div id="paramPlaceholder_query"><%= params["filterrific"] ? params["filterrific"]["sys_search_query"] : "" %></div>
+    <div id="paramPlaceholder_group"><%= params["filterrific"] ? params["filterrific"]["with_system_group_id"] : "" %></div>
   </div>
 
   <div class="pagination col_12">

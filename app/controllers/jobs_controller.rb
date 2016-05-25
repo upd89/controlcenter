@@ -23,6 +23,11 @@ class JobsController < ApplicationController
 
   def create_combo
     list = JSON.parse params[:list]
+    filter = JSON.parse params[:filter]
+
+    logger.debug( filter["text"] )
+    logger.debug( filter["group"] )
+
     packages = list["packages"]
     task_state_pending = TaskState.where(name: "Pending")[0]
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
@@ -53,7 +58,21 @@ class JobsController < ApplicationController
       end
 
       cpvs.each do |cpv|
-        systems << cpv.system
+        # only take system in consideration if it's passed the optional filter
+        valid = true
+
+        if filter['text']
+          valid = (cpv.system.name.start_with? filter['text']) ||
+                  (cpv.system.urn.start_with? filter['text'])
+        end
+
+        if filter['group'] && valid
+          valid = cpv.system.system_group ? (cpv.system.system_group.id == filter['group']) : false
+        end
+
+        if valid
+          systems << cpv.system
+        end
       end
     end
 

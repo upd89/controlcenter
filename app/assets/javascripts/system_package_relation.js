@@ -114,10 +114,6 @@ function List() {
 }
 
 var list = new List(),
-    updateSummary = function() {
-      // TODO: pristine packages don't have their correct cpvs yet...
-      $("#updateSummary").html( "This will install " + list.size() + " Updates on " + list.cpvCount() + " CPVs" );
-    },
     toggleUpdateButton = function() {
       if ( list.size() === 0 ) {
         $("#applyUpdates").attr('disabled', 'disabled');
@@ -203,6 +199,17 @@ var list = new List(),
       toggleUpdateButton();
     };
 var applyUpdatesClickHandler = function( e ) {
+  var filter = {
+        'text': $("#paramPlaceholder_query").text(),
+        'group': $("#paramPlaceholder_group").text()
+      },
+      data = {
+        'utf8': $("#comboViewForm input[name='utf8']").val(),
+        'authenticity_token': $("#comboViewForm input[name='authenticity_token']").val(),
+        'list': JSON.stringify( list ),
+        'filter': JSON.stringify( filter )
+      };
+
   $.ajax({
     url: $("#comboViewForm")[0].action,
     headers: {
@@ -210,11 +217,7 @@ var applyUpdatesClickHandler = function( e ) {
       "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8'
     },
     type: 'POST',
-    data: {
-      'utf8': $("#comboViewForm input[name='utf8']").val(),
-      'authenticity_token': $("#comboViewForm input[name='authenticity_token']").val(),
-      'list': JSON.stringify( list )
-    },
+    data: data,
     success: function(data) {
       if (data.responseText.indexOf("/") === 0) {
         window.location = data.responseText;
@@ -244,14 +247,15 @@ var selectAllClickHandler = function( e ) {
   toggleUpdateButton();
 };
 var bindClickHandlers = function(){
-  $("#selectAll").on("click", selectAllClickHandler );
-  $("#clearList").on("click", clearListClickHandler );
-  $("#applyUpdates").on("click", applyUpdatesClickHandler );
+  $("#selectAll").off().on("click", selectAllClickHandler );
+  $("#clearList").off().on("click", clearListClickHandler );
+  $("#applyUpdates").off().on("click", applyUpdatesClickHandler );
 };
 
 $(document).on("page:change", function(){
-  $("table.comboUpdates .checkboxInstallUpdate").on("click", clickHandler);
+  $("table.comboUpdates .checkboxInstallUpdate").off().on("click", clickHandler);
   bindClickHandlers();
+  toggleUpdateButton();
 });
 $(document).on("comboview:showCPVs", function(){
   highlightChosenPackage();
