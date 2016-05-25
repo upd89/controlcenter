@@ -38,5 +38,6 @@ module Cc
 
     end
 
+    WillPaginate.per_page = Settings.Pagination.NoOfEntriesPerPage
   end
 end
