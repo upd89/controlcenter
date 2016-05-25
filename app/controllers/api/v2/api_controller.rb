@@ -52,15 +52,6 @@ module Api::V2
       return assoc
     end
 
-    def get_maybe_create_distro(distro)
-        if Distribution.exists?(name: distro)
-            distro_obj = Distribution.where(name: distro)[0]
-        else
-            distro_obj = Distribution.create(name: distro)
-        end
-        return distro_obj
-    end
-
     def get_maybe_create_system(system)
         if System.exists?(:urn => system["urn"])
             system_obj = System.where(urn: system["urn"])[0]
@@ -224,7 +215,7 @@ module Api::V2
           end
 
           if currentSys.os
-            pkgVersion.distribution = get_maybe_create_distro(currentSys.os)
+            pkgVersion.distribution = Distribution.get_maybe_create(currentSys.os)
           end
           error = true unless pkgVersion.save()
 
@@ -302,7 +293,7 @@ module Api::V2
       update_last_seen( currentSys )
 
       if currentSys.os
-          dist = get_maybe_create_distro(currentSys.os)
+          dist = Distribution.get_maybe_create(currentSys.os)
       end
 
       data["packages"].each do |package|
