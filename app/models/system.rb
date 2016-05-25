@@ -38,6 +38,15 @@ class System < ActiveRecord::Base
     save()
   end
 
+  def apply_properties(data)
+    name = data["name"] if data["name"]
+    urn = data["urn"] if data["urn"]
+    os = data["os"] if data["os"]
+    address = data["address"] if data["address"]
+    reboot_required = data["rebootRequired"] if data["rebootRequired"]
+    last_seen = DateTime.now
+  end
+
   # Scope definitions. We implement all Filterrific filters through ActiveRecord
   # scopes. In this example we omit the implementation of the scopes for brevity.
   # Please see 'Scope patterns' for scope implementation details.
