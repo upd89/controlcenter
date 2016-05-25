@@ -202,6 +202,31 @@ var list = new List(),
 
       toggleUpdateButton();
     };
+var applyUpdatesClickHandler = function(e) {
+  $.ajax({
+    url: $("#comboViewForm")[0].action,
+    headers: {
+      Accept : "text/javascript; charset=utf-8",
+      "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8'
+    },
+    type: 'POST',
+    data: {
+      'utf8': $("#comboViewForm input[name='utf8']").val(),
+      'authenticity_token': $("#comboViewForm input[name='authenticity_token']").val(),
+      'list': JSON.stringify( list )
+    },
+    success: function(data) {
+      if (data.responseText.indexOf("/") === 0) {
+        window.location = data.responseText;
+      }
+    },
+    error: function(data) {
+      if (data.responseText.indexOf("/") === 0) {
+        window.location = data.responseText;
+      }
+    }
+  });
+};
 
 $(document).on("page:change", function(){
   $("table.comboUpdates .checkboxInstallUpdate").on("click", clickHandler);
@@ -237,29 +262,5 @@ $(function() {
     return false;
   });
 
-  $("#applyUpdates").on("click", function(e) {
-    $.ajax({
-      url: $("#comboViewForm")[0].action,
-      headers: {
-        Accept : "text/javascript; charset=utf-8",
-        "Content-Type": 'application/x-www-form-urlencoded; charset=UTF-8'
-      },
-      type: 'POST',
-      data: {
-        'utf8': $("#comboViewForm input[name='utf8']").val(),
-        'authenticity_token': $("#comboViewForm input[name='authenticity_token']").val(),
-        'list': JSON.stringify( list )
-      },
-      success: function(data) {
-        if (data.responseText.indexOf("/") === 0) {
-          window.location = data.responseText;
-        }
-      },
-      error: function(data) {
-        if (data.responseText.indexOf("/") === 0) {
-          window.location = data.responseText;
-        }
-      }
-    });
-  });
+  $("#applyUpdates").on("click", applyUpdatesClickHandler );
 });

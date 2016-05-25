@@ -22,13 +22,13 @@ class SystemPackageRelationsController < ApplicationController
 
   # GET /system_package_relations/id
   def show
-    @system_package_relations = SystemPackageRelation.where(:pkg_id => params['id'])
+    @system_package_relations = SystemPackageRelation.where( pkg_id: params['id'])
     if params['query']
         if params['query']['text']
-            @system_package_relations = @system_package_relations.where(:sys_name => params['query']['text'].to_s)
+            @system_package_relations = @system_package_relations.where( "sys_name like ?", "#{params['query']['text'].to_s}%" )
         end
         if params['query']['group']
-            @system_package_relations = @system_package_relations.where(:sys_grp_id => params['query']['group'])
+            @system_package_relations = @system_package_relations.where( sys_grp_id: params['query']['group'] )
         end
     end
   end
