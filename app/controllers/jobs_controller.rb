@@ -200,7 +200,7 @@ class JobsController < ApplicationController
       @job.tasks.each do |t|
         BackgroundSender.perform_async( t )
       end
-      redirect_to @job
+      redirect_to @job, success: 'Job was successfully sent!'
     elsif params[:cancel]
       stateAvail = ConcretePackageState.where(name: "Available")[0]
       @job.tasks.each do |t|
