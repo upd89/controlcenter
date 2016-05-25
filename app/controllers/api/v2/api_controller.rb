@@ -20,15 +20,6 @@ module Api::V2
       return error
     end
 
-    def apply_system_properties( sys, data )
-      sys.name = data["name"] if data["name"]
-      sys.urn = data["urn"] if data["urn"]
-      sys.os = data["os"] if data["os"]
-      sys.address = data["address"] if data["address"]
-      sys.reboot_required = data["rebootRequired"] if data["rebootRequired"]
-      sys.last_seen = DateTime.now
-    end
-
     def create_new_concrete_package_version( pkgVersion, sys, state )
       # TODO: service to get package states...
       state = ConcretePackageState.first unless defined? state
@@ -80,7 +71,7 @@ module Api::V2
 
       currentSys = System.where(urn: params[:urn])[0]
       currentSys.update_last_seen()
-      apply_system_properties( currentSys, data )
+      currentSys.apply_properties(data)
       currentSys.save()
 
       unknownPackages = []
@@ -124,7 +115,7 @@ module Api::V2
 
       currentSys = System.where(urn: params[:urn])[0]
       currentSys.update_last_seen()
-      apply_system_properties( currentSys, data )
+      currentSys.apply_properties(data)
       error = true unless currentSys.save()
 
       data["packageUpdates"].each do |update|
