@@ -50,7 +50,7 @@
         <%= page_entries_info @systems %>
       </div>
       <div class="col_6">
-        <%= will_paginate @systems, :container => false %>
+        <%= will_paginate @systems, container: false, inner_window: 3, outer_window: 1 %>
       </div>
     </div>
   <% end %>
