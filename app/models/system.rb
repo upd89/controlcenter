@@ -25,7 +25,7 @@ class System < ActiveRecord::Base
           system_obj = where(urn: system["urn"])[0]
       else
           system_obj = new
-          apply_system_properties( system_obj, system )
+          system_obj.apply_properties( system )
           system_obj.system_group = SystemGroup.first
           system_obj.last_seen = DateTime.now
           system_obj.save()
