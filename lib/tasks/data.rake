@@ -15,12 +15,12 @@ namespace :db do
     PackageGroup.destroy_all
     System.destroy_all
     SystemGroup.destroy_all
-    User.destroy_all
-    Role.destroy_all
-    TaskExecution.destroy_all
     Task.destroy_all
+    TaskExecution.destroy_all
     TaskState.destroy_all
     Job.destroy_all
+    User.destroy_all
+    Role.destroy_all
     Distribution.destroy_all
     Repository.destroy_all
     ConcretePackageState.destroy_all
