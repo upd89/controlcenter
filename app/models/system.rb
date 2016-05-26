@@ -27,24 +27,24 @@ class System < ActiveRecord::Base
           system_obj = new
           system_obj.apply_properties( system )
           system_obj.system_group = SystemGroup.first
-          system_obj.last_seen = DateTime.now
+          #system_obj.last_seen = DateTime.now
           system_obj.save()
       end
       return system_obj
   end
 
   def update_last_seen()
-    last_seen = DateTime.now
+    write_attribute(:last_seen, DateTime.now)
     save()
   end
 
   def apply_properties(data)
-    name = data["name"] if data["name"]
-    urn = data["urn"] if data["urn"]
-    os = data["os"] if data["os"]
-    address = data["address"] if data["address"]
-    reboot_required = data["rebootRequired"] if data["rebootRequired"]
-    last_seen = DateTime.now
+    write_attribute(:name, data["name"]) if data["name"]
+    write_attribute(:urn, data["urn"]) if data["urn"]
+    write_attribute(:os, data["os"]) if data["os"]
+    write_attribute(:address, data["address"]) if data["address"]
+    write_attribute(:reboot_required, data["rebootRequired"]) if data["rebootRequired"]
+    write_attribute(:last_seen, DateTime.now)
   end
 
   # Scope definitions. We implement all Filterrific filters through ActiveRecord
