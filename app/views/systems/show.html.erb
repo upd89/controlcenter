@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "System " + (@system.name ? @system.name : "") ,
+  "class" => "sysText",
   "entity" => @system,
   "actions" =>[{
     "icon" => "arrow-left",
