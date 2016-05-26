@@ -30,7 +30,7 @@
         <td><%= package_version.package.name %></td>
         <td><%= package_version.distribution.name if package_version.distribution %></td>
         <td><%= package_version.repository.full_name if package_version.repository %></td>
-        <td><%= package_version.base_version ? package_version.base_version : "this" %></td>
+        <td><%= package_version.base_version ? package_version.base_version.version : "this" %></td>
         <td>
           <ul class="button-bar">
             <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_version %></li>
