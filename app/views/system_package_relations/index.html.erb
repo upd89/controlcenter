@@ -5,10 +5,10 @@
 
 <%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
   <div class="col_6">
-    <div class="col_12">Package Filters</div>
+    <div class="col_12 pkgText"><h6>Package Filters</h6></div>
 
     <div class="col_6">
-      <label for="pkg_search_query">Search</label>
+      <label for="pkg_search_query">Search in Packages</label>
 
       <%= f.text_field(
         :pkg_search_query,
@@ -24,10 +24,10 @@
   </div>
 
   <div class="col_6">
-    <div class="col_12">System Filters</div>
+    <div class="col_12 sysText"><h6>System Filters</h6></div>
 
     <div class="col_6">
-      <label for="sys_search_query">Search</label>
+      <label for="sys_search_query">Search in Systems</label>
       <%= f.text_field(
         :sys_search_query,
         class: 'filterrific-periodically-observed',
@@ -41,7 +41,9 @@
     </div>
   </div>
 
-  <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+  <div class="col_12 right">
+    <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+  </div>
 
   <%= render_filterrific_spinner %>
 <% end %>

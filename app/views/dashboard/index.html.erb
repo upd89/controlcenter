@@ -6,7 +6,7 @@
 <div class="col_12">
   <p class="col_12">Hello, <%= link_to current_user.name, user_path(current_user.id) %>!</p>
 
-  <div class="col_6 dashboard_box">
+  <div class="col_6 dashboard_box sysBG">
     <h4>Systems</h4>
     <ul>
       <li><%= @systems.count %> Systems present</li>
@@ -24,7 +24,7 @@
     <div class="floatFix"></div>
   </div>
 
-  <div class="col_6 dashboard_box">
+  <div class="col_6 dashboard_box pkgBG">
     <h4>Packages</h4>
     <ul>
       <li><%= @packages.count %> known Packages</li>

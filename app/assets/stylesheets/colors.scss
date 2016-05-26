@@ -6,24 +6,26 @@ $color_warn: #E9C46A;
 $color_error: #E76F51;
 $color_ok: #99DD58;
 
-.warnText {
-  color: $color_warn;
-}
-.errorText {
-  color: $color_warn;
-}
-.successText {
-  color: $color_ok;
-}
-.sysText {
-  color: $color_sys;
-}
-.pkgText {
-  color: $color_pkg;
-}
-.sysBG {
-  background-color: $color_sys;
-}
-.pkgBG {
-  background-color: $color_pkg;
+body {
+  .warnText {
+    color: $color_warn;
+  }
+  .errorText {
+    color: $color_error;
+  }
+  .successText {
+    color: $color_ok;
+  }
+  .sysText {
+    color: $color_sys;
+  }
+  .pkgText {
+    color: $color_pkg;
+  }
+  .sysBG {
+    background-color: $color_sys;
+  }
+  .pkgBG {
+    background-color: $color_pkg;
+  }
 }
