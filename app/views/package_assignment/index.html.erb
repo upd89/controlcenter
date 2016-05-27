@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Assign to Package-Groups",
+  "class" => "pkgText",
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -8,7 +9,7 @@
 } %>
 <div class="col_12">
 <% if @packages.count > 0 %>
-  <h4>Packages</h4>
+  <h4 class="pkgText">Packages</h4>
   <table class="striped tight">
     <thead>
       <tr>
@@ -26,8 +27,24 @@
           <td><a href="<%= package.homepage %>"><%= package.nice_url %></a></td>
           <td>
             <td>
-              <%= form_for(package, remote: true) do |f| %>
+              <% package.package_groups.each do |grp| %>
+                <% grp_ass = GroupAssignment.where(package_group: grp, package: package)[0] %>
+                <%= form_for(grp_ass, method: :delete, remote: true) do |f| %>
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <%= grp_ass.package_group.name %>
+                  <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); $(this).parent().remove(); location.reload()" %>
+                <% end %>
               <% end %>
+
+              <%= form_tag( { controller: "group_assignments", action: "create_remote", remote: true }, class: "addPackageGroupForm" ) do %>
+                <% pkg_grps = PackageGroup.where.not(name: package.get_group_names_array ) %>
+                <% if pkg_grps.size > 0 %>
+                  <%= select( "group_assignment", "package_group_id", pkg_grps.collect {|p| [ p.name, p.id ] } ) %>
+                  <%= hidden_field_tag("group_assignment[package_id]", package.id) %>
+                  <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); return false;", id: "addPackageGroup" %>
+                <% end %>
+              <% end %>
+
             </td>
           </td>
         </tr>

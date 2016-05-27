@@ -1,5 +1,6 @@
 <%= render :partial => "header", :object => {
   "title" => "Assign to System-Group",
+  "class" => "sysText",
   "actions" =>[{
     "icon" => "arrow-left",
     "text" => "",
@@ -9,7 +10,7 @@
 
 <div class="col_12">
 <% if @systems.count > 0 %>
-  <h4>Systems</h4>
+  <h4 class="sysText">Systems</h4>
   <table class="striped tight">
     <thead>
       <tr>
