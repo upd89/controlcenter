@@ -3,6 +3,16 @@ html {
   background-color: rgba(242, 242, 242, 0.89);
 }
 
+#main {
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+     -moz-box-shadow: 0 10px 6px -6px #777;
+          box-shadow: 0 10px 6px -6px #777;
+  padding-bottom: 20px;
+  background-color: white;
+}
+
+
+/* MENU */
 .menu {
   & > li {
     border-right: 1px solid #cbcbcb;
@@ -15,22 +25,6 @@ html {
 
   li a i.fa {
     margin-right: 5px;
-  }
-}
-
-#main {
-  -webkit-box-shadow: 0 10px 6px -6px #777;
-     -moz-box-shadow: 0 10px 6px -6px #777;
-          box-shadow: 0 10px 6px -6px #777;
-  padding-bottom: 20px;
-  background-color: white;
-}
-
-.actions {
-  clear: both;
-
-  button, input[type="submit"] {
-   margin-bottom: 5px;
   }
 }
 
@@ -66,6 +60,14 @@ header {
     max-width: 70px;
     max-height: 70px;
     margin: 0 auto;
+  }
+}
+
+.actions {
+  clear: both;
+
+  button, input[type="submit"] {
+   margin-bottom: 5px;
   }
 }
 
@@ -153,7 +155,7 @@ table {
 /* Dashboard */
 .dashboard_box {
     background-color: #E6E6E6;
-    padding: 0px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
     margin-top: 1em;
 
     .button {
@@ -176,7 +178,6 @@ table.comboUpdates tbody tr.active {
   display: none;
   visibility: hidden;
 }
-
 
 ul.noDots {
   list-style-type: none;

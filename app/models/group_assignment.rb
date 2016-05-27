@@ -55,4 +55,7 @@ class GroupAssignment < ActiveRecord::Base
   }
 
   self.per_page = Settings.Pagination.NoOfEntriesPerPage
+
+  scope :get_by_pkg_and_group, ->(pkg, grp) { where( package_group: grp, package: pkg )[0] }
+
 end

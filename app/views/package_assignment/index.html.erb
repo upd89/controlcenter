@@ -27,21 +27,27 @@
           <td><a href="<%= package.homepage %>"><%= package.nice_url %></a></td>
           <td>
             <td>
+              <% if false %>
               <% package.package_groups.each do |grp| %>
-                <% grp_ass = GroupAssignment.where(package_group: grp, package: package)[0] %>
+                <% grp_ass = GroupAssignment.get_by_pkg_and_group( package, grp ) %>
                 <%= form_for(grp_ass, method: :delete, remote: true) do |f| %>
                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                   <%= grp_ass.package_group.name %>
-                  <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); $(this).parent().remove(); location.reload()" %>
+                  <%= link_to '<i class="fa fa-remove"></i>'.html_safe, {},
+                              onclick: "event.preventDefault(); $(this).parent('form').submit(); $(this).parent().remove(); return false;" %>
                 <% end %>
               <% end %>
+              <% end %>
+
+              <ul class="selected-groups"></ul>
 
               <%= form_tag( { controller: "group_assignments", action: "create_remote", remote: true }, class: "addPackageGroupForm" ) do %>
                 <% pkg_grps = PackageGroup.where.not(name: package.get_group_names_array ) %>
                 <% if pkg_grps.size > 0 %>
-                  <%= select( "group_assignment", "package_group_id", pkg_grps.collect {|p| [ p.name, p.id ] } ) %>
+                  <%= select( "group_assignment", "package_group_id", pkg_grps.collect {|p| [ p.name, p.id ] }, { include_blank: 'Assign to group ' }, class: 'grp_select' ) %>
                   <%= hidden_field_tag("group_assignment[package_id]", package.id) %>
-                  <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {}, onclick: "event.preventDefault(); $(this).parent('form').submit(); return false;", id: "addPackageGroup" %>
+                  <%= link_to '<i class="fa fa-plus"></i>'.html_safe, {},
+                              onclick: "event.preventDefault(); $(this).parent('form').submit(); return false;", id: "addPackageGroup" %>
                 <% end %>
               <% end %>
 
