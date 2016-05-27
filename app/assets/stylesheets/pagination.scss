@@ -1,8 +1,6 @@
 /* Source: mislav.github.io/will_paginate/ */
 
 .pagination {
-  min-height: 20px;
-  padding: 10px;
   background-color: #f5f5f5;
   border: 1px solid #e3e3e3;
   -webkit-border-radius: 4px;
@@ -42,8 +40,6 @@
     margin-bottom: 7px;
     b {
       color: #000033;
-      background: #969696;
-      padding: 0.1em 0.25em;
     }
   }
   /* self-clearing method: */
