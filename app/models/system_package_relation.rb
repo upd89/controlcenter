@@ -86,16 +86,16 @@ class SystemPackageRelation < ActiveRecord::Base
   }
 
   scope :with_system_group_id, lambda { |system_group_ids|
-    where(:sys_grp_id => [*system_group_ids])
+    where( sys_grp_id: [*system_group_ids] )
   }
 
   scope :with_package_group_id, lambda { |package_group_ids|
-    assignments = GroupAssignment.where( :package_group_id => [*package_group_ids] )
+    assignments = GroupAssignment.where( package_group_id: [*package_group_ids] )
     pkg_ids = []
-    assignments.each do | pkg |
-        pkg_ids.append(pkg.id)
+    assignments.each do | assignment |
+        pkg_ids.append( assignment.package_id )
     end
-    where(:pkg_id => pkg_ids)
+    where( pkg_id: pkg_ids )
   }
 
   def self.options_for_sorted_by

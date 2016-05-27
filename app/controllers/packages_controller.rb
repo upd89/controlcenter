@@ -44,8 +44,15 @@ class PackagesController < ApplicationController
 
   # DELETE /packages/1
   def destroy
-    @package.destroy
-    redirect_to packages_url, success: 'Package was successfully destroyed.'
+    GroupAssignment.where(package: @package).each do |ga|
+      ga.destroy
+    end
+    if @package.destroy
+      redirect_to packages_url, success: 'Package was successfully destroyed.'
+    else
+      redirect_to roles_url, error: 'Couldn\'t delete package!'
+    end
+
   end
 
   private
