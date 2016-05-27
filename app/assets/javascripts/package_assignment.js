@@ -21,4 +21,8 @@ $(function() {
         $(this).find('option[value="'+ grpID +'"]').attr("disabled", "disabled");
         $(this).find('option:eq(0)').prop('selected', true);
     });
+
+    $("#btnSaveAssignments").on("click", function() {
+       console.log( "save assignments!" );
+    });
 });
