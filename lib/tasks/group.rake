@@ -31,7 +31,7 @@ namespace :db do
         GroupAssignment.create( { :package_group => dbcrit , :package => pkg } )
     end
 
-    uncrit_pkgs = Package.where( :section => ["editors", "utils"] )
+    uncrit_pkgs = Package.where( :section => ["editors", "utils", "perl", "python", "misc"] )
     uncrit_pkgs.each do | pkg |
         GroupAssignment.create( { :package_group => uncrit , :package => pkg } )
     end
