@@ -43,12 +43,12 @@
 <% if @tasks.length %>
   <% @tasks.each do |task| %>
     <div class="col_12">
-      <p><%= pluralize(task.concrete_package_versions.length, "Update") %> on System <%= link_to task.system_name, task.get_system %> (<%= task.task_state.name if task.task_state %>) <%= link_to "Details", task %><%= task.task_execution ? (" | ").html_safe + link_to( "Log", task.task_execution ) : "" %></p>
+      <p><%= pluralize(task.concrete_package_versions.length, "Update") %> on System <%= link_to task.system_name, task.get_system, class: "sysText" %> (<%= task.task_state.name if task.task_state %>) <%= link_to "Details", task %><%= task.task_execution ? (" | ").html_safe + link_to( "Log", task.task_execution ) : "" %></p>
 
       <ul>
         <% task.concrete_package_versions.each do |cpv| %>
           <li>
-            Package: <%= cpv.package_version.package.name %>, Candidate Version: <%= cpv.package_version.version %>
+            Package: <span class="pkgText"><%= cpv.package_version.package.name %></span>, Candidate Version: <%= cpv.package_version.version %>
           </li>
         <% end %>
       </ul>
