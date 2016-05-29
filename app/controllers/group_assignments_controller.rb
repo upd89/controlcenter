@@ -24,7 +24,11 @@ class GroupAssignmentsController < ApplicationController
   def create_remote
     @group_assignment = GroupAssignment.new(group_assignment_params)
     @group_assignment.save
-    redirect_to edit_package_path( @group_assignment.package )
+    if !params["package_assignment"]
+      redirect_to edit_package_path( @group_assignment.package )
+    else
+      render json: {"result": "OK"}
+    end
   end
 
   # POST /group_assignments
