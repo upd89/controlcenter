@@ -100,7 +100,7 @@
 </div>
 
 <div class="col_6">
-  <h5>Last <%= @recent_tasks.count %> Tasks </h5>
+  <h5>Last <%= pluralize( @recent_tasks.count, "Task") %> </h5>
   <table class="col_12 striped tight clickableRows">
     <thead>
       <tr>
