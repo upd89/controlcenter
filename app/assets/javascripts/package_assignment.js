@@ -28,15 +28,12 @@ var saveList = 0,
             type: 'POST',
             data: data,
             success: function(data) {
-                debugger;
                 saveList--;
                 if ( saveList === 0 ) {
                     window.location = "/";
                 }
             },
-            error: function(data) {
-                debugger;
-            }
+            error: function(data) {}
         });
     };
 
