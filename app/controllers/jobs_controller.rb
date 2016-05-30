@@ -216,6 +216,9 @@ class JobsController < ApplicationController
   def execute
     if params[:execute]
       @job.is_in_preview = false
+
+      @job.update( job_params )
+
       @job.save()
       @job.tasks.each do |t|
         BackgroundSender.perform_async( t )
@@ -244,6 +247,6 @@ class JobsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def job_params
-      params.require(:job).permit(:started_at, :user_id)
+      params.require(:job).permit(:started_at, :user_id, :note)
     end
 end

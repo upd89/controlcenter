@@ -67,6 +67,7 @@ header {
   clear: both;
 
   button, input[type="submit"] {
+   margin-top: 5px;
    margin-bottom: 5px;
   }
 }
@@ -197,4 +198,9 @@ ul.noDots {
   ul {
     margin: 0;
   }
+}
+
+/* Jobs */
+.jobNote {
+  height: auto;
 }
