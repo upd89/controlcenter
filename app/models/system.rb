@@ -109,6 +109,11 @@ class System < ActiveRecord::Base
     concrete_package_versions.where( concrete_package_state: cpv_state_avail )
   end
 
+  def get_queued_CPVs
+    cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
+    concrete_package_versions.where( concrete_package_state: cpv_state_queued )
+  end
+
   def decorated_created_at
       created_at.to_formatted_s(:short)
   end

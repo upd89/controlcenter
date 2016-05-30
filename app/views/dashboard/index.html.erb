@@ -9,12 +9,11 @@
   <div class="col_8 dashboard_box sysBG">
     <h4>Systems</h4>
     <div class="col_6">
-      <div id="systemChart"></div>
-      <ul>
-        <li><%= @updatable_systems.count %> Systems with update</li>
-        <li><%= get_not_recently_seen_systems.count %> Systems not recently seen</li>
-        <li><%= get_normal_systems.count %> Systems are ok!</li>
-      </ul>
+      <div id="systemChart"
+           data-total="<%= @systems.count %>"
+           data-ok="<%= get_systems_without_updates_or_queued.count %>"
+           data-progress="<%= get_systems_with_available_updates_only.count %>"
+           data-warning="<%= get_systems_with_queued_updates.count %>"></div>
     </div>
     <div class="col_6">
       <ul>

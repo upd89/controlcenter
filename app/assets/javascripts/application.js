@@ -15,3 +15,5 @@
 //= require turbolinks
 //= require_tree .
 //= require filterrific/filterrific-jquery
+//= require flot/jquery.flot.min
+//= require flot/jquery.flot.pie.min

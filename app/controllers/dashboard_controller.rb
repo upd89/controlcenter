@@ -6,7 +6,9 @@ class DashboardController < ApplicationController
                 :get_packages_without_group,
                 :get_tasks_for_recent_activities,
                 :get_overdue_tasks,
-                :get_normal_systems
+                :get_systems_with_queued_updates,
+                :get_systems_without_updates_or_queued,
+                :get_systems_with_available_updates_only
 
   #load_and_authorize_resource
 
@@ -57,7 +59,15 @@ class DashboardController < ApplicationController
     @tasks.where( "created_at < ?", (Time.now - (Settings.Tasks.OverdueWarningThresholdMinutes).minutes ) ).where( task_state: [queued, pending ] )
   end
 
-  def get_normal_systems
-    @systems.is_not_missing.reject{ |s| s.get_installable_CPVs.count > 0 }
+  def get_systems_with_queued_updates
+    @systems.reject{ |s| s.get_queued_CPVs.count == 0 }
+  end
+
+  def get_systems_without_updates_or_queued
+    @systems.reject{ |s| s.get_queued_CPVs.count > 0 || s.get_installable_CPVs.count > 0 }
+  end
+
+  def get_systems_with_available_updates_only
+    @updatable_systems.reject{ |s| s.get_queued_CPVs.count > 0 }
   end
 end
