@@ -154,7 +154,8 @@ class JobsController < ApplicationController
 
     if params[:all]
       # get task IDs from system, map to strings
-      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: ConcretePackageState.first ) #TODO: centralised state manager
+      cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: cpv_state_avail ) #TODO: centralised state manager
     else
       # get task IDs from submitted array
       if params[:updates]

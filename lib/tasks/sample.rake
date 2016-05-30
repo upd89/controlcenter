@@ -84,9 +84,9 @@ namespace :db do
                                              :architecture => "amd64",
                                              :distribution => dist } )
 
-    update_installed = ConcretePackageState.last
-    update_available = ConcretePackageState.first
-    update_queued = ConcretePackageState.second
+    update_installed = ConcretePackageState.where(name: "Installed")[0]
+    update_available = ConcretePackageState.where(name: "Available")[0]
+    update_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
 
     ConcretePackageVersion.create( { :system => vm1, :package_version => vim_base , :concrete_package_state => update_installed } )
     ConcretePackageVersion.create( { :system => vm1, :package_version => vim_upd , :concrete_package_state => update_available } )

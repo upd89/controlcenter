@@ -27,7 +27,7 @@
 
     <%= hidden_field_tag(:system_id, @system.id) %>
 
-    <% if @concrete_package_versions.any?{|cpv| cpv.concrete_package_state == ConcretePackageState.first } %>
+    <% if @concrete_package_versions.any?{|cpv| cpv.concrete_package_state == ConcretePackageState.where(name: "Available")[0] } %>
     <div class="actions">
       <%= submit_tag "Create Job for Selected", :name => 'specific', :id=>"createJobBtn" %>
       <%= submit_tag "Create Job for all", :name => 'all', :id=>"createJobBtnForAll" %>

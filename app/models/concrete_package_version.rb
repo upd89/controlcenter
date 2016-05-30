@@ -15,7 +15,8 @@ class ConcretePackageVersion < ActiveRecord::Base
   # used in API
   def self.create_new(pkgVersion, sys, state)
       # TODO: service to get package states...
-      state = ConcretePackageState.first unless defined? state
+      cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+      state = cpv_state_avail unless defined? state
 
       if exists?(package_version: pkgVersion, system: sys)
         assoc = where(package_version: pkgVersion, system: sys)[0]

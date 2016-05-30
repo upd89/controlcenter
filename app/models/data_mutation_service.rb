@@ -1,5 +1,5 @@
 #used from API
-class DataMutationService 
+class DataMutationService
 
     def self.register(data)
         System.get_maybe_create(data)
@@ -14,7 +14,7 @@ class DataMutationService
 
       unknownPackages = []
       knownPackages = []
-      stateAvailable = ConcretePackageState.first
+      stateAvailable = ConcretePackageState.where(name: "Available")[0]
 
       data["packageUpdates"].each do |updHash|
         if PackageVersion.exists?( sha256: updHash )
@@ -37,7 +37,7 @@ class DataMutationService
     end
 
     def self.updateSystem(urn, data)
-      stateAvailable = ConcretePackageState.first
+      stateAvailable = ConcretePackageState.where(name: "Available")[0]
       error = false
       unknownPackages = false
 
@@ -97,7 +97,7 @@ class DataMutationService
       unknownPackages = []
       knownPackages = []
       error = false
-      stateInstalled = ConcretePackageState.last
+      stateInstalled = ConcretePackageState.where(name: "Installed")[0]
 
       currentSys = System.where(urn: urn)[0]
       currentSys.update_last_seen()
@@ -127,7 +127,7 @@ class DataMutationService
 
     def self.refreshInstalled(urn, data)
       error = false
-      stateInstalled = ConcretePackageState.last
+      stateInstalled = ConcretePackageState.where(name: "Installed")[0]
       currentSys = System.where(urn: urn)[0]
       currentSys.update_last_seen()
 
