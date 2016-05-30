@@ -1,7 +1,4 @@
 $(document).on("page:change", function(){
-  function labelFormatter(label, series) {
-    return "<div style='text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
-  }
   var $placeholder = $("#systemChart"),
       total = $placeholder.data("total"),
       data = [
@@ -19,6 +16,15 @@ $(document).on("page:change", function(){
           color: "#E76F51"
         }
       ];
+
+  if ( !$placeholder.length ) {
+    //only valid on the dashboard!
+    return;
+  }
+
+  function labelFormatter(label, series) {
+    return "<div style='text-align:center; padding:2px; color:white;'>" + label + "<br/>" + Math.round(series.percent) + "%</div>";
+  }
 
   $.plot('#systemChart', data, {
     series: {
