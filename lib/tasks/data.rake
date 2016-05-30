@@ -37,7 +37,6 @@ namespace :db do
 
     update_available   = ConcretePackageState.create( { :name => "Available" } )
     update_queued      = ConcretePackageState.create( { :name => "Queued for Installation" } )
-    update_failed      = ConcretePackageState.create( { :name => "Failed" } )
     update_outdated    = ConcretePackageState.create( { :name => "Outdated" } )
     update_installed   = ConcretePackageState.create( { :name => "Installed" } )
 
