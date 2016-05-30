@@ -45,7 +45,8 @@ class DashboardController < ApplicationController
   end
 
   def get_packages_without_group
-    @packages.reject{|pkg| !pkg.group_assignments.empty?}
+    #@packages.reject{|pkg| !pkg.group_assignments.empty?}
+    @packages.joins('left join group_assignments on packages.id = group_assignments.package_id where package_group_id is null')
   end
 
   def get_tasks_for_recent_activities
