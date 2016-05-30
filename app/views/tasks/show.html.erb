@@ -51,6 +51,12 @@
   </li>
   <li>
     <p>
+      <span class="property">Start Date</span>
+      <span class="value"><%= @task.job.decorated_started_at %></span>
+    </p>
+  </li>
+  <li>
+    <p>
       <span class="property">Updates</span>
       <span class="value"><%= @task.concrete_package_versions.length %></span>
     </p>
