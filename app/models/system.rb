@@ -109,6 +109,11 @@ class System < ActiveRecord::Base
     concrete_package_versions.where( concrete_package_state: cpv_state_avail )
   end
 
+  def get_installed_cpvs
+    cpv_state_installed = ConcretePackageState.where(name: "Installed")[0]
+    concrete_package_versions.where( concrete_package_state: cpv_state_installed )
+  end
+
   def get_queued_CPVs
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
     concrete_package_versions.where( concrete_package_state: cpv_state_queued )
