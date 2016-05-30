@@ -12,8 +12,8 @@
       <div id="systemChart"
            data-total="<%= @systems.count %>"
            data-ok="<%= get_systems_without_updates_or_queued.count %>"
-           data-progress="<%= get_systems_with_available_updates_only.count %>"
-           data-warning="<%= get_systems_with_queued_updates.count %>"></div>
+           data-progress="<%= get_systems_with_queued_updates.count %>"
+           data-warning="<%= get_systems_with_available_updates_only.count %>"></div>
     </div>
     <div class="col_6">
       <ul>
