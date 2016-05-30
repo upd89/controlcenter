@@ -47,29 +47,24 @@
   </li>
   <% else %>
     <%= form_for @job, url: { action: "execute" }, html: { method: :put } do |f| %>
-    <li>
-      <p>
-        <span class="property"><%= f.label :note %></span>
-        <span class="value"><%= f.text_area :note, class: "jobNote", placeholder: "Comments/reasons for this Job?", size: "50x5" %></span>
-      </p>
-    </li>
-    <li>
-      <p>
-        <span class="property"></span>
-        <span class="value">
-            <%= submit_tag "Execute Job", name: 'execute', id: "executeJobBtn", class: "button green" %>
-            <%= submit_tag "Cancel Job", name: 'cancel', id: "cancelJobBtn", class: "button red" %>
-        </span>
-      </p>
-    </li>
+      <li>
+        <p>
+          <span class="property"><%= f.label :note %></span>
+          <span class="value"><%= f.text_area :note, class: "jobNote", placeholder: "Comments/reasons for this Job?", size: "50x5" %></span>
+        </p>
+      </li>
+      <div class="col_12 right">
+        <%= submit_tag "Execute Job", name: 'execute', id: "executeJobBtn", class: "button green" %>
+        <%= submit_tag "Cancel Job", name: 'cancel', id: "cancelJobBtn", class: "button red" %>
+      </div>
     <% end %>
   <% end %>
 </ul>
 
 
 <% if @tasks.length %>
+  <div class="col_6">
   <% @tasks.each do |task| %>
-    <div class="col_6">
       <p><%= pluralize(task.concrete_package_versions.length, "Update") %> on System <%= link_to task.system_name, task.get_system, class: "sysText" %> (<%= task.task_state.name if task.task_state %>) <%= link_to "Details", task %><%= task.task_execution ? (" | ").html_safe + link_to( "Log", task.task_execution ) : "" %></p>
 
       <ul>
@@ -79,8 +74,8 @@
           </li>
         <% end %>
       </ul>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 <% end %>
 
 <% if false && @job.is_in_preview %>
