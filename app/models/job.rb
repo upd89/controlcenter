@@ -6,4 +6,8 @@ class Job < ActiveRecord::Base
   def decorated_started_at
       started_at.to_formatted_s(:short)
   end
+
+  def get_note
+    note ? note.truncate_words(6) : ( is_in_preview ? ('<span class="successText">Ready to be sent!</span>' ).html_safe : "" )
+  end
 end

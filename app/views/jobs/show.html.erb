@@ -38,11 +38,38 @@
       <span class="value"><%= @job.user.name %></span>
     </p>
   </li>
+  <% if !@job.is_in_preview %>
+  <li>
+    <p>
+      <span class="property">Note</span>
+      <span class="value"><%= @job.note %></span>
+    </p>
+  </li>
+  <% else %>
+    <%= form_for @job, url: { action: "execute" }, html: { method: :put } do |f| %>
+    <li>
+      <p>
+        <span class="property"><%= f.label :note %></span>
+        <span class="value"><%= f.text_area :note, class: "jobNote", placeholder: "Comments/reasons for this Job?", size: "50x5" %></span>
+      </p>
+    </li>
+    <li>
+      <p>
+        <span class="property"></span>
+        <span class="value">
+            <%= submit_tag "Execute Job", name: 'execute', id: "executeJobBtn", class: "button green" %>
+            <%= submit_tag "Cancel Job", name: 'cancel', id: "cancelJobBtn", class: "button red" %>
+        </span>
+      </p>
+    </li>
+    <% end %>
+  <% end %>
 </ul>
+
 
 <% if @tasks.length %>
   <% @tasks.each do |task| %>
-    <div class="col_12">
+    <div class="col_6">
       <p><%= pluralize(task.concrete_package_versions.length, "Update") %> on System <%= link_to task.system_name, task.get_system, class: "sysText" %> (<%= task.task_state.name if task.task_state %>) <%= link_to "Details", task %><%= task.task_execution ? (" | ").html_safe + link_to( "Log", task.task_execution ) : "" %></p>
 
       <ul>
@@ -56,9 +83,13 @@
   <% end %>
 <% end %>
 
-<% if @job.is_in_preview %>
-  <div class="actions col_12">
+<% if false && @job.is_in_preview %>
+  <div class="actions col_6">
     <%= form_for @job, url: { action: "execute" }, html: { method: :put } do |f| %>
+      <p>
+        <span class="property"><%= f.label :note %></span>
+        <span class="value"><%= f.text_area :note, class: "jobNote" %></span>
+      </p>
       <%= submit_tag "Execute Job", name: 'execute', id: "executeJobBtn" %>
       <%= submit_tag "Cancel Job", name: 'cancel', id: "cancelJobBtn" %>
     <% end %>
