@@ -47,21 +47,12 @@ class System < ActiveRecord::Base
     write_attribute(:last_seen, DateTime.now)
   end
 
-  # Scope definitions. We implement all Filterrific filters through ActiveRecord
-  # scopes. In this example we omit the implementation of the scopes for brevity.
-  # Please see 'Scope patterns' for scope implementation details.
   scope :sys_search_query, lambda { |query|
     return nil  if query.blank?
-    # condition query, parse into individual keywords
     terms = query.downcase.split(/\s+/)
-    # replace "*" with "%" for wildcard searches,
-    # append '%', remove duplicate '%'s
     terms = terms.map { |e|
       (e.gsub('*', '%') + '%').gsub(/%+/, '%')
     }
-    # configure number of OR conditions for provision
-    # of interpolation arguments. Adjust this if you
-    # change the number of OR conditions.
     num_or_conditions = 3
     where(
       terms.map {
@@ -103,8 +94,6 @@ class System < ActiveRecord::Base
     where(:system_group_id => [*system_group_ids])
   }
 
-  # This method provides select options for the `sorted_by` filter select input.
-  # It is called in the controller as part of `initialize_filterrific`.
   def self.options_for_sorted_by
     [
       ['Name (a-z)', 'name_asc'],
@@ -117,7 +106,7 @@ class System < ActiveRecord::Base
 
   def get_installable_CPVs
     cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
-    ConcretePackageVersion.where(system: self, concrete_package_state: cpv_state_avail )
+    concrete_package_versions.where( concrete_package_state: cpv_state_avail )
   end
 
   def decorated_created_at
@@ -135,4 +124,8 @@ class System < ActiveRecord::Base
       "not yet"
     end
   end
+  
+  scope :is_missing, -> { where("last_seen > ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) ) }
+  scope :is_not_missing, -> { where.not(id: is_missing) }
+
 end

@@ -6,25 +6,35 @@
 <div class="col_12">
   <p class="col_12">Hello, <%= link_to current_user.name, user_path(current_user.id) %>!</p>
 
-  <div class="col_6 dashboard_box sysBG">
+  <div class="col_8 dashboard_box sysBG">
     <h4>Systems</h4>
-    <ul>
-      <li><%= @systems.count %> Systems present</li>
-      <% if get_not_recently_seen_systems.count > 0 %>
-      <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
-      <% end %>
-      <% if get_systems_without_group.count > 0 %>
-      <li><%= get_systems_without_group.count %> Systems not in a group</li>
-      <% end %>
-    </ul>
+    <div class="col_6">
+      <div id="systemChart"></div>
+      <ul>
+        <li><%= @updatable_systems.count %> Systems with update</li>
+        <li><%= get_not_recently_seen_systems.count %> Systems not recently seen</li>
+        <li><%= get_normal_systems.count %> Systems are ok!</li>
+      </ul>
+    </div>
+    <div class="col_6">
+      <ul>
+        <li><%= @systems.count %> Systems present</li>
+        <% if get_not_recently_seen_systems.count > 0 %>
+        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+        <% end %>
+        <% if get_systems_without_group.count > 0 %>
+        <li><%= get_systems_without_group.count %> Systems not in a group</li>
+        <% end %>
+      </ul>
 
-    <% if get_systems_without_group.count > 0 %>
-      <%= link_to("Assign to a group", :assign_systems, class: "button") %>
-    <% end %>
+      <% if get_systems_without_group.count > 0 %>
+        <%= link_to("Assign to a group", :assign_systems, class: "button") %>
+      <% end %>
+    </div>
     <div class="floatFix"></div>
   </div>
 
-  <div class="col_6 dashboard_box pkgBG">
+  <div class="col_4 dashboard_box pkgBG">
     <h4>Packages</h4>
     <ul>
       <li><%= @packages.count %> known Packages</li>
@@ -64,15 +74,18 @@
     <div class="floatFix"></div>
   </div>
 
-  <div class="col_6 dashboard_box">
+  <div class="col_6 dashboard_box sysBG">
     <h4>Available Updates</h4>
     <div class="col_6">
+      <h6>By System:</h6>
       <% @updatable_systems.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys| %>
         <div><%= link_to(sys.name, sys) + ": " + sys.get_installable_CPVs.count.to_s %></div>
       <% end %>
       <% if @updatable_systems.count > Settings.Dashboard.NrOfEntitiesWithUpdatesShown %>...<% end %>
     </div>
+
     <div class="col_6">
+      <h6>By Group:</h6>
       <% @updatable_system_groups.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys_grp| %>
         <div><%= link_to(sys_grp.name, sys_grp) + ": " + sys_grp.get_nr_of_installable_CPVs.to_s %></div>
       <% end %>

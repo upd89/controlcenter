@@ -5,7 +5,8 @@ class DashboardController < ApplicationController
                 :get_systems_without_group,
                 :get_packages_without_group,
                 :get_tasks_for_recent_activities,
-                :get_overdue_tasks
+                :get_overdue_tasks,
+                :get_normal_systems
 
   #load_and_authorize_resource
 
@@ -33,7 +34,7 @@ class DashboardController < ApplicationController
   end
 
   def get_not_recently_seen_systems
-    @systems.where("last_seen > ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) )
+    @systems.is_missing
   end
 
   def get_systems_without_group
@@ -54,5 +55,9 @@ class DashboardController < ApplicationController
     queued = TaskState.where(name: "Queued")[0]
 
     @tasks.where( "created_at < ?", (Time.now - (Settings.Tasks.OverdueWarningThresholdMinutes).minutes ) ).where( task_state: [queued, pending ] )
+  end
+
+  def get_normal_systems
+    @systems.is_not_missing.reject{ |s| s.get_installable_CPVs.count > 0 }
   end
 end

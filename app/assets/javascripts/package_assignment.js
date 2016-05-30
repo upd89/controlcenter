@@ -70,12 +70,9 @@ $(document).on("page:change", function(){
                 groups.push( $(this).data("grpId") )
             });
 
-            console.log( $(this).data("packageId"), groups );
-
             if ( groups.length > 0 ) {
                 saveAssignment($(this).data("packageId"), groups);
             }
         });
-       console.log( "save assignments!" );
     });
 });
