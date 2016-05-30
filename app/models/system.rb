@@ -124,8 +124,8 @@ class System < ActiveRecord::Base
       "not yet"
     end
   end
-  
-  scope :is_missing, -> { where("last_seen > ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) ) }
+
+  scope :is_missing, -> { where("last_seen < ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) ) }
   scope :is_not_missing, -> { where.not(id: is_missing) }
 
 end
