@@ -74,7 +74,7 @@
   </div>
 
   <div class="col_6 dashboard_box sysBG">
-    <h4>Available Updates</h4>
+    <h4><%= link_to( "Available Updates", concrete_package_versions_path( filterrific: { with_state_id: ConcretePackageState.where(name: "Available")[0].id } ) ) %></h4>
     <div class="col_6">
       <h6>By System:</h6>
       <% @updatable_systems.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys| %>
