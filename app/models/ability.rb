@@ -56,6 +56,12 @@ class Ability
     can :read, ConcretePackageState
     cannot [:create, :update, :destroy], ConcretePackageState
 
+    can :read, ConcretePackageVersion
+    can [ :update, :destroy ], ConcretePackageVersion do |cpv|
+      cpv.system.system_group.permission_level <= user.role.permission_level && cpv.package_version.package.get_permission_level <= user.role.permission_level
+    end
+    cannot :create, ConcretePackageVersion
+
     can :read, Job
     can :read, Task
     can :read, TaskExecution

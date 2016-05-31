@@ -1,24 +1,25 @@
 class ConcretePackageVersionsController < ApplicationController
   before_action :set_concrete_package_version, only: [:show, :edit, :update, :destroy]
 
-  # GET /concrete_package_versions
-  # GET /concrete_package_versions.json
-  def index
-    @concrete_package_versions = ConcretePackageVersion.all
-  end
+  load_and_authorize_resource
 
-  # GET /concrete_package_versions/1
-  # GET /concrete_package_versions/1.json
-  def show
+  # GET /concrete_package_versions
+  def index
+    @filterrific = initialize_filterrific(
+      ConcretePackageVersion,
+      params[:filterrific],
+      :select_options => {
+        sorted_by: ConcretePackageVersion.options_for_sorted_by,
+        with_state_id: ConcretePackageState.options_for_select
+      }
+    ) or return
+    @concrete_package_versions = @filterrific.find.page(params[:page])
+    #@concrete_package_versions = ConcretePackageVersion.all
   end
 
   # GET /concrete_package_versions/new
   def new
     @concrete_package_version = ConcretePackageVersion.new
-  end
-
-  # GET /concrete_package_versions/1/edit
-  def edit
   end
 
   # POST /concrete_package_versions

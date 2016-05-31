@@ -5,7 +5,7 @@ class ConcretePackageVersion < ActiveRecord::Base
   belongs_to :package_version
 
   filterrific(
-    default_filter_params: { sorted_by: 'id_desc' },
+    default_filter_params: { sorted_by: 'id_asc' },
     available_filters: [
       :sorted_by,
       :with_state_id
@@ -45,4 +45,10 @@ class ConcretePackageVersion < ActiveRecord::Base
   scope :with_state_id, lambda { |state_ids|
     where(concrete_package_state_id: [*state_ids])
   }
+
+  def self.options_for_sorted_by
+    [
+      ['ID (1-n)', 'id_asc']
+    ]
+  end
 end

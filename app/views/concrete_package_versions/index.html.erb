@@ -3,43 +3,45 @@
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Concrete package version",
-    "path" => new_concrete_package_version_path
+    "path" => new_concrete_package_version_path,
+    "ctrlAction" => :create
   }]
 } %>
 
-<table class="striped tight sortable clickableRows">
-  <thead>
-    <tr>
-      <th>System</th>
-      <th>Task</th>
-      <th>Concrete package state</th>
-      <th>Package name</th>
-      <th>Package version</th>
-      <th>Distribution</th>
-      <th>Repository</th>
-      <th></th>
-    </tr>
-  </thead>
+<%= form_for_filterrific @filterrific, html: { class:"col_12" } do |f| %>
+  <% if false %>
+  <div class="col_3">
+    <label for="sys_search_query">Search in Concrete Package Versions</label>
+    <%= f.text_field(
+      :sys_search_query,
+      class: 'filterrific-periodically-observed',
+      id: 'sys_search_query'
+    ) %>
+  </div>
 
-  <tbody>
-    <% @concrete_package_versions.each do |concrete_package_version| %>
-      <tr>
-        <td><%= concrete_package_version.system.name %></td>
-        <td><%= concrete_package_version.task ? concrete_package_version.task.id : "" %></td>
-        <td><%= concrete_package_version.concrete_package_state.name %></td>
-        <td><%= concrete_package_version.package_version.package.name %></td>
-        <td><%= concrete_package_version.package_version.version %></td>
-        <td><%= concrete_package_version.package_version.distribution.name if concrete_package_version.package_version.distribution %></td>
-        <td><%= concrete_package_version.package_version.repository.full_name if concrete_package_version.package_version.repository %></td>
+  <div class="col_3">
+    <label for="sort_by">Sorted by</label>
+    <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by], id: 'sort_by') %>
+  </div>
+  <% end %>
 
-        <td>
-          <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, concrete_package_version %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_concrete_package_version_path(concrete_package_version) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, concrete_package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li>
-          </ul>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <div class="col_3">
+    <label for="state_select">State</label>
+    <%= f.select( :with_state_id, @filterrific.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_select') %>
+  </div>
+
+  <div class="col_3 right">
+    <%= link_to( 'Reset filters', reset_filterrific_url, class: "button" ) %>
+  </div>
+
+  <%= render_filterrific_spinner %>
+<% end %>
+
+<div id="filterrific_table" class="col_12">
+  <%= render(
+    partial: 'concrete_package_versions/list',
+    locals: { concrete_package_versions: @concrete_package_versions }
+  ) %>
+</div>
+
+<div class="floatFix"></div>
