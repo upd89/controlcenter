@@ -65,6 +65,7 @@
         <th>SHA256</th>
         <th>Version</th>
         <th>Base version</th>
+        <th>Distribution</th>
         <th></th>
       </tr>
     </thead>
@@ -74,6 +75,7 @@
           <td><%= pkg_version.sha256.last(10) %></td>
           <td><%= pkg_version.version %></td>
           <td><%= pkg_version.base_version ? (link_to pkg_version.base_version.version, pkg_version.base_version) : "this" %></td>
+          <td><%= pkg_version.distribution.name %></td>
           <td><%= link_to pkg_version.id, pkg_version %></td>
         </tr>
       <% end %>
