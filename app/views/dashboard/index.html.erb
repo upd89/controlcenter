@@ -35,6 +35,7 @@
 
   <div class="col_4 dashboard_box pkgBG">
     <h4>Packages</h4>
+
     <ul>
       <li><%= @packages.count %> known Packages</li>
       <% if get_packages_without_group.count > 0 %>
@@ -59,11 +60,13 @@
 
     <ul class="noDots">
     <% if get_running_tasks.count > 0 %>
-      <li><%= get_running_tasks.count %> pending Tasks</li>
+      <li><%= get_running_tasks.count %> pending <%= link_to("Tasks", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Pending")[0].id } ) ) %></li>
     <% end %>
+
     <% if get_failed_tasks.count > 0 %>
       <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks</li>
     <% end %>
+
     <% if get_overdue_tasks.count > 0 %>
       <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
           <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
@@ -72,6 +75,7 @@
           <% if get_overdue_tasks.count > Settings.Dashboard.NrOfOverdueTasksShown %>...<% end %>
       </li>
     <% end %>
+
     </ul>
 
     <div class="floatFix"></div>
