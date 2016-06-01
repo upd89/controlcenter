@@ -70,7 +70,7 @@
     <% if get_overdue_tasks.count > 0 %>
       <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
           <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
-          <div><%= link_to(task.id, task) + ": " + task.decorated_created_at + ", " + task.task_state.name %></div>
+          <div><%= task.decorated_created_at %> (<%= task.task_state.name %>) <%= link_to "Cancel", task_path( task ), method: :delete %> <%= link_to "Check", task_path( task )  %></div>
           <% end %>
           <% if get_overdue_tasks.count > Settings.Dashboard.NrOfOverdueTasksShown %>...<% end %>
       </li>
