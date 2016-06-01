@@ -18,7 +18,6 @@ class TasksController < ApplicationController
   end
 
   # GET /tasks/1
-  # GET /tasks/1.json
   def show
     @paginated_concrete_package_versions = @task.concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
   end
