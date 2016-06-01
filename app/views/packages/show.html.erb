@@ -76,7 +76,11 @@
           <td><%= pkg_version.version %></td>
           <td><%= pkg_version.base_version ? (link_to pkg_version.base_version.version, pkg_version.base_version) : "this" %></td>
           <td><%= pkg_version.distribution.name %></td>
-          <td><%= link_to pkg_version.id, pkg_version %></td>
+          <td>
+            <ul class="button-bar">
+              <% if can? :read, pkg_version %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, pkg_version  %></li><% end %>
+            </ul>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -89,7 +93,5 @@
     <%= will_paginate @paginated_package_versions, :container => false %>
   </div>
 <% end %>
-
-
 
 <div class="floatFix"></div>
