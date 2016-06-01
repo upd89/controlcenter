@@ -24,7 +24,6 @@ class RepositoriesController < ApplicationController
   end
 
   # DELETE /repositories/1
-  # DELETE /repositories/1.json
   def destroy
     @repository.destroy
     redirect_to repositories_url, success: 'Repository was successfully destroyed.'
