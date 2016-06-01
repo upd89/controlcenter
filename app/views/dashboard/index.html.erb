@@ -53,6 +53,10 @@
   <div class="col_6 dashboard_box">
     <h4>Tasks</h4>
 
+    <% if get_running_tasks.count + get_failed_tasks.count + get_overdue_tasks.count == 0 %>
+      <p>Nothing to report!</p>
+    <% end %>
+
     <ul class="noDots">
     <% if get_running_tasks.count > 0 %>
       <li><%= get_running_tasks.count %> pending Tasks</li>

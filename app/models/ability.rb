@@ -62,11 +62,11 @@ class Ability
     end
     cannot :create, ConcretePackageVersion
 
-    can :read, Job
-    can :read, Task
+    can [:read, :destroy], Job
+    can [:read, :destroy], Task
     can :read, TaskExecution
-    cannot [:create, :update, :destroy], Job
-    cannot [:create, :update, :destroy], Task
+    cannot [:create, :update], Job
+    cannot [:create, :update], Task
     cannot [:create, :update, :destroy], TaskExecution
   end
 end
