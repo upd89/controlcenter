@@ -12,15 +12,23 @@ class PackageVersion < ActiveRecord::Base
 
     # used in api
     def self.get_maybe_create(pkgVersion, pkg)
-        if exists?( sha256: pkgVersion['sha256'] )
-            pkgVersion_obj = where( sha256: pkgVersion['sha256'] )[0]
-        else
-            pkgVersion_obj = create( {
-              :sha256       => pkgVersion['sha256'],
-              :version      => pkgVersion['version'],
-              :architecture => pkgVersion['architecture'],
-              :package      => pkg
-            } )
+        pkgVersion_obj = nil
+        begin
+            self.transaction(isolation: :serializable) do
+                pkgVersion_obj = self.create_with(
+                    version: pkgVersion['version'],
+                    architecture: pkgVersion['architecture'],
+                    pkg: pkg
+                ).find_or_create_by(sha256: pkgVersion['sha256'])
+                #pkgVersion_obj.pkg = pkg
+                #pkgVersion_obj.save()
+            end
+        rescue ActiveRecord::RecordInvalid
+            logger.debug("AcriveRecord: RecordInvalid Exception")
+            retry
+        rescue ActiveRecord::StatementInvalid
+            logger.debug("AcriveRecord: StatementInvalid Exception")
+            retry
         end
         return pkgVersion_obj
     end
