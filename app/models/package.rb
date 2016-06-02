@@ -26,21 +26,23 @@ class Package < ActiveRecord::Base
 
     # used in api
     def self.get_maybe_create(package)
-        if exists?( name: package['name'] )
-          package_obj = where( name: package['name'] )[0]
-          # update package information if specified
-          package_obj.section  = package['section']  if package['section']
-          package_obj.homepage = package['homepage'] if package['homepage']
-          package_obj.summary  = package['summary']  if package['summary']
-          package_obj.save()
-        else
-          # creating package
-          package_obj = create( {
-                 :name         =>  package['name'],
-                 :section      =>  package['section'],
-                 :homepage     =>  package['homepage'],
-                 :summary      =>  package['summary']
-          } )
+        package_obj = nil
+        begin
+            self.transaction(isolation: :serializable) do
+                package_obj = self.create_with(
+                    :section      =>  package['section'],
+                    :homepage     =>  package['homepage'],
+                    :summary      =>  package['summary']
+                ).find_or_create_by(name: package['name'])
+                # update package information if specified
+                package_obj.section  = package['section']  if package['section']
+                package_obj.homepage = package['homepage'] if package['homepage']
+                package_obj.summary  = package['summary']  if package['summary']
+                package_obj.save()
+            end
+        rescue ActiveRecord::StatementInvalid
+            logger.debug("AcriveRecord: StatementInvalid Exception")
+            retry
         end
         return package_obj
     end

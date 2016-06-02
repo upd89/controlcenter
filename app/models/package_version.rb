@@ -20,12 +20,7 @@ class PackageVersion < ActiveRecord::Base
                     architecture: pkgVersion['architecture'],
                     pkg: pkg
                 ).find_or_create_by(sha256: pkgVersion['sha256'])
-                #pkgVersion_obj.pkg = pkg
-                #pkgVersion_obj.save()
             end
-        rescue ActiveRecord::RecordInvalid
-            logger.debug("AcriveRecord: RecordInvalid Exception")
-            retry
         rescue ActiveRecord::StatementInvalid
             logger.debug("AcriveRecord: StatementInvalid Exception")
             retry
