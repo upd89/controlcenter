@@ -41,7 +41,7 @@ class Package < ActiveRecord::Base
                 package_obj.save()
             end
         rescue ActiveRecord::StatementInvalid
-            logger.debug("AcriveRecord: StatementInvalid Exception")
+            logger.debug("ActiveRecord: StatementInvalid Exception")
             retry
         end
         return package_obj

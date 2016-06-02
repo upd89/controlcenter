@@ -22,7 +22,7 @@ class PackageVersion < ActiveRecord::Base
                 ).find_or_create_by(sha256: pkgVersion['sha256'])
             end
         rescue ActiveRecord::StatementInvalid
-            logger.debug("AcriveRecord: StatementInvalid Exception")
+            logger.debug("ActiveRecord: StatementInvalid Exception")
             retry
         end
         return pkgVersion_obj
