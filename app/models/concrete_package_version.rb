@@ -18,16 +18,17 @@ class ConcretePackageVersion < ActiveRecord::Base
       cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
       state = cpv_state_avail unless defined? state
 
+      # only one connection from package version to system allowed
       if exists?(package_version: pkgVersion, system: sys)
         assoc = where(package_version: pkgVersion, system: sys)[0]
         assoc.concrete_package_state = state
         assoc.save()
       else
-        assoc = new
-        assoc.system = sys
-        assoc.package_version = pkgVersion
-        assoc.concrete_package_state = state
-        assoc.save()
+        assoc = ConcretePackageVersion.create(
+          system: sys,
+          package_version: pkgVersion,
+          concrete_package_state: state
+        )
       end
       return assoc
   end
