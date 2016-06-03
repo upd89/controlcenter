@@ -18,11 +18,13 @@ class PackageVersion < ActiveRecord::Base
                 pkgVersion_obj = self.create_with(
                     version: pkgVersion['version'],
                     architecture: pkgVersion['architecture'],
-                    pkg: pkg
+                    package: pkg
                 ).find_or_create_by(sha256: pkgVersion['sha256'])
             end
         rescue ActiveRecord::StatementInvalid
             logger.debug("ActiveRecord: StatementInvalid Exception")
+            logger.debug("failed package version for pkg: " + pkg.name)
+            sleep(rand(100)*0.005)
             retry
         end
         return pkgVersion_obj

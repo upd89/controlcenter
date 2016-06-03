@@ -42,6 +42,8 @@ class Package < ActiveRecord::Base
             end
         rescue ActiveRecord::StatementInvalid
             logger.debug("ActiveRecord: StatementInvalid Exception")
+            logger.debug("failed pkg: " + package['name'])
+            sleep(rand(100)*0.005)
             retry
         end
         return package_obj
