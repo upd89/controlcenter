@@ -34,7 +34,7 @@ class Package < ActiveRecord::Base
                     :homepage     =>  package['homepage'],
                     :summary      =>  package['summary']
                 ).find_or_create_by(name: package['name'])
-                # update package information if specified
+                # update package information if specified - Wrong place here?
                 package_obj.section  = package['section']  if package['section']
                 package_obj.homepage = package['homepage'] if package['homepage']
                 package_obj.summary  = package['summary']  if package['summary']

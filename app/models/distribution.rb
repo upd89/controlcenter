@@ -5,8 +5,7 @@ class Distribution < ActiveRecord::Base
     distro_obj = nil
     begin
       self.transaction(isolation: :serializable) do
-        distro_obj = self.create_with( name: distro )
-                         .find_or_create_by(name: distro)
+        distro_obj = self.find_or_create_by(name: distro)
       end
     rescue ActiveRecord::StatementInvalid
       logger.debug("ActiveRecord: StatementInvalid Exception")

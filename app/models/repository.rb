@@ -8,11 +8,7 @@ class Repository < ActiveRecord::Base
     repo_obj = nil
     begin
       self.transaction(isolation: :serializable) do
-        repo_obj = self.create_with(
-          archive: rep['archive'],
-          origin: rep['origin'],
-          component: rep['component']
-        ).find_or_create_by(
+        repo_obj = self.find_or_create_by(
           archive: rep['archive'],
           origin: rep['origin'],
           component: rep['component']
