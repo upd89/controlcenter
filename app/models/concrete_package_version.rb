@@ -16,6 +16,8 @@ class ConcretePackageVersion < ActiveRecord::Base
   def self.create_new(pkgVersion, sys, state)
       # TODO: service to get package states...
       cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+      cpv_state_outdated = ConcretePackageState.where(name: "Outdated")[0]
+
       state = cpv_state_avail unless defined? state
 
       # only one connection from package version to system allowed
@@ -24,6 +26,13 @@ class ConcretePackageVersion < ActiveRecord::Base
         assoc.concrete_package_state = state
         assoc.save()
       else
+        # Set other CPVs to Outdated!
+        sys.package_versions.where( package: pkgVersion.package ).each do |other_package_version|
+          cpv = ConcretePackageVersion.where( system: sys, package_version: other_package_version )[0]
+          cpv.concrete_package_state = cpv_state_outdated
+          cpv.save()
+        end
+
         assoc = ConcretePackageVersion.create(
           system: sys,
           package_version: pkgVersion,
