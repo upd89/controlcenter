@@ -1,10 +1,14 @@
 # README
 
+## upd89 ControlCenter
+
+upd89 is a system update management for debian based systems.
+
 ## Dependencies
 
 This application is based on "Ruby on Rails" (RoR).
 
-Tested versions are:
+Tested environment:
 - ruby-2.2.3
 - Rails 4.2.4
 - passenger 5.0.27 / Apache/2.4.7 (Ubuntu 14.04)
