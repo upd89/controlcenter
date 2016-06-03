@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/upd89/controlcenter.svg?branch=master)](https://travis-ci.org/upd89/controlcenter)
+
 # README
 
 ## upd89 ControlCenter
@@ -17,10 +19,9 @@ Tested environment:
 If you don't have a recent version of RoR, please have a look at the following installation guides:
 
 - [Setup Ruby On Rails on Ubuntu][1]
-  [1]: https://gorails.com/setup/ubuntu/16.10
 - [How To Deploy a Rails App with Passenger and Apache on Ubuntu 14.04][2]
+  [1]: https://gorails.com/setup/ubuntu/16.10
   [2]: https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04
-
 
 ## Installation
 
