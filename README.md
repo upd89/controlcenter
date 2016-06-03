@@ -32,3 +32,5 @@ If you don't have a recent version of RoR, please have a look at the following i
 	rake db:migrate
 	rake db:base_data
 
+
+## Configuration
