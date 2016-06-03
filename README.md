@@ -25,7 +25,7 @@ If you don't have a recent version of RoR, please have a look at the following i
 
 ## Installation
 
-	git clone https://github.com/upd89/controlcenter
+	git clone https://github.com/upd89/controlcenter.git
 	cd controlcenter
 	bundle install
 	rake db:create
