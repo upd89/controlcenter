@@ -52,8 +52,6 @@ If you don't have a recent version of RoR, please have a look at the following i
   [1]: https://gorails.com/setup/ubuntu/16.10
   [2]: https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04
 
-For git, use 	`sudo apt-get install git-all` to install.
-
 ## Installation
 
 	git clone https://github.com/upd89/controlcenter.git
