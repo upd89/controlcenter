@@ -63,7 +63,7 @@ For git, use 	`sudo apt-get install git-all` to install.
 	rake db:migrate
 	rake db:base_data
 
-## Start
+## Start the Server
 
 	rails server
 
@@ -78,3 +78,13 @@ The initial rake task created a couple of users, most importantly `admin` (also 
 To configure some view-related settings, you can change some variables in `config/settings.yml`. Each setting is commented and should be self-explanatory.
 
 Database-related settings can be changed in `config/database.yml`
+
+If you want some more example entries, you can run
+
+```
+rake db:sample_data
+```
+
+This will create a number of basic entries for systems, packages and others for testing purposes.
+
+![Base Data](documentation/base_data.png?raw=true "Sample Data")
