@@ -76,8 +76,8 @@ The initial rake task created a couple of users, most importantly `admin` (also 
 Setup Certificate authority:
 
 ```
-apt install easy-rsa
-make-cadir ca
+  apt install easy-rsa
+  make-cadir ca
 ```
 
 Change the following entries (recommended) in  `ca/vars` (with your own settings, of course):
@@ -102,19 +102,14 @@ Afterwards, set up your CA:
 
 ```
   cd ca
-  source ./vars
+  export EASY_RSA="${EASY_RSA:-.}"
+  . vars
   ./clean-all
-  ./build-ca
-```
-
-You can still change your settings regarding country, org, etc. here.
-
-Now, for each server you want to register with the control center, generate a key with the server's URN as parameter:
-
-```
-  ./build-key server1.upd89.org
-  ./build-key server2.upd89.org
-  ./build-key server3.upd89.org
+  "$EASY_RSA/pkitool" --initca
+  "$EASY_RSA/pkitool" --server cc.upd89.org
+  "$EASY_RSA/pkitool" agent1.upd89.org
+  "$EASY_RSA/pkitool" agent2.upd89.org
+  "$EASY_RSA/pkitool" agent3.upd89.org
 ```
 
 Follow this guide https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04
@@ -123,22 +118,26 @@ But: Use https://raw.githubusercontent.com/upd89/controlcenter/master/apache.con
 ```
   $_HOSTNAME_ with your desired hostname (or localhost),
   $_ROOTDIR_ with the installation directory of the rails application,
-  $_RAILSENV_ with the desired rails environment (e.g. development, demo, production, test),
-  $_SSLCERTFILE_ with the SSL certificate file,
-  $_SSLKEYFILE_ with the SSL key file,
-  $_SSLCHAINFILE_ with the SSL chain file,
-  $_UPD89CA_
-  $_SSLAPICERTFILE_ with the SSL certificate file for the API,
-  $_SSLAPIKEYFILE_ with the SSL key file for the API
+  $_RAILSENV_ with the desired rails environment (e.g. development, production),
+  $_SSLCERTFILE_ with the SSL certificate file (for the web interface)*,
+  $_SSLKEYFILE_ with the SSL key file (for the web interface)*,
+  $_SSLCHAINFILE_ with the SSL chain file (for the web interface)*,
+  $_UPD89CA_ with the absolute path to ca/keys/ca.crt
+  $_SSLAPICERTFILE_ with the SSL certificate file for the API (ca/keys/cc.upd89.org.crt),
+  $_SSLAPIKEYFILE_ with the SSL key file for the API (ca/keys/cc.upd89.org.key)
 ```
+
+\* Recommendation: use letsencrypt ()
 
 ```
   sudo a2enmod rewrite  
   sudo a2enmod ssl
+  sudo a2enmod passenger
   apache2ctl configtest
   sudo service apache2 restart
 ```
 
+Now you should have a functioning web server, congratulations!
 
 ## Configuration
 
