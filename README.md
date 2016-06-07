@@ -98,30 +98,46 @@ in `ca/openssl-1.0.0.cnf`, set the usage to both client and server so it can be 
   extendedKeyUsage=serverAuth,clientAuth
 ```
 
+Afterwards, set up your CA:
 
+```
+  cd ca
+  source ./vars
+  ./clean-all
+  ./build-ca
+```
 
-Follow this
-https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04
+You can still change your settings regarding country, org, etc. here.
 
-But: Use https://raw.githubusercontent.com/upd89/controlcenter/master/apache.conf.sample instead of the suggested content for the conf file
+Now, for each server you want to register with the control center, generate a key with the server's URN as parameter:
 
-replace
-  $_HOSTNAME_ with your desired hostname (or localhost)
-  $_ROOTDIR_ with the installation directory of the rails application
-  $_RAILSENV_ with the desired rails environment (e.g. development, demo, production, test)
-  $_SSLCERTFILE_
-  $_SSLKEYFILE_
-  $_SSLCHAINFILE_
+```
+  ./build-key server1.upd89.org
+  ./build-key server2.upd89.org
+  ./build-key server3.upd89.org
+```
+
+Follow this guide https://www.digitalocean.com/community/tutorials/how-to-deploy-a-rails-app-with-passenger-and-apache-on-ubuntu-14-04
+
+But: Use https://raw.githubusercontent.com/upd89/controlcenter/master/apache.conf.sample instead of the suggested content for the conf file and replace the following variables:
+```
+  $_HOSTNAME_ with your desired hostname (or localhost),
+  $_ROOTDIR_ with the installation directory of the rails application,
+  $_RAILSENV_ with the desired rails environment (e.g. development, demo, production, test),
+  $_SSLCERTFILE_ with the SSL certificate file,
+  $_SSLKEYFILE_ with the SSL key file,
+  $_SSLCHAINFILE_ with the SSL chain file,
   $_UPD89CA_
-  $_SSLAPICERTFILE_
-  $_SSLAPIKEYFILE_ 
+  $_SSLAPICERTFILE_ with the SSL certificate file for the API,
+  $_SSLAPIKEYFILE_ with the SSL key file for the API
+```
 
-
-
-sudo a2enmod rewrite  
-sudo a2enmod ssl
-apache2ctl configtest
-sudo service apache2 restart
+```
+  sudo a2enmod rewrite  
+  sudo a2enmod ssl
+  apache2ctl configtest
+  sudo service apache2 restart
+```
 
 
 ## Configuration
