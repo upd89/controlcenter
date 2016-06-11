@@ -155,6 +155,80 @@ This will create a number of basic entries for systems, packages and others for 
 
 ![Base Data](documentation/base_data.png?raw=true "Sample Data")
 
+## How-To...
+
+Q: How to create a new User?
+
+A: Go to Users, click on "New User" and provide a Name, Email, a role and a password including password confirmation. The password has to be longer than 8 characters.
+
+
+Q: How to edit a User?
+
+A: You can only do this if your role has the permission to manage users. If that's the case, go to the user page (/users) and click on the user's edit icon (the pencil). You can edit all properties here. Make sure to click on "Save" after you are done with your changes!
+
+
+Q: How to delete a User?
+
+A: Go to the user page (/users) and click on the user's delete icon (the X). This button only appears if you have the proper permissions. For obvious reasons it's not possible to delete your own user.
+
+
+Q: How to check a user's permissions / what a user can do?
+
+A: Simple! Go the the user's profile (via /user and a click on the user) and check the permission summary on the right side.
+
+
+Q: How to create a new Role?
+
+A: Go to Roles (/roles), click on "New Role" and provide a Name, Permission level and whether or not this role can manage users, then click on "Save".
+
+
+Q: How to edit a Role?
+
+A: Go to the role page (/roles) and click on the role's edit icon (the pencil). You can edit all properties here. Make sure to click on "Save" after you are done with your changes!
+
+
+Q: How to delete a Role?
+
+A: Go to the role page (/roles) and click on the role's delete icon (the X). You can only delete roles when no users are assigned this role!
+
+
+Q: How to see all users of a certain role?
+
+A: Visit the role's page (via /roles and a click on the role) and check out the list of users on the bottom.
+
+
+Q: How can I create a System Group?
+
+A: Go to the system group page (/system_groups) and click on "New System Group" on the top right. Give it a name and a permission level and click save. Done!
+
+
+Q: How can I edit a System Group?
+
+A: Visit the group page (/system_groups), click on the edit button for the desired system group (looks like a pencil). This button only appears when you have the required permissions (i.e. your role's permission level must be higher than the group's)!
+
+
+Q: How can I create a Package Group?
+
+A: Go to the package group page (/package_groups) and click on "New Package Group" on the top right. Give it a name and a permission level and click save. Done!
+
+
+Q: How can I edit a Package Group?
+
+A: Visit the group page (/package_groups), click on the edit button for the desired package group (looks like a pencil). This button only appears when you have the required permissions (i.e. your role's permission level must be higher than the group's)!
+
+
+Q: How can I create a new System?
+
+A: Trick question! Systems can't be created, they register themselves. If you really have to create systems manually, use the console (`rails console` in the app's root directory)
+
+
+Q: How can I create a new Package?
+
+A: You'll have to install that package on a registered system and wait for an update from the system. Packages can't be created manually.
+
+
+
+
 ## Troubleshooting
 
 Q: I accidentally deleted all users!
