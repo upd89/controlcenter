@@ -64,7 +64,7 @@
     <% end %>
 
     <% if get_failed_tasks.count > 0 %>
-      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks</li>
+      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks! (<%= link_to("Check", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Failed")[0].id } ) ) %>)</li>
     <% end %>
 
     <% if get_overdue_tasks.count > 0 %>
