@@ -135,6 +135,12 @@ class System < ActiveRecord::Base
     end
   end
 
+  def is_missing
+    if last_seen
+      last_seen < (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours )
+    end
+  end
+
   scope :is_missing, -> { where("last_seen < ?", (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours ) ) }
   scope :is_not_missing, -> { where.not(id: is_missing) }
 
