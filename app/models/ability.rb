@@ -39,8 +39,11 @@ class Ability
     # Everyone can read any user
     # Only user manager roles can edit, create or delete a user
     can :read, User
-    can [ :create, :update, :destroy ], User do |concerned_user|
+    can [ :create, :update ], User do |concerned_user|
       user.role.is_user_manager
+    end
+    can [ :destroy ], User do |concerned_user|
+      user.role.is_user_manager && user != concerned_user
     end
 
     # Everyone can read any role
