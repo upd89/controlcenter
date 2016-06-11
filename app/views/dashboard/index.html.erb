@@ -19,7 +19,7 @@
       <ul>
         <li><%= @systems.count %> Systems present</li>
         <% if get_not_recently_seen_systems.count > 0 %>
-        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours <%= link_to("(Check)", systems_path( filterrific: { sorted_by: "last_seen_asc" } ) ) %></li>
         <% end %>
         <% if get_systems_without_group.count > 0 %>
         <li><%= get_systems_without_group.count %> Systems not in a group</li>
