@@ -199,7 +199,7 @@ A: Simple! Go the the user's profile (via /user and a click on the user) and che
 
 Q: How to create a new Role?
 
-A: Go to Roles (/roles), click on "New Role" and provide a Name, Permission level and whether or not this role can manage users, then click on "Save".
+A: Go to the Roles page (/roles), click on "New Role" and provide a Name, Permission level and whether or not this role can manage users, then click on "Save".
 
 
 Q: How to edit a Role?
