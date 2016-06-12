@@ -8,7 +8,7 @@ class TasksController < ApplicationController
     @filterrific = initialize_filterrific(
       Task,
       params[:filterrific],
-      :select_options => {
+      select_options: {
         sorted_by: Task.options_for_sorted_by,
         with_state_id: TaskState.options_for_select,
         with_system_id: System.options_for_select
@@ -19,7 +19,7 @@ class TasksController < ApplicationController
 
   # GET /tasks/1
   def show
-    @paginated_concrete_package_versions = @task.concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @paginated_concrete_package_versions = @task.concrete_package_versions.paginate(page: params[:page], per_page: Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # POST /tasks

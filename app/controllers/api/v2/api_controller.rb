@@ -69,7 +69,7 @@ module Api::V2
       urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => urn)
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(urn: urn)
         render json: { status: "ERROR" }
         return
       end
@@ -83,7 +83,7 @@ module Api::V2
       urn = params[:urn]
       data = JSON.parse request.body.read
 
-      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(:urn => urn)
+      if check_mandatory_json_params(data, ["pkgCount", "packages"]) || !System.exists?(urn: urn)
         render json: { status: "ERROR" }
         return
       end

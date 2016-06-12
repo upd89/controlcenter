@@ -8,7 +8,7 @@ class SystemsController < ApplicationController
     @filterrific = initialize_filterrific(
       System,
       params[:filterrific],
-      :select_options => {
+      select_options: {
         sorted_by: System.options_for_sorted_by,
         with_system_group_id: SystemGroup.options_for_select
       }
@@ -23,7 +23,7 @@ class SystemsController < ApplicationController
     @filterrific_show = initialize_filterrific(
       ConcretePackageVersion.where(system: @system ),
       params[:filterrific],
-      :select_options => {
+      select_options: {
         with_state_id: ConcretePackageState.options_for_select
       }
     ) or return

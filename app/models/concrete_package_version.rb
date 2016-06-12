@@ -15,8 +15,8 @@ class ConcretePackageVersion < ActiveRecord::Base
   # used in API
   def self.create_new(pkgVersion, sys, state)
       # TODO: service to get package states...
-      cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
-      cpv_state_outdated = ConcretePackageState.where(name: "Outdated")[0]
+      cpv_state_avail = ConcretePackageState.find_by(name: "Available")
+      cpv_state_outdated = ConcretePackageState.find_by(name: "Outdated")
 
       state = cpv_state_avail unless defined? state
 
@@ -24,13 +24,13 @@ class ConcretePackageVersion < ActiveRecord::Base
       if exists?(package_version: pkgVersion, system: sys)
         assoc = where(package_version: pkgVersion, system: sys)[0]
         assoc.concrete_package_state = state
-        assoc.save()
+        assoc.save
       else
         # Set other CPVs to Outdated!
         sys.package_versions.where( package: pkgVersion.package ).each do |other_package_version|
           cpv = ConcretePackageVersion.where( system: sys, package_version: other_package_version )[0]
           cpv.concrete_package_state = cpv_state_outdated
-          cpv.save()
+          cpv.save
         end
 
         assoc = ConcretePackageVersion.create(
