@@ -2,7 +2,7 @@ require 'faker'
 
 FactoryGirl.define do
   factory :package_version do |f|
-    f.sha256 Faker::Internet.password(64) #TODO use Faker::Crypto.sha256 in 1.6.9
+    f.sha256 Faker::Internet.password(64) #or use Faker::Crypto.sha256 in 1.6.9
     f.version Faker::App.version
     f.architecture Faker::Hipster.word
     f.package nil

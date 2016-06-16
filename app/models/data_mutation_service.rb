@@ -229,7 +229,6 @@ class DataMutationService
     state = TaskState.where(:name => data["state"] ).first
     if state
       task.task_state = state
-      # TODO + log
     end
 
     if data["log"]

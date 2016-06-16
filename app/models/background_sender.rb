@@ -38,7 +38,6 @@ class BackgroundSender
       if status.downcase == "ok"
         task.task_state = TaskState.find_by(name: "Queued")
       end
-    # rescue Faraday::Error::ConnectionFailed => e #TODO: other possible errors
     rescue
       if task.tries.to_i < Settings.BackgroundTask.MaximumAmountOfTries
         BackgroundSender.perform_in(Settings.BackgroundTask.SecondsBetweenTries, task)

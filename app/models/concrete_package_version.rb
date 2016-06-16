@@ -14,7 +14,6 @@ class ConcretePackageVersion < ActiveRecord::Base
 
   # used in API
   def self.create_new(pkgVersion, sys, state)
-      # TODO: service to get package states...
       cpv_state_avail = ConcretePackageState.find_by(name: "Available")
       cpv_state_outdated = ConcretePackageState.find_by(name: "Outdated")
 

@@ -20,7 +20,6 @@ class JobsController < ApplicationController
     task_state_pending = TaskState.where(name: "Pending")[0]
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
 
-    #TODO: extract code, see create and create_multiple!
     if current_user
       @job = Job.new(user: current_user,
                      started_at: Time.new,
@@ -143,7 +142,7 @@ class JobsController < ApplicationController
     if params[:all]
       # get task IDs from system, map to strings
       cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
-      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: cpv_state_avail ) #TODO: centralised state manager
+      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: cpv_state_avail )
     else
       # get task IDs from submitted array
       if params[:updates]
@@ -171,8 +170,6 @@ class JobsController < ApplicationController
       @job.save
 
       redirect_to @job
-    else
-      #TODO: log!
     end
 
   end

@@ -27,8 +27,8 @@ module Cc
       g.test_framework :rspec,
         :fixtures => true, #specifies to generate a fixture for each model
         :view_specs => false, #skip generating view specs
-        :helper_specs => false, #skips generating specs for the helper files (TODO at a later point, add those)
-        :routing_specs => false, #TODO: maybe test routing later as well
+        :helper_specs => false, #skips generating specs for the helper files
+        :routing_specs => false,
         :controller_specs => true,
         :request_specs => true
       g.fixture_replacement :factory_girl, :dir => "spec/factories"

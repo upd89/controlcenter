@@ -11,7 +11,6 @@ describe "ControlCenter API v2" do
         address: Faker::Internet.public_ip_v4_address,
         certificate: ""
       }
-      # TODO: Change URL (/api)
       post '/api/v2/register', params.to_json, {'ACCEPT' => "application/json", 'CONTENT_TYPE' => 'application/json'}
 
       expect(response).to be_success
@@ -151,7 +150,7 @@ describe "ControlCenter API v2" do
     it 'sends a wrong updCount' do
     end
 
-    
+
   end
 
 end
