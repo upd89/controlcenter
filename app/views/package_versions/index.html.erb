@@ -3,6 +3,7 @@
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Package version",
+    "ctrlAction" => :create,
     "path" => new_package_version_path
   }]
 } %>
@@ -33,9 +34,9 @@
         <td><%= package_version.base_version ? package_version.base_version.version : "this" %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_version %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_version_path(package_version) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, package_version    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, package_version %></li><% end %>
+            <% if can? :update, package_version  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_package_version_path(package_version) %></li><% end %>
+            <% if can? :destroy, package_version %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

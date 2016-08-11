@@ -1,5 +1,5 @@
 #
-# Base Data, load with command: "rake db:base_data"
+# Base Data, load with command: "rake db:add_groups"
 #
 
 namespace :db do

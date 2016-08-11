@@ -3,15 +3,22 @@ class Repository < ActiveRecord::Base
       origin + " " + archive + " " + component
   end
 
-    # used in api
-    def self.get_maybe_create(rep)
-        if exists?( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-            repo_obj = where( archive: rep['archive'], origin: rep['origin'], component: rep['component'] )[0]
-        else
-            repo_obj = create(archive: rep['archive'], origin: rep['origin'], component: rep['component'] )
-        end
-        return repo_obj
+  # used in api
+  def self.get_maybe_create(rep)
+    repo_obj = nil
+    begin
+      self.transaction(isolation: :serializable) do
+        repo_obj = self.find_or_create_by(
+          archive: rep['archive'],
+          origin: rep['origin'],
+          component: rep['component']
+        )
+      end
+    rescue ActiveRecord::StatementInvalid
+      logger.debug("ActiveRecord: StatementInvalid Exception")
+      retry
     end
-
-
+    return repo_obj
+  end
+  
 end

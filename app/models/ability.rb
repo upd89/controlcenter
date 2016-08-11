@@ -39,8 +39,11 @@ class Ability
     # Everyone can read any user
     # Only user manager roles can edit, create or delete a user
     can :read, User
-    can [ :create, :update, :destroy ], User do |concerned_user|
+    can [ :create, :update ], User do |concerned_user|
       user.role.is_user_manager
+    end
+    can [ :destroy ], User do |concerned_user|
+      user.role.is_user_manager && user != concerned_user
     end
 
     # Everyone can read any role
@@ -56,11 +59,28 @@ class Ability
     can :read, ConcretePackageState
     cannot [:create, :update, :destroy], ConcretePackageState
 
-    can :read, Job
-    can :read, Task
+    can :read, ConcretePackageVersion
+    can [ :update, :destroy ], ConcretePackageVersion do |cpv|
+      cpv.system.system_group.permission_level <= user.role.permission_level && cpv.package_version.package.get_permission_level <= user.role.permission_level
+    end
+    cannot :create, ConcretePackageVersion
+
+    can :read, PackageVersion
+    cannot [:create, :update, :destroy], PackageVersion
+
+    can [:read, :destroy], Job
+    cannot [:create, :update], Job
+
+    can [:read, :destroy], Task
+    cannot [:create, :update], Task
+
     can :read, TaskExecution
-    cannot [:create, :update, :destroy], Job
-    cannot [:create, :update, :destroy], Task
     cannot [:create, :update, :destroy], TaskExecution
+
+    can [:read, :update], Distribution
+    cannot [:create, :destroy], Distribution
+
+    can [:read, :update], Repository
+    cannot [:create, :destroy], Repository
   end
 end

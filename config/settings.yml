@@ -1,15 +1,15 @@
 Pagination:
-  NoOfEntriesPerPage: 15
+  NoOfEntriesPerPage: 15 #how many entries should be shown per page
 BackgroundTask:
-  SecondsBetweenTries: 20
-  MaximumAmountOfTries: 3
+  SecondsBetweenTries: 20 #how long the application should wait until it retries to contact an agent again after it wasn't able to connect
+  MaximumAmountOfTries: 3 #how many times the application should try to send a background task to an agent before it gives up
 Systems:
-  NoOfShownRecentTasks: 10
-  NotSeenWarningThresholdMinutes: 240
+  NoOfShownRecentTasks: 10 #how many of the most recent tasks should be displayed on the system detail view
+  NotSeenWarningThresholdMinutes: 240 #after how many minutes should a system be considered "lost"? After it hasn't been seen for this many minutes, it'll be displayed in the dashboard
 Tasks:
-  OverdueWarningThresholdMinutes: 10
+  OverdueWarningThresholdMinutes: 10 #after how many minutes a task should be overdue. This time includes sending the task, installing the update and sending the reply.
 General:
   Timezone: "Bern" #use rake time:zones:all to see all available settings
 Dashboard:
-  NrOfOverdueTasksShown: 5
-  NrOfEntitiesWithUpdatesShown: 10
+  NrOfOverdueTasksShown: 5 #how many overdue tasks should be shown at most
+  NrOfEntitiesWithUpdatesShown: 10 #how many systems or system gorups with updates should be shown at most in the dashboard

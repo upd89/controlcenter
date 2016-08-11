@@ -84,7 +84,7 @@ class System < ActiveRecord::Base
         order("LOWER(systems.address) #{ direction }")
       when /^last_seen_/
         order("systems.last_seen #{ direction }")
-      when /^system_group_/ #TODO: doesn't work yet!
+      when /^system_group_/
         order("system_groups.name #{ direction }").includes(:system_group)
       else
         raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
@@ -132,6 +132,12 @@ class System < ActiveRecord::Base
       last_seen.to_formatted_s(:short)
     else
       "not yet"
+    end
+  end
+
+  def is_missing
+    if last_seen
+      last_seen < (Time.now - (Settings.Systems.NotSeenWarningThresholdMinutes / 60).hours )
     end
   end
 

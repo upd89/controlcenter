@@ -5,7 +5,7 @@ class ConcretePackageVersion < ActiveRecord::Base
   belongs_to :package_version
 
   filterrific(
-    default_filter_params: { sorted_by: 'id_desc' },
+    default_filter_params: { sorted_by: 'id_asc' },
     available_filters: [
       :sorted_by,
       :with_state_id
@@ -14,20 +14,29 @@ class ConcretePackageVersion < ActiveRecord::Base
 
   # used in API
   def self.create_new(pkgVersion, sys, state)
-      # TODO: service to get package states...
-      cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
+      cpv_state_avail = ConcretePackageState.find_by(name: "Available")
+      cpv_state_outdated = ConcretePackageState.find_by(name: "Outdated")
+
       state = cpv_state_avail unless defined? state
 
+      # only one connection from package version to system allowed
       if exists?(package_version: pkgVersion, system: sys)
         assoc = where(package_version: pkgVersion, system: sys)[0]
         assoc.concrete_package_state = state
-        assoc.save()
+        assoc.save
       else
-        assoc = new
-        assoc.system = sys
-        assoc.package_version = pkgVersion
-        assoc.concrete_package_state = state
-        assoc.save()
+        # Set other CPVs to Outdated!
+        sys.package_versions.where( package: pkgVersion.package ).each do |other_package_version|
+          cpv = ConcretePackageVersion.where( system: sys, package_version: other_package_version )[0]
+          cpv.concrete_package_state = cpv_state_outdated
+          cpv.save
+        end
+
+        assoc = ConcretePackageVersion.create(
+          system: sys,
+          package_version: pkgVersion,
+          concrete_package_state: state
+        )
       end
       return assoc
   end
@@ -45,4 +54,10 @@ class ConcretePackageVersion < ActiveRecord::Base
   scope :with_state_id, lambda { |state_ids|
     where(concrete_package_state_id: [*state_ids])
   }
+
+  def self.options_for_sorted_by
+    [
+      ['ID (1-n)', 'id_asc']
+    ]
+  end
 end

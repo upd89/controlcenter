@@ -21,7 +21,7 @@
           <td class="mHide"><%= system.os %></td>
           <td><%= system.reboot_required ? "yes" : "no" %></td>
           <td><%= system.address %></td>
-          <td><%= system.decorated_last_seen %></td>
+          <td class="<%= system.is_missing ? "errorText" : "" %>" ><%= system.decorated_last_seen %></td>
           <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
           <td><%= system.get_installable_CPVs.count %></td>
           <td class="mHide">

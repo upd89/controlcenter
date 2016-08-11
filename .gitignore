@@ -47,3 +47,5 @@ config/environments/*.local.yml
 config/clientCert/*.*
 
 public/report.html
+
+/.idea/

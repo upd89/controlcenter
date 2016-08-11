@@ -142,7 +142,7 @@ class DataMutationService
       return { status: "ERROR" }
     elsif unknownPackages.length > 0
       return { status: "infoIncomplete", knownPackages: knownPackages }
-    elsif currentSys.packages.count != data["pkgCount"]
+    elsif currentSys.get_installed_cpvs.count != data["pkgCount"]
       return { status: "countMismatch", knownPackages: knownPackages  }
     else
       return { status: "OK", knownPackages: knownPackages  }
@@ -216,7 +216,7 @@ class DataMutationService
 
     if error
       return { status: "ERROR" }
-    elsif currentSys.packages.count != data["pkgCount"]
+    elsif currentSys.get_installed_cpvs.count != data["pkgCount"]
       return { status: "countMismatch" }
     else
       return { status: "OK" }
@@ -229,7 +229,6 @@ class DataMutationService
     state = TaskState.where(:name => data["state"] ).first
     if state
       task.task_state = state
-      # TODO + log
     end
 
     if data["log"]

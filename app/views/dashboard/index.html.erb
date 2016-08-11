@@ -19,7 +19,7 @@
       <ul>
         <li><%= @systems.count %> Systems present</li>
         <% if get_not_recently_seen_systems.count > 0 %>
-        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours</li>
+        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours <%= link_to("(Check)", systems_path( filterrific: { sorted_by: "last_seen_asc" } ) ) %></li>
         <% end %>
         <% if get_systems_without_group.count > 0 %>
         <li><%= get_systems_without_group.count %> Systems not in a group</li>
@@ -35,6 +35,7 @@
 
   <div class="col_4 dashboard_box pkgBG">
     <h4>Packages</h4>
+
     <ul>
       <li><%= @packages.count %> known Packages</li>
       <% if get_packages_without_group.count > 0 %>
@@ -53,28 +54,35 @@
   <div class="col_6 dashboard_box">
     <h4>Tasks</h4>
 
+    <% if get_running_tasks.count + get_failed_tasks.count + get_overdue_tasks.count == 0 %>
+      <p>Nothing to report!</p>
+    <% end %>
+
     <ul class="noDots">
     <% if get_running_tasks.count > 0 %>
-      <li><%= get_running_tasks.count %> pending Tasks</li>
+      <li><%= get_running_tasks.count %> pending <%= link_to("Tasks", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Pending")[0].id } ) ) %></li>
     <% end %>
+
     <% if get_failed_tasks.count > 0 %>
-      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks</li>
+      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks! (<%= link_to("Check", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Failed")[0].id } ) ) %>)</li>
     <% end %>
+
     <% if get_overdue_tasks.count > 0 %>
       <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
           <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
-          <div><%= link_to(task.id, task) + ": " + task.decorated_created_at + ", " + task.task_state.name %></div>
+          <div><%= task.decorated_created_at %> (<%= task.task_state.name %>) <%= link_to "Cancel", task_path( task ), method: :delete %> <%= link_to "Check", task_path( task )  %></div>
           <% end %>
           <% if get_overdue_tasks.count > Settings.Dashboard.NrOfOverdueTasksShown %>...<% end %>
       </li>
     <% end %>
+
     </ul>
 
     <div class="floatFix"></div>
   </div>
 
   <div class="col_6 dashboard_box sysBG">
-    <h4>Available Updates</h4>
+    <h4><%= link_to( "Available Updates", concrete_package_versions_path( filterrific: { with_state_id: ConcretePackageState.where(name: "Available")[0].id } ) ) %></h4>
     <div class="col_6">
       <h6>By System:</h6>
       <% @updatable_systems.take( Settings.Dashboard.NrOfEntitiesWithUpdatesShown ).each do |sys| %>

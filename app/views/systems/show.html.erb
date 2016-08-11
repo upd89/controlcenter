@@ -10,7 +10,7 @@
     "icon" => "pencil",
     "text" => "",
     "path" => edit_system_path(@system),
-    "ctrlAction" => :edit
+    "ctrlAction" => :update
   }, {
     "icon" => "remove",
     "text" => "",
@@ -87,8 +87,6 @@
       <label for="state_select">State</label>
       <%= f.select( :with_state_id, @filterrific_show.select_options[:with_state_id], { include_blank: '- Any -' }, id: 'state_select') %>
     </div>
-
-    <%= render_filterrific_spinner %>
   <% end %>
 
   <div id="filterrific_table" class="col_12">

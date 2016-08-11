@@ -7,12 +7,14 @@
   }, {
     "icon" => "pencil",
     "text" => "",
-    "path" => edit_distribution_path(@distribution)
+    "path" => edit_distribution_path(@distribution),
+    "ctrlAction" => :update
   }, {
     "icon" => "remove",
     "text" => "",
     "path" => @distribution,
     "method" => :delete,
+    "ctrlAction" => :destroy,
     "confirm" => "Are you sure you want to delete this Distribution?"
   }]
 } %>
@@ -27,4 +29,3 @@
 </ul>
 
 <div class="floatFix"></div>
-

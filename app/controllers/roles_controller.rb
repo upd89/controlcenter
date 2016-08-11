@@ -5,8 +5,8 @@ class RolesController < ApplicationController
 
   # GET /roles/1
   def show
-    @users = User.where(:role => @role)
-    @paginated_users = @users.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
+    @users = User.where(role: @role)
+    @paginated_users = @users.paginate(page: params[:page], per_page: Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # POST /roles

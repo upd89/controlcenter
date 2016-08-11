@@ -59,12 +59,13 @@
 </ul>
 
 <% if @package_versions.length %>
-  <table class="package_versions col_12">
+  <table class="package_versions col_12 striped tight clickableRows">
     <thead>
       <tr>
         <th>SHA256</th>
         <th>Version</th>
         <th>Base version</th>
+        <th>Distribution</th>
         <th></th>
       </tr>
     </thead>
@@ -74,7 +75,12 @@
           <td><%= pkg_version.sha256.last(10) %></td>
           <td><%= pkg_version.version %></td>
           <td><%= pkg_version.base_version ? (link_to pkg_version.base_version.version, pkg_version.base_version) : "this" %></td>
-          <td><%= link_to pkg_version.id, pkg_version %></td>
+          <td><%= pkg_version.distribution.name %></td>
+          <td>
+            <ul class="button-bar">
+              <% if can? :read, pkg_version %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, pkg_version  %></li><% end %>
+            </ul>
+          </td>
         </tr>
       <% end %>
     </tbody>
@@ -87,7 +93,5 @@
     <%= will_paginate @paginated_package_versions, :container => false %>
   </div>
 <% end %>
-
-
 
 <div class="floatFix"></div>

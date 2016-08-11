@@ -17,45 +17,41 @@ class BackgroundSender
     url = 'https://' + system.address
 
     begin
-      connection = Faraday::Connection.new url, :ssl => {
-        #      :ca_path => '/usr/lib/ssl/certs',  #original SSL dir
-        #      :ca_path => '/opt/upd89/ca/keys',  #original upd89 cert dir
-        :ca_path => 'config/certs',         #relative dir
-        :client_cert => OpenSSL::X509::Certificate.new(File.read('config/clientCert/upd89-02.nine.ch.crt')),
-        :client_key => OpenSSL::PKey::RSA.new(File.read('config/clientCert/upd89-02.nine.ch.key')),
-        :version => 'TLSv1_2',
-        :verify => true
+      connection = Faraday::Connection.new url, ssl: {
+        ca_path: 'config/certs',         #relative dir
+        client_cert: OpenSSL::X509::Certificate.new(File.read('config/clientCert/upd89-02.nine.ch.crt')),
+        client_key: OpenSSL::PKey::RSA.new(File.read('config/clientCert/upd89-02.nine.ch.key')),
+        version: 'TLSv1_2',
+        verify: true
       }
-
-      #TODO: remove debug logging
-      logger.debug( "------------CONN---------" )
-      logger.debug( connection )
 
       result = connection.post '/task', taskData.to_json
 
-      logger.debug( "------------BODY---------" )
-      logger.debug( result.body )
-
-      if ( result.body.downcase == "ok")
-        task.task_state = TaskState.where(name: "Queued")[0]
-      end
-    #rescue Faraday::Error::ConnectionFailed => e #TODO: other possible errors
-    rescue
-      logger.debug( "Connection failed" ) #TODO: log exception!
-      if task.tries.to_i < Settings.BackgroundTask.MaximumAmountOfTries
-        logger.debug( "RESTARTING TASK " + task.tries.to_s )
-        BackgroundSender.perform_in(Settings.BackgroundTask.SecondsBetweenTries, task )
+      # handle both JSON and text reply
+      if JSON.parse(result.body.read)
+        status = JSON.parse result.body.read
+        status = status["status"]
       else
-        task.task_state = TaskState.where(name: "Not Delivered")[0]
-        stateAvailable = ConcretePackageState.where(name: "Available")[0]
-        task.concrete_package_versions.each do |pkgVersion|
-          pkgVersion.concrete_package_state = stateAvailable
-          pkgVersion.save()
+        status = result.body
+      end
+
+      if status.downcase == "ok"
+        task.task_state = TaskState.find_by(name: "Queued")
+      end
+    rescue
+      if task.tries.to_i < Settings.BackgroundTask.MaximumAmountOfTries
+        BackgroundSender.perform_in(Settings.BackgroundTask.SecondsBetweenTries, task)
+      else
+        task.task_state = TaskState.find_by(name: "Not Delivered")
+        cpv_state_avail = ConcretePackageState.find_by(name: "Available")
+        task.concrete_package_versions.each do |cpv|
+          cpv.concrete_package_state = cpv_state_avail
+          cpv.save
         end
-  
+
       end
     ensure
-      task.save()
+      task.save
     end
   end
 end

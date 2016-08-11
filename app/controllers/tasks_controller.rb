@@ -1,13 +1,14 @@
 class TasksController < ApplicationController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
+  load_and_authorize_resource
+
   # GET /tasks
-  # GET /tasks.json
   def index
     @filterrific = initialize_filterrific(
       Task,
       params[:filterrific],
-      :select_options => {
+      select_options: {
         sorted_by: Task.options_for_sorted_by,
         with_state_id: TaskState.options_for_select,
         with_system_id: System.options_for_select
@@ -17,57 +18,60 @@ class TasksController < ApplicationController
   end
 
   # GET /tasks/1
-  # GET /tasks/1.json
   def show
-    @paginated_concrete_package_versions = @task.concrete_package_versions.paginate(:page => params[:page], :per_page => Settings.Pagination.NoOfEntriesPerPage)
-  end
-
-  # GET /tasks/new
-  def new
-    @task = Task.new
-  end
-
-  # GET /tasks/1/edit
-  def edit
+    @paginated_concrete_package_versions = @task.concrete_package_versions.paginate(page: params[:page], per_page: Settings.Pagination.NoOfEntriesPerPage)
   end
 
   # POST /tasks
-  # POST /tasks.json
   def create
     @task = Task.new(task_params)
 
-    respond_to do |format|
-      if @task.save
-        format.html { redirect_to @task, success: 'Task was successfully created.' }
-        format.json { render :show, status: :created, location: @task }
-      else
-        format.html { render :new }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.save
+      redirect_to @task, success: 'Task was successfully created.'
+    else
+      render :new
     end
   end
 
   # PATCH/PUT /tasks/1
-  # PATCH/PUT /tasks/1.json
   def update
-    respond_to do |format|
-      if @task.update(task_params)
-        format.html { redirect_to @task, success: 'Task was successfully updated.' }
-        format.json { render :show, status: :ok, location: @task }
-      else
-        format.html { render :edit }
-        format.json { render json: @task.errors, status: :unprocessable_entity }
-      end
+    if @task.update(task_params)
+      redirect_to @task, success: 'Task was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /tasks/1
-  # DELETE /tasks/1.json
   def destroy
-    @task.destroy
-    respond_to do |format|
-      format.html { redirect_to tasks_url, success: 'Task was successfully destroyed.' }
-      format.json { head :no_content }
+    if @task.task_state == TaskState.where(name: "Done")[0]
+      next_state = ConcretePackageState.where(name: "Installed")[0]
+    else
+      next_state = ConcretePackageState.where(name: "Available")[0]
+    end
+
+    if @task.concrete_package_versions.length > 0
+      prev_state = @task.concrete_package_versions.first().concrete_package_state
+    else
+      prev_state = ConcretePackageState.where(name: "Queued for Installation")[0]
+    end
+
+    @task.concrete_package_versions.each do |cpv|
+      cpv.concrete_package_state = next_state
+      cpv.concrete_package_state.save()
+    end
+
+    if @task.job && @task.job.tasks.length == 1
+      @task.job.destroy()
+    end
+
+    if @task.destroy
+      redirect_to tasks_url, success: 'Task was successfully destroyed.'
+    else
+      @task.concrete_package_versions.each do |cpv|
+        cpv.concrete_package_state = prev_state
+      end
+      redirect_to tasks_url, error: 'Couldn\t delete task.'
     end
   end
 

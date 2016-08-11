@@ -1,0 +1,90 @@
+# Redirect to SSL, except for let's encrypt check
+<VirtualHost *:80>
+    ServerName $_HOSTNAME_
+    DocumentRoot /var/www/html
+    CustomLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-access.log combined
+    ErrorLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-error.log
+    <Directory "/var/www/html">
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+    Options -Indexes
+    RewriteEngine On
+    # No redirect to https:// for Let's encrypt-check
+    RewriteRule ^/\.well-known/.* - [L]
+    RewriteCond %{HTTPS} off
+    RewriteRule .* https://%{HTTP_HOST}%{REQUEST_URI}
+</VirtualHost>
+
+# Browser Access for Users, use Public Cert (eg. Let's encrypt)
+<VirtualHost *:443>
+    ServerName $_HOSTNAME_
+    DocumentRoot $_ROOTDIR_/public
+    RailsEnv $_RAILSENV_
+    PassengerDefaultRuby /usr/local/rvm/wrappers/ruby-2.2.3/ruby
+    ErrorLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-error.log
+    CustomLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-access.log combined
+    <Directory "$_ROOTDIR_/public">
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+
+    # SSL
+    SSLEngine On
+    SSLCertificateFile    /etc/apache2/ssl/$_SSLCERTFILE_
+    SSLCertificateKeyFile /etc/apache2/ssl/$_SSLKEYFILE_
+    SSLCertificateChainFile /etc/apache2/ssl/$_SSLCHAINFILE_
+
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLHonorCipherOrder on
+    SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS +RC4 RC4"
+    SSLCompression off
+
+    SSLVerifyClient none
+    SSLCACertificateFile "/etc/apache2/ssl/$_UPD89CA_"
+    <Location "/api">
+        SSLVerifyClient require
+        SSLVerifyDepth 1
+        SSLOptions +StdEnvVars +ExportCertData
+        RequestHeader set X-Api-Client-Cert "%{SSL_CLIENT_CERT}s"
+        RequestHeader set X-Api-Client-CN "%{SSL_CLIENT_S_DN_CN}s"
+    </Location>
+
+</VirtualHost>
+
+# API Access for agent, use private CA signed pub/keyfile
+<VirtualHost *:443>
+    ServerName $_HOSTNAME_
+    DocumentRoot $_ROOTDIR_/public
+    RailsEnv $_RAILSENV_
+    PassengerDefaultRuby /usr/local/rvm/wrappers/ruby-2.2.3/ruby
+    ErrorLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-error.log
+    CustomLog ${APACHE_LOG_DIR}/upd89-$_RAILSENV_-access.log combined
+    <Directory "$_ROOTDIR_/public">
+        Options FollowSymLinks
+        Require all granted
+    </Directory>
+
+    # SSL
+    SSLEngine On
+    SSLCertificateFile    /etc/apache2/ssl/$_SSLAPICERTFILE_
+    SSLCertificateKeyFile /etc/apache2/ssl/$_SSLAPIKEYFILE_
+
+    SSLProtocol all -SSLv2 -SSLv3
+    SSLHonorCipherOrder on
+    SSLCipherSuite "EECDH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+aRSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS +RC4 RC4"
+    SSLCompression off
+
+    SSLVerifyClient none
+    SSLCACertificateFile "/etc/apache2/ssl/$_UPD89CA_"
+    <Location "/api">
+        SSLVerifyClient require
+        SSLVerifyDepth 1
+        SSLOptions +StdEnvVars +ExportCertData
+        RequestHeader set X-Api-Client-Cert "%{SSL_CLIENT_CERT}s"
+        RequestHeader set X-Api-Client-CN "%{SSL_CLIENT_S_DN_CN}s"
+        SSLRenegBufferSize 10486000
+    </Location>
+
+</VirtualHost>
+

@@ -64,7 +64,7 @@ module Api::V1
                   } )
                 end
               else
-                # TODO: package not found... what to do now?
+                # package not found
               end
             end #end of each
             render json: { status: "OK" }
@@ -89,7 +89,6 @@ module Api::V1
             state = TaskState.where(:name => taskUpdate["state"] ).first
             if state
               task.task_state = state
-              # TODO + log
               if task.save()
                 render json: { status: "OK" }
               else

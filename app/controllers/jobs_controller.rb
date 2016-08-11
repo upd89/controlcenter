@@ -12,27 +12,14 @@ class JobsController < ApplicationController
     @tasks = Task.where(:job => @job)
   end
 
-  # GET /jobs/new
-  def new
-    @job = Job.new
-  end
-
-  # GET /jobs/1/edit
-  def edit
-  end
-
   def create_combo
     list = JSON.parse params[:list]
     filter = JSON.parse params[:filter]
-
-    logger.debug( filter["text"] )
-    logger.debug( filter["group"] )
 
     packages = list["packages"]
     task_state_pending = TaskState.where(name: "Pending")[0]
     cpv_state_queued = ConcretePackageState.where(name: "Queued for Installation")[0]
 
-    #TODO: extract code, see create and create_multiple!
     if current_user
       @job = Job.new(user: current_user,
                      started_at: Time.new,
@@ -155,7 +142,7 @@ class JobsController < ApplicationController
     if params[:all]
       # get task IDs from system, map to strings
       cpv_state_avail = ConcretePackageState.where(name: "Available")[0]
-      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: cpv_state_avail ) #TODO: centralised state manager
+      @task.concrete_package_versions << System.find(params[:system_id]).concrete_package_versions.where(concrete_package_state: cpv_state_avail )
     else
       # get task IDs from submitted array
       if params[:updates]
@@ -183,34 +170,29 @@ class JobsController < ApplicationController
       @job.save
 
       redirect_to @job
-    else
-      #TODO: log!
     end
 
   end
 
   # PATCH/PUT /jobs/1
-  # PATCH/PUT /jobs/1.json
   def update
-    respond_to do |format|
-      if @job.update(job_params)
-        format.html { redirect_to @job, success: 'Job was successfully updated.' }
-        format.json { render :show, status: :ok, location: @job }
-      else
-        format.html { render :edit }
-        format.json { render json: @job.errors, status: :unprocessable_entity }
-      end
+    if @job.update(job_params)
+      redirect_to @job, success: 'Job was successfully updated.'
+    else
+      render :edit
     end
   end
 
   # DELETE /jobs/1
-  # DELETE /jobs/1.json
   def destroy
-    @job.destroy
-    respond_to do |format|
-      format.html { redirect_to jobs_url, success: 'Job was successfully destroyed.' }
-      format.json { head :no_content }
+    if @job.tasks.length > 0
+      @job.tasks.each do |t|
+        t.destroy()
+      end
     end
+
+    @job.destroy
+    redirect_to jobs_url, success: 'Job was successfully destroyed.'
   end
 
   def execute

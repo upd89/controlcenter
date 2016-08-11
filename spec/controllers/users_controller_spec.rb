@@ -7,13 +7,5 @@ RSpec.describe UsersController, type: :controller do
       get :index
       assert_redirected_to :login
     end
-
-    #it "should get index when logged in" do
-    #  @user = FactoryGirl.create(:user, role: FactoryGirl.build(:role), email: "asd@asd.com", password: "asdasdasd")
-    #  login_user_post("asd@asd.com", "asdasdasd") #TODO: doesn't work yet
-    #  get 'new', venue_id: 1
-    #  assert_response :success
-    #end
-
   end
 end

@@ -3,7 +3,8 @@
   "actions" =>[{
     "icon" => "plus",
     "text" => "New Repository",
-    "path" => new_repository_path
+    "path" => new_repository_path,
+    "ctrlAction" => :create
   }]
 } %>
 
@@ -25,9 +26,9 @@
         <td><%= repository.component %></td>
         <td>
           <ul class="button-bar">
-            <li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, repository %></li>
-            <li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_repository_path(repository) %></li>
-            <li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, repository, method: :delete, data: { confirm: 'Are you sure?' } %></li>
+            <% if can? :read, repository    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, repository %></li><% end %>
+            <% if can? :update, repository  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_repository_path(repository) %></li><% end %>
+            <% if can? :destroy, repository %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, repository, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
           </ul>
         </td>
       </tr>

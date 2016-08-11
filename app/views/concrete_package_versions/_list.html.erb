@@ -1,0 +1,49 @@
+<div id="filterrific_results">
+
+  <table class="striped tight clickableRows">
+    <thead>
+      <tr>
+        <th>System</th>
+        <th>Task</th>
+        <th>Concrete package state</th>
+        <th>Package name</th>
+        <th>Package version</th>
+        <th>Distribution</th>
+        <th>Repository</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% concrete_package_versions.each do |concrete_package_version| %>
+        <tr>
+          <td><%= concrete_package_version.system.name %></td>
+          <td><%= concrete_package_version.task ? concrete_package_version.task.id : "" %></td>
+          <td><%= concrete_package_version.concrete_package_state.name %></td>
+          <td><%= concrete_package_version.package_version.package.name %></td>
+          <td><%= concrete_package_version.package_version.version %></td>
+          <td><%= concrete_package_version.package_version.distribution.name if concrete_package_version.package_version.distribution %></td>
+          <td><%= concrete_package_version.package_version.repository.full_name if concrete_package_version.package_version.repository %></td>
+
+          <td>
+            <ul class="button-bar">
+              <% if can? :read, concrete_package_version    %><li><%= link_to '<i class="fa fa-arrow-right"></i>'.html_safe, concrete_package_version %></li><% end %>
+              <% if can? :update, concrete_package_version  %><li><%= link_to '<i class="fa fa-pencil"></i>'.html_safe, edit_concrete_package_version_path(concrete_package_version) %></li><% end %>
+              <% if can? :destroy, concrete_package_version %><li><%= link_to '<i class="fa fa-remove"></i>'.html_safe, concrete_package_version, method: :delete, data: { confirm: 'Are you sure?' } %></li><% end %>
+            </ul>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <div class="page_info col_6">
+      <%= page_entries_info @concrete_package_versions %>
+    </div>
+    <div class="col_6">
+      <%= will_paginate @concrete_package_versions, container: false, inner_window: 3, outer_window: 1 %>
+    </div>
+  </div>
+
+</div>

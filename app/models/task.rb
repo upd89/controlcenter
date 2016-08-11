@@ -4,8 +4,7 @@ class Task < ActiveRecord::Base
   belongs_to :task_execution
   belongs_to :job
 
-  has_many :concrete_package_versions
-  #has_one :system, -> { distinct }, through: :concrete_package_versions
+  has_many :concrete_package_versions, dependent: :nullify
 
   filterrific(
     default_filter_params: { sorted_by: 'id_desc' },
