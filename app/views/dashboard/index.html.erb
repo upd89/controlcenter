@@ -19,10 +19,10 @@
       <ul>
         <li><%= @systems.count %> Systems present</li>
         <% if get_not_recently_seen_systems.count > 0 %>
-        <li><%= get_not_recently_seen_systems.count %> Systems not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours <%= link_to("(Check)", systems_path( filterrific: { sorted_by: "last_seen_asc" } ) ) %></li>
+        <li><%= get_not_recently_seen_systems.count %> <%= "System".pluralize(get_not_recently_seen_systems.count) %> not seen in past <%= Settings.Systems.NotSeenWarningThresholdMinutes / 60 %> hours <%= link_to("(Check)", systems_path( filterrific: { sorted_by: "last_seen_asc" } ) ) %></li>
         <% end %>
         <% if get_systems_without_group.count > 0 %>
-        <li><%= get_systems_without_group.count %> Systems not in a group</li>
+        <li><%= get_systems_without_group.count %> <%= "System".pluralize(get_systems_without_group.count) %> not in a group</li>
         <% end %>
       </ul>
 
@@ -37,9 +37,9 @@
     <h4>Packages</h4>
 
     <ul>
-      <li><%= @packages.count %> known Packages</li>
+      <li><%= @packages.count %> known <%= "Package".pluralize(@packages.count) %></li>
       <% if get_packages_without_group.count > 0 %>
-      <li><%= get_packages_without_group.count %> Packages not in a group</li>
+      <li><%= get_packages_without_group.count %> <%= "Package".pluralize(get_packages_without_group.count) %> not in a group</li>
       <% end %>
     </ul>
 
@@ -60,15 +60,15 @@
 
     <ul class="noDots">
     <% if get_running_tasks.count > 0 %>
-      <li><%= get_running_tasks.count %> pending <%= link_to("Tasks", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Pending")[0].id } ) ) %></li>
+      <li><%= get_running_tasks.count %> pending <%= link_to( "Task".pluralize(get_running_tasks.count)  , tasks_path( filterrific: { with_state_id: TaskState.where(name: "Pending")[0].id } ) ) %></li>
     <% end %>
 
     <% if get_failed_tasks.count > 0 %>
-      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed Tasks! (<%= link_to("Check", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Failed")[0].id } ) ) %>)</li>
+      <li class="errorText"><i class="fa fa-exclamation-triangle"></i> <%= get_failed_tasks.count %> failed <%= "Task".pluralize(get_failed_tasks.count) %>! (<%= link_to("Check", tasks_path( filterrific: { with_state_id: TaskState.where(name: "Failed")[0].id } ) ) %>)</li>
     <% end %>
 
     <% if get_overdue_tasks.count > 0 %>
-      <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> Tasks overdue!
+      <li class="warnText"><i class="fa fa-clock-o"></i> <%= get_overdue_tasks.count %> <%= "Task".pluralize(get_overdue_tasks.count) %> overdue!
           <% get_overdue_tasks.take( Settings.Dashboard.NrOfOverdueTasksShown ).each do |task| %>
           <div><%= task.decorated_created_at %> (<%= task.task_state.name %>) <%= link_to "Cancel", task_path( task ), method: :delete %> <%= link_to "Check", task_path( task )  %></div>
           <% end %>
