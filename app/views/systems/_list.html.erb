@@ -6,8 +6,7 @@
         <th><%= filterrific_sorting_link(@filterrific, :name) %></th>
         <th class="mHide"><%= filterrific_sorting_link(@filterrific, :urn) %></th>
         <th class="mHide"><%= filterrific_sorting_link(@filterrific, :os) %></th>
-        <th><%= filterrific_sorting_link(@filterrific, :reboot_required) %></th>
-        <th><%= filterrific_sorting_link(@filterrific, :address) %></th>
+        <th title="Indicates whether this system requires a reboot or not">Reboot</th>
         <th><%= filterrific_sorting_link(@filterrific, :last_seen) %></th>
         <th class="mHide"><%= filterrific_sorting_link(@filterrific, :system_group) %></th>
         <th>Updates</th>
@@ -20,7 +19,6 @@
           <td class="mHide"><%= system.urn %></td>
           <td class="mHide"><%= system.os %></td>
           <td><%= system.reboot_required ? "yes" : "no" %></td>
-          <td><%= system.address %></td>
           <td class="<%= system.is_missing ? "errorText" : "" %>" ><%= system.decorated_last_seen %></td>
           <td class="mHide"><%= system.system_group.blank? ? "-" : system.system_group.name %></td>
           <td><%= system.get_installable_CPVs.count %></td>
@@ -50,7 +48,7 @@
         <%= page_entries_info @systems %>
       </div>
       <div class="col_6">
-        <%= will_paginate @systems, container: false, inner_window: 3, outer_window: 1 %>
+        <%= will_paginate @systems, container: false, inner_window: 2, outer_window: 1 %>
       </div>
     </div>
   <% end %>

@@ -52,7 +52,7 @@
       <%= page_entries_info @system_package_relations %>
     </div>
     <div class="col_6">
-      <%= will_paginate @system_package_relations, :container => false %>
+      <%= will_paginate @system_package_relations, :container => false, :inner_window => 1 %>
     </div>
   </div>
 

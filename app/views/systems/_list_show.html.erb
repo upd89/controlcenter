@@ -39,7 +39,7 @@
         <%= page_entries_info @concrete_package_versions %>
       </div>
       <div class="col_6">
-        <%= will_paginate @concrete_package_versions, :container => false %>
+        <%= will_paginate @concrete_package_versions, :container => false, :page_links => false %>
       </div>
     </div>
 

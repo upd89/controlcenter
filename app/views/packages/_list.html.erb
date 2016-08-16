@@ -33,7 +33,7 @@
       <%= page_entries_info @packages %>
     </div>
     <div class="col_6">
-      <%= will_paginate @packages, :container => false %>
+      <%= will_paginate @packages, :container => false, :inner_window => 1 %>
     </div>
   </div>
 
