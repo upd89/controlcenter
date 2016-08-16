@@ -39,6 +39,10 @@ table {
   &.striped tbody tr:hover {
     background: RGBA(170, 170, 170, 0.7);
   }
+
+  &.striped tbody tr th {
+    text-align: left;
+  }
 }
 
 /* INDEX */
@@ -206,4 +210,8 @@ ul.noDots {
 /* Jobs */
 .jobNote {
   height: auto;
+}
+
+ul.button-bar {
+  white-space: nowrap;
 }
