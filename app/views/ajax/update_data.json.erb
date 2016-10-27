@@ -1,0 +1,11 @@
+{
+    "sytems": {
+        "total"             : <%= sys_count %>,
+        "ok"                : <%= get_systems_without_updates_or_queued.count %>,
+        "in-progress"       : <%= get_systems_with_queued_updates.count %>,
+        "updates-available" : <%= get_systems_with_available_updates_only.count %>
+    },
+    "tasks": {
+        "overdue"           : <%= get_overdue_tasks.count %>
+    }
+}
